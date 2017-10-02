@@ -1,11 +1,11 @@
 /**-------------------------------------------------------------------
  * $Id$
- * Universidad de los Andes (Bogot√° - Colombia)
- * Departamento de Ingenier√≠a de Sistemas y Computaci√≥n
+ * Universidad de los Andes (Bogot· - Colombia)
+ * Departamento de IngenierÌa de Sistemas y ComputaciÛn
  *
  * Materia: Sistemas Transaccionales
  * Ejercicio: VideoAndes
- * Autor: Juan Felipe Garc√≠a - jf.garcia268@uniandes.edu.co
+ * Autor: Juan Felipe GarcÌa - jf.garcia268@uniandes.edu.co
  * -------------------------------------------------------------------
  */
 package vos;

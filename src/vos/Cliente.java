@@ -1,0 +1,121 @@
+package vos;
+
+import java.util.Date;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+
+/**
+ * Clase que representa un Cliente.
+ */
+public class Cliente {
+
+	// -------------------------------------------------------------
+	// Atributos
+	// -------------------------------------------------------------
+
+	/**
+	 * Cédula del cliente.
+	 */
+	@JsonProperty(value = "cedula")
+	private Long cedula;
+
+	/**
+	 * Nombre del cliente.
+	 */
+	@JsonProperty(value = "nombre")
+	private String nombre;
+
+	/**
+	 * Fecha de ingreso del cliente.
+	 */
+	@JsonProperty(value = "fehcaIngreso")
+	private Date fechaIngreso;
+
+	// -------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------
+
+	/**
+	 * Método constructor de la clase cliente. <b>post: </b> Crea el cliente con
+	 * los valores que entran como parámetro.
+	 * 
+	 * @param cedula
+	 *            - Cédula del cliente.
+	 * @param nombre
+	 *            - Nombre del cliente. nombre != null
+	 * @param fechaIngreso
+	 *            - Fecha de ingreso del cliente.
+	 */
+	public Cliente(@JsonProperty(value = "cedula") Long cedula, @JsonProperty(value = "nombre") String nombre,
+			@JsonProperty(value = "fechaIngreso") Date fechaIngreso) {
+		super();
+		this.cedula = cedula;
+		this.nombre = nombre;
+		this.fechaIngreso = fechaIngreso;
+	}
+
+	// -------------------------------------------------------------
+	// Getters & Setters
+	// -------------------------------------------------------------
+
+	/**
+	 * Método getter del atributo id
+	 * 
+	 * @return id del cliente
+	 */
+	public Long getCedula() {
+		return cedula;
+	}
+
+	/**
+	 * Método setter del atributo id <b>post: </b> El id del cliente ha sido
+	 * cambiado con el valor que entra como parámetro.
+	 * 
+	 * @param id
+	 *            - Id del cliente
+	 */
+	public void setCedula(Long cedula) {
+		this.cedula = cedula;
+	}
+
+	/**
+	 * Método getter del atributo nombre
+	 * 
+	 * @return id del cliente
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * Método setter del atributo nombre <b>post: </b> El nombre del cliente ha
+	 * sido cambiado con el valor que entra como parámetro.
+	 * 
+	 * @param nombre
+	 *            - Nombre del cliente.
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * Método getter del atributo fechaIngreso.
+	 * 
+	 * @return fecha de ingreso del cliente.
+	 */
+	public Date getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	/**
+	 * Método setter del atributo fehchaIngreso <b>post: </b> La fecha de
+	 * ingreso del cliente ha sido cambiado con el valor que entra como
+	 * parámetro.
+	 * 
+	 * @param fechaIngreso
+	 *            - Fecha de ingreso del cliente.
+	 */
+	public void setFechaIngreso(Date fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+}
