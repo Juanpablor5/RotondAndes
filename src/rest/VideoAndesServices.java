@@ -26,9 +26,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
 import tm.VideoAndesTM;
 import vos.Video;
 
