@@ -39,13 +39,13 @@ public class Preferencias {
 	 * 
 	 * @param id
 	 *            - Id de la preferencia.
-	 * @param precioMayor
-	 *            - El mayor precio con el que se desea filtrar.
 	 * @param precioMenor
 	 *            - El menor precio con el que se desea filtrar.
+	 * @param precioMayor
+	 *            - El mayor precio con el que se desea filtrar.
 	 */
-	public Preferencias(@JsonProperty(value = "id") Long id, @JsonProperty(value = "precioMayor") Double precioMayor,
-			@JsonProperty(value = "precioMenor") Double precioMenor) {
+	public Preferencias(@JsonProperty(value = "id") Long id, @JsonProperty(value = "precioMenor") Double precioMenor,
+			@JsonProperty(value = "precioMayor") Double precioMayor) {
 		super();
 		this.id = id;
 		this.precioMayor = precioMayor;

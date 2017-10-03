@@ -25,7 +25,6 @@ public class DAOCliente extends DAOBase implements CRUD<Cliente>{
 	// -------------------------------------------------------------
 	// Métodos
 	// -------------------------------------------------------------
-	
 
 	@Override
 	public Cliente get(long cedula) throws SQLException, Exception {

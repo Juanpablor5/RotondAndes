@@ -6,8 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import vos.Registro;
 
-
+/**
+ * Clase DAO que se conecta la base de datos usando JDBC para resolver los requerimientos de la aplicación
+ */
 public class DAORegistro extends DAOBase implements CRUD<Registro>{
+	
+	// -------------------------------------------------------------
+	// Constantes
+	// -------------------------------------------------------------
+	
+	/**
+	 * Constante que representa la tabla registro.
+	 */
 	private final static String TABLA="REGISTRO";
 	
 
