@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import vos.Reserva;
-import vos.Reserva;
-import vos.Reserva;
 
 /**
  * Clase DAO que se conecta la base de datos usando JDBC para resolver los requerimientos de la aplicación

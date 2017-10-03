@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vos.Restaurante;
-import vos.Restaurante;
-import vos.Restaurante;
 
 /**
  * Clase DAO que se conecta la base de datos usando JDBC para resolver los requerimientos de la aplicación
