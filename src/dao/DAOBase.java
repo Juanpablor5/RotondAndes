@@ -48,6 +48,13 @@ public abstract class DAOBase {
 		this.conn = con;
 	}
 	
+	/**
+	 * realiza algun cambio en la base de datos
+	 * @param sql la sentencia sql a ejecutar
+	 * @return el resultado de la sentencia que se ejecuto
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
 	protected ResultSet executeModification(String sql)throws SQLException, Exception {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
