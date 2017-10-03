@@ -27,50 +27,57 @@ import vos.Registro;
 import vos.Restaurante;
 import vos.Zona;
 
-
 public class RotondAndesTM {
 	/**
-	 * Atributo estatico que contiene el path relativo del archivo que tiene los datos de la conexion
+	 * Atributo estatico que contiene el path relativo del archivo que tiene los
+	 * datos de la conexion
 	 */
 	private static final String CONNECTION_DATA_FILE_NAME_REMOTE = "/conexion.properties";
 
 	/**
-	 * Atributo estatico que contiene el path absoluto del archivo que tiene los datos de la conexion
+	 * Atributo estatico que contiene el path absoluto del archivo que tiene los
+	 * datos de la conexion
 	 */
-	private  String connectionDataPath;
+	private String connectionDataPath;
 
 	/**
-	 * Atributo que guarda el usuario que se va a usar para conectarse a la base de datos.
+	 * Atributo que guarda el usuario que se va a usar para conectarse a la base
+	 * de datos.
 	 */
 	private String user;
 
 	/**
-	 * Atributo que guarda la clave que se va a usar para conectarse a la base de datos.
+	 * Atributo que guarda la clave que se va a usar para conectarse a la base
+	 * de datos.
 	 */
 	private String password;
 
 	/**
-	 * Atributo que guarda el URL que se va a usar para conectarse a la base de datos.
+	 * Atributo que guarda el URL que se va a usar para conectarse a la base de
+	 * datos.
 	 */
 	private String url;
 
 	/**
-	 * Atributo que guarda el driver que se va a usar para conectarse a la base de datos.
+	 * Atributo que guarda el driver que se va a usar para conectarse a la base
+	 * de datos.
 	 */
 	private String driver;
-	
+
 	/**
 	 * conexion a la base de datos
 	 */
 	private Connection conn;
 
-
 	/**
-	 * Metodo constructor de la clase VideoAndesMaster, esta clase modela y contiene cada una de las 
-	 * Transacciónes y la logica de negocios que estas conllevan.
-	 * <b>post: </b> Se crea el objeto VideoAndesTM, se inicializa el path absoluto del archivo de conexion y se
-	 * inicializa los atributos que se usan par la conexion a la base de datos.
-	 * @param contextPathP - path absoluto en el servidor del contexto del deploy actual
+	 * Metodo constructor de la clase VideoAndesMaster, esta clase modela y
+	 * contiene cada una de las Transacciónes y la logica de negocios que estas
+	 * conllevan. <b>post: </b> Se crea el objeto VideoAndesTM, se inicializa el
+	 * path absoluto del archivo de conexion y se inicializa los atributos que
+	 * se usan par la conexion a la base de datos.
+	 * 
+	 * @param contextPathP
+	 *            - path absoluto en el servidor del contexto del deploy actual
 	 */
 	public RotondAndesTM(String contextPathP) {
 		connectionDataPath = contextPathP + CONNECTION_DATA_FILE_NAME_REMOTE;
@@ -78,8 +85,9 @@ public class RotondAndesTM {
 	}
 
 	/**
-	 * Metodo que  inicializa los atributos que se usan para la conexion a la base de datos.
-	 * <b>post: </b> Se han inicializado los atributos que se usan par la conexion a la base de datos.
+	 * Metodo que inicializa los atributos que se usan para la conexion a la
+	 * base de datos. <b>post: </b> Se han inicializado los atributos que se
+	 * usan par la conexion a la base de datos.
 	 */
 	private void initConnectionData() {
 		try {
@@ -99,9 +107,12 @@ public class RotondAndesTM {
 	}
 
 	/**
-	 * Metodo que  retorna la conexion a la base de datos
+	 * Metodo que retorna la conexion a la base de datos
+	 * 
 	 * @return Connection - la conexion a la base de datos
-	 * @throws SQLException - Cualquier error que se genere durante la conexion a la base de datos
+	 * @throws SQLException
+	 *             - Cualquier error que se genere durante la conexion a la base
+	 *             de datos
 	 */
 	private Connection darConexion() throws SQLException {
 		System.out.println("Connecting to: " + url + " With user: " + user);
@@ -109,15 +120,14 @@ public class RotondAndesTM {
 	}
 
 	////////////////////////////////////////
-	///////Transacciones////////////////////
+	/////// Transacciones////////////////////
 	////////////////////////////////////////
-	
-	public List<Registro> getAllResgistro() throws SQLException, Exception{
+
+	public List<Registro> getAllResgistro() throws SQLException, Exception {
 		List<Registro> data;
 		DAORegistro daos = new DAORegistro();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -132,7 +142,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -142,18 +152,17 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
-	public Registro getRegistro(long id) throws RotondAndesException, Exception{
+
+	public Registro getRegistro(long id) throws RotondAndesException, Exception {
 		Registro data;
 		DAORegistro daos = new DAORegistro();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El registro con el codigo:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El registro con el codigo:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -165,7 +174,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -175,18 +184,15 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
-	
 
-	public void addRegistro(Registro data) throws RotondAndesException, Exception{
+	public void addRegistro(Registro data) throws RotondAndesException, Exception {
 		DAORegistro daos = new DAORegistro();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getCodigo())!=null)
-				throw new RotondAndesException("El registro con el codigo <"+data.getCodigo()+"> ya existe");
+			if (daos.get(data.getCodigo()) != null)
+				throw new RotondAndesException("El registro con el codigo <" + data.getCodigo() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -201,7 +207,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -211,15 +217,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateRegistro(Registro data) throws RotondAndesException, Exception{
+	public void updateRegistro(Registro data) throws RotondAndesException, Exception {
 		DAORegistro daos = new DAORegistro();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getCodigo())==null)
-				throw new RotondAndesException("Ya existe un regstro con el codigo <"+data.getCodigo()+">");
+			if (daos.get(data.getCodigo()) == null)
+				throw new RotondAndesException("Ya existe un regstro con el codigo <" + data.getCodigo() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -233,7 +238,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -243,15 +248,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteRegistro(Registro data) throws RotondAndesException, Exception{
+	public void deleteRegistro(Registro data) throws RotondAndesException, Exception {
 		DAORegistro daos = new DAORegistro();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getCodigo())==null)
-				throw new RotondAndesException("No existe un registro con codigo:<"+data.getCodigo()+">");
+			if (daos.get(data.getCodigo()) == null)
+				throw new RotondAndesException("No existe un registro con codigo:<" + data.getCodigo() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -265,7 +269,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -274,13 +278,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Cliente> getAllCliente() throws SQLException, Exception{
+
+	public List<Cliente> getAllCliente() throws SQLException, Exception {
 		List<Cliente> data;
 		DAOCliente daos = new DAOCliente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -295,7 +298,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -306,17 +309,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Cliente getCliente(long id) throws RotondAndesException, Exception{
+	public Cliente getCliente(long id) throws RotondAndesException, Exception {
 		Cliente data;
 		DAOCliente daos = new DAOCliente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El cliente con el codigo:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El cliente con el codigo:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -328,7 +330,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -339,15 +341,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addCliente(Cliente data) throws RotondAndesException, Exception{
+	public void addCliente(Cliente data) throws RotondAndesException, Exception {
 		DAOCliente daos = new DAOCliente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getCedula())!=null)
-				throw new RotondAndesException("El cliente con la cedula <"+data.getCedula()+"> ya existe");
+			if (daos.get(data.getCedula()) != null)
+				throw new RotondAndesException("El cliente con la cedula <" + data.getCedula() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -362,7 +363,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -372,15 +373,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateCliente(Cliente data) throws RotondAndesException, Exception{
+	public void updateCliente(Cliente data) throws RotondAndesException, Exception {
 		DAOCliente daos = new DAOCliente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getCedula())==null)
-				throw new RotondAndesException("Ya existe un cliente con la cedula <"+data.getCedula()+">");
+			if (daos.get(data.getCedula()) == null)
+				throw new RotondAndesException("Ya existe un cliente con la cedula <" + data.getCedula() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -394,7 +394,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -404,15 +404,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteCliente(Cliente data) throws RotondAndesException, Exception{
+	public void deleteCliente(Cliente data) throws RotondAndesException, Exception {
 		DAOCliente daos = new DAOCliente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getCedula())==null)
-				throw new RotondAndesException("No existe un cliente con la cedula<"+data.getCedula()+">");
+			if (daos.get(data.getCedula()) == null)
+				throw new RotondAndesException("No existe un cliente con la cedula<" + data.getCedula() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -426,7 +425,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -435,13 +434,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Restaurante> getAllRestaurante() throws SQLException, Exception{
+
+	public List<Restaurante> getAllRestaurante() throws SQLException, Exception {
 		List<Restaurante> data;
 		DAORestaurante daos = new DAORestaurante();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -456,7 +454,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -467,17 +465,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Restaurante getRestaurante(long id) throws RotondAndesException, Exception{
+	public Restaurante getRestaurante(long id) throws RotondAndesException, Exception {
 		Restaurante data;
 		DAORestaurante daos = new DAORestaurante();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El restaurante con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El restaurante con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -489,7 +486,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -500,15 +497,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addRestaurante(Restaurante data) throws RotondAndesException, Exception{
+	public void addRestaurante(Restaurante data) throws RotondAndesException, Exception {
 		DAORestaurante daos = new DAORestaurante();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("El restaurante con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El restaurante con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -523,7 +519,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -533,15 +529,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateRestaurante(Restaurante data) throws RotondAndesException, Exception{
+	public void updateRestaurante(Restaurante data) throws RotondAndesException, Exception {
 		DAORestaurante daos = new DAORestaurante();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe un restaurante con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe un restaurante con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -555,7 +550,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -565,15 +560,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteRestaurante(Restaurante data) throws RotondAndesException, Exception{
+	public void deleteRestaurante(Restaurante data) throws RotondAndesException, Exception {
 		DAORestaurante daos = new DAORestaurante();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe un restaurante con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe un restaurante con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -587,7 +581,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -596,13 +590,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Producto> getAllProducto() throws SQLException, Exception{
+
+	public List<Producto> getAllProducto() throws SQLException, Exception {
 		List<Producto> data;
 		DAOProducto daos = new DAOProducto();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -617,7 +610,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -628,17 +621,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Producto getProducto(long id) throws RotondAndesException, Exception{
+	public Producto getProducto(long id) throws RotondAndesException, Exception {
 		Producto data;
 		DAOProducto daos = new DAOProducto();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El producto con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El producto con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -650,7 +642,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -661,15 +653,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addProducto(Producto data) throws RotondAndesException, Exception{
+	public void addProducto(Producto data) throws RotondAndesException, Exception {
 		DAOProducto daos = new DAOProducto();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("El producto con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El producto con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -684,7 +675,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -694,15 +685,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateProducto(Producto data) throws RotondAndesException, Exception{
+	public void updateProducto(Producto data) throws RotondAndesException, Exception {
 		DAOProducto daos = new DAOProducto();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe un producto con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe un producto con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -716,7 +706,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -726,15 +716,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteProducto(Producto data) throws RotondAndesException, Exception{
+	public void deleteProducto(Producto data) throws RotondAndesException, Exception {
 		DAOProducto daos = new DAOProducto();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe un producto con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe un producto con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -748,7 +737,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -757,13 +746,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Ingrediente> getAllIngrediente() throws SQLException, Exception{
+
+	public List<Ingrediente> getAllIngrediente() throws SQLException, Exception {
 		List<Ingrediente> data;
 		DAOIngrediente daos = new DAOIngrediente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -778,7 +766,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -789,17 +777,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Ingrediente getIngrediente(long id) throws RotondAndesException, Exception{
+	public Ingrediente getIngrediente(long id) throws RotondAndesException, Exception {
 		Ingrediente data;
 		DAOIngrediente daos = new DAOIngrediente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El ingrediente con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El ingrediente con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -811,7 +798,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -822,15 +809,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addIngrediente(Ingrediente data) throws RotondAndesException, Exception{
+	public void addIngrediente(Ingrediente data) throws RotondAndesException, Exception {
 		DAOIngrediente daos = new DAOIngrediente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("El ingrediente con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El ingrediente con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -845,7 +831,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -855,15 +841,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateIngrediente(Ingrediente data) throws RotondAndesException, Exception{
+	public void updateIngrediente(Ingrediente data) throws RotondAndesException, Exception {
 		DAOIngrediente daos = new DAOIngrediente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe un ingrediente con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe un ingrediente con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -877,7 +862,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -887,15 +872,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteIngrediente(Ingrediente data) throws RotondAndesException, Exception{
+	public void deleteIngrediente(Ingrediente data) throws RotondAndesException, Exception {
 		DAOIngrediente daos = new DAOIngrediente();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe un ingrediente con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe un ingrediente con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -909,7 +893,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -918,13 +902,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Menu> getAllMenu() throws SQLException, Exception{
+
+	public List<Menu> getAllMenu() throws SQLException, Exception {
 		List<Menu> data;
 		DAOMenu daos = new DAOMenu();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -939,7 +922,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -950,17 +933,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Menu getMenu(long id) throws RotondAndesException, Exception{
+	public Menu getMenu(long id) throws RotondAndesException, Exception {
 		Menu data;
 		DAOMenu daos = new DAOMenu();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El menu con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El menu con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -972,7 +954,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -983,15 +965,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addMenu(Menu data) throws RotondAndesException, Exception{
+	public void addMenu(Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("El menu con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El menu con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -1006,7 +987,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1016,15 +997,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateMenu(Menu data) throws RotondAndesException, Exception{
+	public void updateMenu(Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe un menu con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe un menu con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -1038,7 +1018,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1048,15 +1028,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteMenu(Menu data) throws RotondAndesException, Exception{
+	public void deleteMenu(Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe un menu con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe un menu con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -1070,7 +1049,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1079,13 +1058,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Zona> getAllZona() throws SQLException, Exception{
+
+	public List<Zona> getAllZona() throws SQLException, Exception {
 		List<Zona> data;
 		DAOZona daos = new DAOZona();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -1100,7 +1078,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1111,17 +1089,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Zona getZona(long id) throws RotondAndesException, Exception{
+	public Zona getZona(long id) throws RotondAndesException, Exception {
 		Zona data;
 		DAOZona daos = new DAOZona();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("La zona con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("La zona con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1133,7 +1110,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1144,15 +1121,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addZona(Zona data) throws RotondAndesException, Exception{
+	public void addZona(Zona data) throws RotondAndesException, Exception {
 		DAOZona daos = new DAOZona();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("La zona con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("La zona con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -1167,7 +1143,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1177,15 +1153,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateZona(Zona data) throws RotondAndesException, Exception{
+	public void updateZona(Zona data) throws RotondAndesException, Exception {
 		DAOZona daos = new DAOZona();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe una zona con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe una zona con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -1199,7 +1174,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1209,15 +1184,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteZona(Zona data) throws RotondAndesException, Exception{
+	public void deleteZona(Zona data) throws RotondAndesException, Exception {
 		DAOZona daos = new DAOZona();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe una zona con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe una zona con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -1231,7 +1205,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1240,13 +1214,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Preferencias> getAllPreferencias() throws SQLException, Exception{
+
+	public List<Preferencias> getAllPreferencias() throws SQLException, Exception {
 		List<Preferencias> data;
 		DAOPreferencias daos = new DAOPreferencias();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -1261,7 +1234,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1272,17 +1245,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Preferencias getPreferencias(long id) throws RotondAndesException, Exception{
+	public Preferencias getPreferencias(long id) throws RotondAndesException, Exception {
 		Preferencias data;
 		DAOPreferencias daos = new DAOPreferencias();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("La preferencia con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("La preferencia con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1294,7 +1266,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1305,15 +1277,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addPreferencias(Preferencias data) throws RotondAndesException, Exception{
+	public void addPreferencias(Preferencias data) throws RotondAndesException, Exception {
 		DAOPreferencias daos = new DAOPreferencias();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("La preferencia con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("La preferencia con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -1328,7 +1299,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1338,15 +1309,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updatePreferencias(Preferencias data) throws RotondAndesException, Exception{
+	public void updatePreferencias(Preferencias data) throws RotondAndesException, Exception {
 		DAOPreferencias daos = new DAOPreferencias();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe una preferencia con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe una preferencia con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -1360,7 +1330,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1370,15 +1340,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deletePreferencias(Preferencias data) throws RotondAndesException, Exception{
+	public void deletePreferencias(Preferencias data) throws RotondAndesException, Exception {
 		DAOPreferencias daos = new DAOPreferencias();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe una preferencia con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe una preferencia con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -1392,7 +1361,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1401,13 +1370,12 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	public List<Pedido> getAllPedido() throws SQLException, Exception{
+
+	public List<Pedido> getAllPedido() throws SQLException, Exception {
 		List<Pedido> data;
 		DAOPedido daos = new DAOPedido();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
@@ -1422,7 +1390,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1433,17 +1401,16 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Pedido getPedido(long id) throws RotondAndesException, Exception{
+	public Pedido getPedido(long id) throws RotondAndesException, Exception {
 		Pedido data;
 		DAOPedido daos = new DAOPedido();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.get(id);
-			if(data==null)
-				throw new RotondAndesException("El pedido con el id:<"+id+">no existe");
+			if (data == null)
+				throw new RotondAndesException("El pedido con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1455,7 +1422,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1466,15 +1433,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addPedido(Pedido data) throws RotondAndesException, Exception{
+	public void addPedido(Pedido data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())!=null)
-				throw new RotondAndesException("El pedido con el id <"+data.getId()+"> ya existe");
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El pedido con el id <" + data.getId() + "> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -1489,7 +1455,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1499,15 +1465,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updatePedido(Pedido data) throws RotondAndesException, Exception{
+	public void updatePedido(Pedido data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("Ya existe un pedido con el <"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe un pedido con el <" + data.getId() + ">");
 			daos.update(data);
 
 		} catch (SQLException e) {
@@ -1521,7 +1486,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
@@ -1531,15 +1496,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deletePedido(Pedido data) throws RotondAndesException, Exception{
+	public void deletePedido(Pedido data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
-		try 
-		{
-			//////Transacción
+		try {
+			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			if(daos.get(data.getId())==null)
-				throw new RotondAndesException("No existe un pedido con el id<"+data.getId()+">");
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe un pedido con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {
@@ -1553,7 +1517,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
-				if(this.conn!=null)
+				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
