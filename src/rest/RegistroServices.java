@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -95,6 +96,22 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		return Response.status(200).entity(data).build();
 	}
 
+	@Path("{" + REGISTROID + ": \\d+}/"+CLIENTE)
+	public Class<ClienteModificationServices> getCliente(@PathParam(REGISTROID) Long id){
+	    System.out.println("dfdsfsdfsdfsdf");
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+        try {
+			if (tm.getRegistro(id).getPermisos() != 3)
+	        	throw new RotondAndesException("no tiene los permisos necesarios");
+			System.out.println("dfdsfsdfsdfsdf");
+	        return ClienteModificationServices.class;
+		} catch (RotondAndesException ex) {
+			 throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			 throw new WebApplicationException( Response.status(500).entity(doErrorMessage(e)).build());
+		}
+    }
+	
 	@Override
 	public void integridad(Registro data) throws RotondAndesException {
 		if(data.getCodigo()==null)
