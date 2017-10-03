@@ -30,7 +30,7 @@ public class Registro {
 	private String contrasena;
 
 	/**
-	 * Permisos que tiene cada cliente representados por números.
+	 * Permisos que tiene cada cliente representados por números.{3:admin, 2:rest, 1:cliente}
 	 */
 	@JsonProperty(value = "permisos")
 	private Integer permisos;

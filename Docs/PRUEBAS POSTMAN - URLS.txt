@@ -1,29 +1,33 @@
 URL's DE EJEMPLO - PRUEBAS EN POSTMAN
 
-GET (TODOS LOS VIDEOS)
+GET (TODOS LOS REGISTROS)
+http://localhost:8080/RotondAndes/rest/registros
 
-http://localhost:8080/VideoAndes/rest/videos
+GET (VIDEO POR CODIGO)
+http://localhost:8080/RotondAndes/rest/registros/123
 
-GET (VIDEO POR ID)
-
-http://localhost:8080/VideoAndes/rest/videos/1
-
-GET (VIDEO POR NOMBRE)
-
-http://localhost:8080/VideoAndes/rest/videos/nombre?nombre=Orgullo y Prejuicio
 
 POST 
-
-http://localhost:8080/VideoAndes/rest/videos
-
+http://localhost:8080/RotondAndes/rest/registros
 JSON:
+{
+    "codigo": 7,
+    "usuario": "james bond",
+    "contrasena": "007",
+    "permisos": 3
+}
 
-	{
-        "id": 13,
-        "name": "Supernatural",
-        "duration": 160
-    }
-	
 PUT
+http://localhost:8080/RotondAndes/rest/registros
+{
+    "codigo": 7,
+    "usuario": "agente007",
+    "contrasena": "007",
+    "permisos": 3
+}
 
-http://localhost:8080/VideoAndes/rest/videos
+DELETE
+http://localhost:8080/RotondAndes/rest/registros
+{
+    "codigo": 7
+}
