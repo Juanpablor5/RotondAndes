@@ -166,7 +166,6 @@ public class DAOTablaVideos {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-
 	}
 	
 	/**

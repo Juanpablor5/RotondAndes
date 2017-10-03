@@ -1,18 +1,48 @@
 package dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import vos.Registro;
 
 public class DAORegistro extends DAOBase implements CRUD<Registro>{
 	private final static String TABLA="REGISTRO";
 	
-	/**
-	 * metodo que agrega un registro a la base de datos
-	 * @param data los datos a agregar
-	 * * @throws SQLException - Cualquier error que la base de datos arroje. No pudo agregar el video a la base de datos
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
-	 */
+
+	@Override
+	public Registro get(long id) throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Registro> getAll() throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Registro data) throws SQLException, Exception {
+		String sql = "UPDATE "+TABLA+" SET ";
+		sql += "USUARIO='" + data.getUsuario() + "',";
+		sql += "CONTRASENIA=" + data.getContrasena()+",";
+		sql += "PERMISOS=" + data.getPermisos();
+		sql += " WHERE CODIGO = " + data.getCodigo();
+		
+		executeModification(sql);
+	}
+
+
+	@Override
+	public void delete(Registro data) throws SQLException, Exception {
+		String sql = "DELETE FROM VIDEO";
+		sql += " WHERE CODIGO = " + data.getCodigo();
+		
+		executeModification(sql);
+	}
+	
+
+	@Override
 	public void add(Registro data) throws SQLException, Exception {
 		String sql = "INSERT INTO "+TABLA+" VALUES (";
 		sql += data.getCodigo() + ",'";
@@ -22,6 +52,4 @@ public class DAORegistro extends DAOBase implements CRUD<Registro>{
 		
 		executeModification(sql);
 	}
-	
-	
 }

@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -47,9 +48,9 @@ public abstract class DAOBase {
 		this.conn = con;
 	}
 	
-	protected void executeModification(String sql)throws SQLException, Exception {
+	protected ResultSet executeModification(String sql)throws SQLException, Exception {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
-		prepStmt.executeQuery();
+		return prepStmt.executeQuery();
 	}
 }
