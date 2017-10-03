@@ -34,7 +34,8 @@ public class DAOCliente extends DAOBase implements CRUD<Cliente>{
 		if(rs.next()) {
 			String nombre = rs.getString("NOMBRE");
 			Date fechaIngreso = rs.getDate("FECHADEINGRESO");
-			cliente = new Cliente(cedula, nombre, fechaIngreso);
+			Integer registroId= rs.getInt("REGISTRO_ID");
+			cliente = new Cliente(cedula, nombre, fechaIngreso,registroId);
 		}
 		return cliente;
 	}
@@ -51,7 +52,8 @@ public class DAOCliente extends DAOBase implements CRUD<Cliente>{
 			Long cedula = rs.getLong("CEDULA");
 			String nombre = rs.getString("NOMBRE");
 			Date fechaIngreso = rs.getDate("FECHADEINGRESO");
-			data.add( new Cliente(cedula, nombre, fechaIngreso));
+			Integer registroId= rs.getInt("REGISTRO_ID");
+			data.add( new Cliente(cedula, nombre, fechaIngreso,registroId));
 		}
 		return data;
 	}

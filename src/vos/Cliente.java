@@ -30,6 +30,12 @@ public class Cliente {
 	 */
 	@JsonProperty(value = "fehcaIngreso")
 	private Date fechaIngreso;
+	
+	/**
+	 * id del registro asocciado
+	 */
+	@JsonProperty(value = "regristroId")
+	private Integer regristroId;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -45,13 +51,15 @@ public class Cliente {
 	 *            - Nombre del cliente. nombre != null
 	 * @param fechaIngreso
 	 *            - Fecha de ingreso del cliente.
+	 * @param regristroId 
 	 */
 	public Cliente(@JsonProperty(value = "cedula") Long cedula, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "fechaIngreso") Date fechaIngreso) {
+			@JsonProperty(value = "fechaIngreso") Date fechaIngreso, @JsonProperty(value = "regristroId") Integer regristroId) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.fechaIngreso = fechaIngreso;
+		this.regristroId= regristroId;
 	}
 
 	// -------------------------------------------------------------
@@ -117,5 +125,19 @@ public class Cliente {
 	 */
 	public void setFechaIngreso(Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
+	}
+	/**
+	 * dar el id derl reistro asociado
+	 * @return
+	 */
+	public Integer getRegristroId() {
+		return regristroId;
+	}
+	/**
+	 * cambiar el id del registro asociado
+	 * @param regristroId
+	 */
+	public void setRegristroId(Integer regristroId) {
+		this.regristroId = regristroId;
 	}
 }

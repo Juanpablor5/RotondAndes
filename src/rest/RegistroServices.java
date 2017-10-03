@@ -17,10 +17,10 @@ import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Registro;
 
-@Path(CRUDRest.REGISTRO)
+@Path(URLS.REGISTRO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RegistroServices extends BaseServices implements CRUDRest<Registro> {
+public class RegistroServices extends BaseServices implements CRUDRest<Registro>,URLS {
 
 	@GET
 	@Override
