@@ -1,5 +1,6 @@
 package rest;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -16,11 +17,16 @@ import vos.Cliente;
 @Produces(MediaType.APPLICATION_JSON)
 public class ClienteModificationServices extends BaseServices implements CRUDEst<Cliente> {
 	
+	public ClienteModificationServices(ServletContext context) {
+		this.context=context;
+	}
+	
 	@POST
 	@Override
 	public Response add(Cliente data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
+			System.out.println("dfdsfsdfsdfsdf");
 			integridad(data);
 			tm.addCliente(data);
 		} catch (RotondAndesException ex) {
@@ -62,6 +68,8 @@ public class ClienteModificationServices extends BaseServices implements CRUDEst
 
 	@Override
 	public void integridad(Cliente data) throws RotondAndesException {
+		if(data.getRegristroId()==null)
+			throw new RotondAndesException("el registro id");
 		if(data.getCedula()==null)
 			throw new RotondAndesException("la cedua no puede ser null");
 		if(data.getNombre()==null)

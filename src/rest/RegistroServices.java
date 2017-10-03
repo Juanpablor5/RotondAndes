@@ -21,7 +21,7 @@ import vos.Registro;
 @Path(URLS.REGISTRO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RegistroServices extends BaseServices implements CRUDRest<Registro>,URLS {
+public class RegistroServices extends BaseServices implements CRUDRest<Registro>, URLS {
 
 	@GET
 	@Override
@@ -96,43 +96,43 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		return Response.status(200).entity(data).build();
 	}
 
-	@Path("{" + REGISTROID + ": \\d+}/"+CLIENTE)
-	public Class<ClienteModificationServices> getCliente(@PathParam(REGISTROID) Long id){
-	    System.out.println("dfdsfsdfsdfsdf");
+	@Path("{" + REGISTROID + ": \\d+}/" + CLIENTE)
+	public ClienteModificationServices getCliente(@PathParam(REGISTROID) Long id) {
+
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-        try {
+		try {
 			if (tm.getRegistro(id).getPermisos() != 3)
-	        	throw new RotondAndesException("no tiene los permisos necesarios");
-			System.out.println("dfdsfsdfsdfsdf");
-	        return ClienteModificationServices.class;
+				throw new RotondAndesException("no tiene los permisos necesarios");
+
+			return new ClienteModificationServices(context);
 		} catch (RotondAndesException ex) {
-			 throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
 		} catch (Exception e) {
-			 throw new WebApplicationException( Response.status(500).entity(doErrorMessage(e)).build());
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}
-    }
-	
+	}
+
 	@Override
 	public void integridad(Registro data) throws RotondAndesException {
-		if(data.getCodigo()==null)
+		if (data.getCodigo() == null)
 			throw new RotondAndesException("el codigo no puede ser null");
-		if(data.getUsuario()==null)
+		if (data.getUsuario() == null)
 			throw new RotondAndesException("el usuario no puede ser null");
-		if(data.getContrasena()==null)
+		if (data.getContrasena() == null)
 			throw new RotondAndesException("la contrasenia no piede ser null");
-		if(data.getPermisos()==null)
+		if (data.getPermisos() == null)
 			throw new RotondAndesException("el permiso no puede se null");
-		if(data.getUsuario().equals(""))
+		if (data.getUsuario().equals(""))
 			throw new RotondAndesException("no puede agregar un usuario vacio");
-		if(data.getUsuario().contains(" "))
+		if (data.getUsuario().contains(" "))
 			throw new RotondAndesException("un usuario no puede tener espacios");
-		if(data.getUsuario().length()>100) 
+		if (data.getUsuario().length() > 100)
 			throw new RotondAndesException("la cadena ususrio supera el limite permitido de caracteres");
-		if(data.getContrasena().equals(""))
+		if (data.getContrasena().equals(""))
 			throw new RotondAndesException("no puede agregar un usuario vacio");
-		if(data.getContrasena().length()>100) 
+		if (data.getContrasena().length() > 100)
 			throw new RotondAndesException("la cadena ususrio supera el limite permitido de caracteres");
-		if(data.getPermisos()<=0 || data.getPermisos()>3)
+		if (data.getPermisos() <= 0 || data.getPermisos() > 3)
 			throw new RotondAndesException("el permiso no es valido");
 	}
 }

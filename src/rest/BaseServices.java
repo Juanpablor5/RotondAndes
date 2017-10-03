@@ -8,7 +8,7 @@ public abstract class BaseServices {
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
 	 */
 	@Context
-	private ServletContext context;
+	protected ServletContext context;
 
 	/**
 	 * Metodo que retorna el path de la carpeta WEB-INF/ConnectionData en el deploy actual dentro del servidor.

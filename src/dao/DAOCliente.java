@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,22 +61,31 @@ public class DAOCliente extends DAOBase implements CRUD<Cliente>{
 
 	@Override
 	public void add(Cliente data) throws SQLException, Exception {
-		String sql = "INSERT INTO " + TABLA +" VALUES (";
+		SimpleDateFormat formato=new SimpleDateFormat("dd/MM/YYYY");
+		
+		String sql = "INSERT INTO " + TABLA +"( CEDULA,NOMBRE,FECHADEINGRESO,REGISTRO_ID) VALUES (";
 		sql += data.getCedula() + ",'";
 		sql += data.getNombre() + "','";
-		sql += data.getFechaIngreso() + "')";
+		sql += formato.format(data.getFechaIngreso()) + "',";
+		sql += data.getRegristroId()+")";
 		
 		executeModification(sql);
 	}
 
 	@Override
 	public void update(Cliente data) throws SQLException, Exception {
+		SimpleDateFormat formato=new SimpleDateFormat("dd/MM/YYYY");
+		
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "NOMBRE='" + data.getNombre() + "',";
-		sql += "FECHADEINGRESO='" + data.getFechaIngreso() + "'";
+		sql += "FECHADEINGRESO='" + formato.format(data.getRegristroId())+ "',";
+		sql += "REGISTRO_ID="+data.getRegristroId();
 		sql += " WHERE CEDULA = " + data.getCedula();
 		
+		System.out.println(sql);
+		
 		executeModification(sql);
+		System.out.println("final");
 	}
 
 	@Override

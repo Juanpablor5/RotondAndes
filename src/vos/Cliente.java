@@ -28,7 +28,7 @@ public class Cliente {
 	/**
 	 * Fecha de ingreso del cliente.
 	 */
-	@JsonProperty(value = "fehcaIngreso")
+	@JsonProperty(value = "fechaIngreso")
 	private Date fechaIngreso;
 	
 	/**
