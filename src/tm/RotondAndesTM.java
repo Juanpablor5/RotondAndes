@@ -128,10 +128,74 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-
+	
 	public Registro getRegistro(long id) throws RotondAndesException, Exception{
 		Registro data;
 		DAORegistro daos = new DAORegistro();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.get(id);
+			if(data==null)
+				throw new RotondAndesException("el registro con el codigo:<"+id+">no existe");
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+	
+	public List<Cliente> getAllCliente() throws SQLException, Exception{
+		List<Cliente> data;
+		DAOCliente daos = new DAOCliente();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.getAll();
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public Cliente getCliente(long id) throws RotondAndesException, Exception{
+		Cliente data;
+		DAOCliente daos = new DAOCliente();
 		try 
 		{
 			//////transaccion
