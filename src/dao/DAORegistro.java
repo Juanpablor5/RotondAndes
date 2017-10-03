@@ -2,8 +2,10 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import vos.Registro;
+
 
 public class DAORegistro extends DAOBase implements CRUD<Registro>{
 	private final static String TABLA="REGISTRO";
@@ -11,14 +13,26 @@ public class DAORegistro extends DAOBase implements CRUD<Registro>{
 
 	@Override
 	public List<Registro> getAll() throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Registro> data = new ArrayList<>();
+
+		String sql = "SELECT * FROM "+TABLA;
+
+		ResultSet rs = executeModification(sql);
+
+		while (rs.next()) {
+			String usuario = rs.getString("USUARIO");
+			Long codigo = rs.getLong("CODIGO");
+			String contrasenia =rs.getString("CONTRASENIA");
+			Integer permisos= rs.getInt("PERMISOS");
+			data.add( new Registro(codigo, usuario, contrasenia,permisos));
+		}
+		return data;
 	}
 	
 	@Override
 	public Registro get(long id) throws SQLException, Exception {
 		Registro data = null;
-		String sql = "SELECT * FROM "+TABLA+" WHERE ID =" + id;
+		String sql = "SELECT * FROM "+TABLA+" WHERE CODIGO =" + id;
 		
 		ResultSet rs =executeModification(sql);
 		if(rs.next()) {
