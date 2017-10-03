@@ -33,7 +33,8 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 		if(rs.next()) {
 			String nombre = rs.getString("NOMBRE");
 			String paginaweb = rs.getString("DESCRIPCION");
-			restaurante = new Restaurante(id, nombre, paginaweb);
+			Integer registroId= rs.getInt("REGISTRO_ID");
+			restaurante = new Restaurante(id, nombre, paginaweb,registroId);
 		}
 		return restaurante;
 	}
@@ -50,7 +51,8 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 			Long id = rs.getLong("ID");
 			String nombre = rs.getString("NOMBRE");
 			String paginaweb = rs.getString("DESCRIPCION");
-			data.add( new Restaurante(id, nombre, paginaweb));
+			Integer registroId= rs.getInt("REGISTRO_ID");
+			data.add( new Restaurante(id, nombre, paginaweb,registroId));
 		}
 		return data;
 	}

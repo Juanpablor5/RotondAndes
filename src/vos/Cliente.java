@@ -32,7 +32,7 @@ public class Cliente {
 	private Date fechaIngreso;
 	
 	/**
-	 * id del registro asocciado
+	 * id del registro asociado
 	 */
 	@JsonProperty(value = "regristroId")
 	private Integer regristroId;
@@ -126,13 +126,15 @@ public class Cliente {
 	public void setFechaIngreso(Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
+	
 	/**
-	 * dar el id derl reistro asociado
+	 * dar el id del reistro asociado
 	 * @return
 	 */
 	public Integer getRegristroId() {
 		return regristroId;
 	}
+	
 	/**
 	 * cambiar el id del registro asociado
 	 * @param regristroId

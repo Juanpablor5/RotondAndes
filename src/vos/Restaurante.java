@@ -28,6 +28,12 @@ public class Restaurante {
 	 */
 	@JsonProperty(value = "paginaWeb")
 	private String paginaWeb;
+	
+	/**
+	 * id del registro asociado
+	 */
+	@JsonProperty(value = "regristroId")
+	private Integer regristroId;
 
 	/**
 	 * Método constructor de la clase restaurante. <b>post: </b> Crea el
@@ -41,11 +47,12 @@ public class Restaurante {
 	 *            - URL de la página web del restaurante.
 	 */
 	public Restaurante(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "paginaWeb") String paginaWeb) {
+			@JsonProperty(value = "paginaWeb") String paginaWeb, @JsonProperty(value = "regristroId") Integer regristroId) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.paginaWeb = paginaWeb;
+		this.regristroId= regristroId;
 	}
 
 	// -------------------------------------------------------------
@@ -111,5 +118,21 @@ public class Restaurante {
 	 */
 	public void setPaginaWeb(String paginaWeb) {
 		this.paginaWeb = paginaWeb;
+	}
+	
+	/**
+	 * dar el id del reistro asociado
+	 * @return
+	 */
+	public Integer getRegristroId() {
+		return regristroId;
+	}
+	
+	/**
+	 * cambiar el id del registro asociado
+	 * @param regristroId
+	 */
+	public void setRegristroId(Integer regristroId) {
+		this.regristroId = regristroId;
 	}
 }
