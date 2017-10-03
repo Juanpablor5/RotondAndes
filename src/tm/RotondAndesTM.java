@@ -268,7 +268,7 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daos.setConn(conn);
 			if(daos.get(data.getCedula())!=null)
-				throw new RotondAndesException("el registro con el codigo <"+data.getCedula()+"> ya existe");
+				throw new RotondAndesException("el cliente con la cedula <"+data.getCedula()+"> ya existe");
 			daos.add(data);
 			conn.commit();
 
@@ -294,12 +294,66 @@ public class RotondAndesTM {
 	}
 
 	public void updateCliente(Cliente data) throws RotondAndesException, Exception{
-		// TODO Auto-generated method stub
-		
+		DAOCliente daos = new DAOCliente();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if(daos.get(data.getCedula())==null)
+				throw new RotondAndesException("ya existe un cliente con la cedula <"+data.getCedula()+">");
+			daos.update(data);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 
 	public void deleteCliente(Cliente data) throws RotondAndesException, Exception{
-		// TODO Auto-generated method stub
-		
+		DAOCliente daos = new DAOCliente();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if(daos.get(data.getCedula())==null)
+				throw new RotondAndesException("no existe un cliente con la cedula<"+data.getCedula()+">");
+			daos.delete(data);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 }
