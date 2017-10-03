@@ -15,6 +15,7 @@ import vos.Cliente;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ClienteModificationServices extends BaseServices implements CRUDEst<Cliente> {
+	
 	@POST
 	@Override
 	public Response add(Cliente data) {

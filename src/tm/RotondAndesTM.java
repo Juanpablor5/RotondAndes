@@ -107,7 +107,6 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daos.setConn(conn);
 			data = daos.getAll();
-
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
