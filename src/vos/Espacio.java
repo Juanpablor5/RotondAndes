@@ -27,7 +27,7 @@ public class Espacio {
 	 * Determina si el espacio está abierto o cerrado.
 	 */
 	@JsonProperty(value = "abierto")
-	private Boolean abierto;
+	private Integer abierto;
 
 	/**
 	 * Indica la capacidad del espacio.
@@ -40,7 +40,7 @@ public class Espacio {
 	 * especiales.
 	 */
 	@JsonProperty(value = "necesidadesEspeciales")
-	private Boolean necesidadesEspeciales;
+	private Integer necesidadesEspeciales;
 
 	/**
 	 * Indica las condiciones técnicas que tiene el espacio.
@@ -72,8 +72,8 @@ public class Espacio {
 	 */
 	public Espacio(@JsonProperty(value = "id") Long id,
 			@JsonProperty(value = "acondicionamiento") String acondicionamiento,
-			@JsonProperty(value = "abierto") Boolean abierto, @JsonProperty(value = "capacidad") Integer capacidad,
-			@JsonProperty(value = "necesidadesEspeciales") Boolean necesidadesEspeciales,
+			@JsonProperty(value = "abierto") Integer abierto, @JsonProperty(value = "capacidad") Integer capacidad,
+			@JsonProperty(value = "necesidadesEspeciales") Integer necesidadesEspeciales,
 			@JsonProperty(value = "condicionesTecnicas") String condicionesTecnicas) {
 		super();
 		this.id = id;
@@ -133,7 +133,7 @@ public class Espacio {
 	 * 
 	 * @return True si el espacio está abierto, false de lo contrario.
 	 */
-	public Boolean getAbierto() {
+	public Integer getAbierto() {
 		return abierto;
 	}
 
@@ -144,7 +144,7 @@ public class Espacio {
 	 * @param abierto
 	 *            - True si el espacio está abierto, false de lo contrario.
 	 */
-	public void setAbierto(Boolean abierto) {
+	public void setAbierto(Integer abierto) {
 		this.abierto = abierto;
 	}
 
@@ -173,7 +173,7 @@ public class Espacio {
 	 * 
 	 * @return necesidadesEspeciales del espacio.
 	 */
-	public Boolean getNecesidadesEspeciales() {
+	public Integer getNecesidadesEspeciales() {
 		return necesidadesEspeciales;
 	}
 
@@ -185,7 +185,7 @@ public class Espacio {
 	 * @param necesidadesEspeciales
 	 *            - Necesidades especiales del espacio.
 	 */
-	public void setNecesidadesEspeciales(Boolean necesidadesEspeciales) {
+	public void setNecesidadesEspeciales(Integer necesidadesEspeciales) {
 		this.necesidadesEspeciales = necesidadesEspeciales;
 	}
 
