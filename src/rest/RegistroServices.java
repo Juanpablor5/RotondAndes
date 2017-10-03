@@ -97,6 +97,14 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 
 	@Override
 	public void integridad(Registro data) throws RotondAndesException {
+		if(data.getCodigo()==null)
+			throw new RotondAndesException("el codigo no puede ser null");
+		if(data.getUsuario()==null)
+			throw new RotondAndesException("el usuario no puede ser null");
+		if(data.getContrasena()==null)
+			throw new RotondAndesException("la contrasenia no piede ser null");
+		if(data.getPermisos()==null)
+			throw new RotondAndesException("el permiso no puede se null");
 		if(data.getUsuario().equals(""))
 			throw new RotondAndesException("no puede agregar un usuario vacio");
 		if(data.getUsuario().contains(" "))

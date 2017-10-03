@@ -7,7 +7,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+
+import dao.DAOCliente;
 import dao.DAORegistro;
+import vos.Cliente;
 import vos.Registro;
 
 
@@ -255,5 +258,48 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+
+	public void addCliente(Cliente data) throws RotondAndesException, Exception{
+		DAOCliente daos = new DAOCliente();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if(daos.get(data.getCedula())!=null)
+				throw new RotondAndesException("el registro con el codigo <"+data.getCedula()+"> ya existe");
+			daos.add(data);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void updateCliente(Cliente data) throws RotondAndesException, Exception{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteCliente(Cliente data) throws RotondAndesException, Exception{
+		// TODO Auto-generated method stub
+		
 	}
 }
