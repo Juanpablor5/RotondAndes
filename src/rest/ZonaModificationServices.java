@@ -11,24 +11,24 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Cliente;
+import vos.Zona;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ClienteModificationServices extends BaseServices implements CRUDEst<Cliente> {
-	public ClienteModificationServices(ServletContext context) {
+public class ZonaModificationServices extends BaseServices implements CRUDEst<Zona>{
+	
+	public ZonaModificationServices(ServletContext context) {
 		this.context=context;
 	}
 	
 	@POST
 	@Override
-	public Response add(Cliente data) {
-		System.out.println("asssf");
+	public Response add(Zona data) {
+		System.out.println("dfdsfdf");
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			System.out.println("dfdsfsdfsdfsdf");
 			integridad(data);
-			tm.addCliente(data);
+			tm.addZona(data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -39,11 +39,11 @@ public class ClienteModificationServices extends BaseServices implements CRUDEst
 
 	@PUT
 	@Override
-	public Response update(Cliente data) {
+	public Response update(Zona data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			integridad(data);
-			tm.updateCliente(data);
+			tm.updateZona(data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -54,10 +54,10 @@ public class ClienteModificationServices extends BaseServices implements CRUDEst
 
 	@DELETE
 	@Override
-	public Response delete(Cliente data) {
+	public Response delete(Zona data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.deleteCliente(data);
+			tm.deleteZona(data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -67,16 +67,13 @@ public class ClienteModificationServices extends BaseServices implements CRUDEst
 	}
 
 	@Override
-	public void integridad(Cliente data) throws RotondAndesException {
-		if(data.getRegristroId()==null)
-			throw new RotondAndesException("el registro id");
-		if(data.getCedula()==null)
-			throw new RotondAndesException("la cedua no puede ser null");
+	public void integridad(Zona data) throws RotondAndesException {
+		if(data.getId()==null)
+			throw new RotondAndesException("el id no puede ser null");
 		if(data.getNombre()==null)
-			throw new RotondAndesException("el nombre no puede ser null");
-		if(data.getCedula()<=0)
-			throw new RotondAndesException("la cedula no puede ser negativa ni cero");
+			throw new RotondAndesException("nombre no puede ser null");
 		if(data.getNombre().equals(""))
-			throw new RotondAndesException("el nombre no puedo ser vacio");
+			throw new RotondAndesException("el nombre no puede contener espacios vacios");
 	}
+
 }
