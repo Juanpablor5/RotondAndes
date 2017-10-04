@@ -26,6 +26,7 @@ public class DAOMenu extends DAOBase{
 
 	public Long IdRestaurante(Long IDRegistro) throws SQLException, Exception{
 		String sql="SELECT ID FROM RESTAURANTE,REGISTRO WHERE REGISTRO.CODIGO=RESTAURANTE.REGISTRO_ID AND REGISTRO.CODIGO="+IDRegistro;
+		System.out.println(sql);
 		ResultSet rs=executeModification(sql);
 		if(rs.next()) {
 			return rs.getLong("ID");
@@ -80,7 +81,7 @@ public class DAOMenu extends DAOBase{
 		if(id==null)throw new SQLException("no se puede obtener el codigo");
 		
 		String sql = "INSERT INTO " + TABLA +" VALUES (";
-		sql += data.getId() + ",'";
+		sql += data.getId() + ",";
 		sql += data.getCantidad() + ",";
 		sql += data.getCostoProduccion() + ",";
 		sql += data.getValorAlPublico() + ",";
@@ -90,7 +91,7 @@ public class DAOMenu extends DAOBase{
 		sql += data.getProductoPostre()+",";
 		sql += data.getProductoAcompanamiento()+",";
 		sql += id+")";
-		
+		System.out.println(sql);
 		executeModification(sql);
 	}
 
@@ -99,7 +100,7 @@ public class DAOMenu extends DAOBase{
 		Long id=IdRestaurante(codigo);
 		if(id==null)throw new SQLException("no se puede obtener el codigo");
 		
-		if(get(data.getId()).getRestauranteID().equals(id))
+		if((get(data.getId()).getRestauranteID())!=id)
 			throw new SQLException("no puede alterar un menu ajeno");
 		
 		
@@ -113,7 +114,7 @@ public class DAOMenu extends DAOBase{
 		sql += "PRODUCTOPOSTRE_ID="+data.getProductoPostre()+",";
 		sql += "PRODUCTOACOMPANAMIENTO_ID="+data.getProductoPostre();
 		sql += " WHERE ID = " + data.getId();
-		
+		System.out.println(sql);
 		executeModification(sql);
 	}
 
@@ -121,13 +122,12 @@ public class DAOMenu extends DAOBase{
 		Long id=IdRestaurante(codigo);
 		if(id==null)throw new SQLException("no se puede obtener el codigo");
 		
-		if(get(data.getId()).getRestauranteID().equals(id))
+		if(get(data.getId()).getRestauranteID()!=id)
 			throw new SQLException("no puede alterar un menu ajeno");
 		
 		String sql = "DELETE FROM " + TABLA;
 		sql += " WHERE ID = " + data.getId();
-		
+		System.out.println(sql);
 		executeModification(sql);
 	}
-
 }

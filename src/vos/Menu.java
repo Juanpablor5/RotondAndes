@@ -79,9 +79,9 @@ public class Menu {
 			@JsonProperty(value = "cantidad") Integer cantidad,
 			@JsonProperty(value = "costoProduccion") Double costoProduccion,
 			@JsonProperty(value = "valorAlPublico") Double valorAlPublico,
-			@JsonProperty(value = "productoEntrada") long productoEntrada,
-			@JsonProperty(value = "productoFuerte") long productoFuerte,
-			@JsonProperty(value = "productoBebida") long productoBebida,
+			@JsonProperty(value = "productoEntrada") Long productoEntrada,
+			@JsonProperty(value = "productoFuerte") Long productoFuerte,
+			@JsonProperty(value = "productoBebida") Long productoBebida,
 			@JsonProperty(value = "productoPostre") Long productoPostre,
 			@JsonProperty(value = "productoAcompanamiento") Long productoAcompanamiento,
 			@JsonProperty(value = "restauranteID") Long restauranteID) {
@@ -99,103 +99,56 @@ public class Menu {
 	}
 
 	// -------------------------------------------------------------
-	// Getters & Setters
-	// -------------------------------------------------------------
+		// Getters & Setters
+		// -------------------------------------------------------------
 
-	/**
-	 * Método getter del atributo id
-	 * 
-	 * @return id del menú
-	 */
+		
+	
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * Método setter del atributo id <b>post: </b> El id del menú ha sido
-	 * cambiado con el valor que entra como parámetro.
-	 * 
-	 * @param id
-	 *            - Id del menú
-	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * Método getter del atributo cantidad.
-	 * 
-	 * @return Cantidad de menús que se ofrece.
-	 */
 	public Integer getCantidad() {
 		return cantidad;
 	}
 
-	/**
-	 * Método setter del atributo cantidad <b>post: </b> El cantidad de menús ha
-	 * sido cambiado con el valor que entra como parámetro.
-	 * 
-	 * @param cantidad
-	 *            - Cantidad de menús disponibles.
-	 */
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
 
-	/**
-	 * Método getter del atributo costoProduccion
-	 * 
-	 * @return Costo de producción del menú.
-	 */
 	public Double getCostoProduccion() {
 		return costoProduccion;
 	}
 
-	/**
-	 * Método setter del atributo costoProduccion <b>post: </b> El costo de
-	 * producción del menú ha sido cambiado con el valor que entra como
-	 * parámetro.
-	 * 
-	 * @param costoProduccion
-	 *            - El costo de producción del menú
-	 */
 	public void setCostoProduccion(Double costoProduccion) {
 		this.costoProduccion = costoProduccion;
 	}
 
-	/**
-	 * Método getter del atributo valorAlPublico
-	 * 
-	 * @return Valor al público del menú.
-	 */
 	public Double getValorAlPublico() {
 		return valorAlPublico;
 	}
 
-	/**
-	 * Método setter del atributo valorAlPublico <b>post: </b> El valor al
-	 * publico del menú ha sido cambiado con el valor que entra como parámetro.
-	 * 
-	 * @param valorAlPublico
-	 *            - Valor al publico del menú
-	 */
 	public void setValorAlPublico(Double valorAlPublico) {
 		this.valorAlPublico = valorAlPublico;
 	}
 
-	public long getProductoEntrada() {
+	public Long getProductoEntrada() {
 		return productoEntrada;
 	}
 
-	public void setProductoEntrada(long productoEntrada) {
+	public void setProductoEntrada(Long productoEntrada) {
 		this.productoEntrada = productoEntrada;
 	}
 
-	public long getProductoFuerte() {
+	public Long getProductoFuerte() {
 		return productoFuerte;
 	}
 
-	public void setProductoFuerte(long productoFuerte) {
+	public void setProductoFuerte(Long productoFuerte) {
 		this.productoFuerte = productoFuerte;
 	}
 
@@ -231,11 +184,5 @@ public class Menu {
 		this.restauranteID = restauranteID;
 	}
 
-	public void setProductoEntrada(Long productoEntrada) {
-		this.productoEntrada = productoEntrada;
-	}
-
-	public void setProductoFuerte(Long productoFuerte) {
-		this.productoFuerte = productoFuerte;
-	}
+	
 }

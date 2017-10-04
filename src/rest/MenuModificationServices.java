@@ -64,6 +64,19 @@ public class MenuModificationServices extends BaseServices implements URLS{
 	}
 
 	public void integridad(Menu data) throws RotondAndesException {
-		
+		if(data.getCantidad()==null)
+			throw new RotondAndesException("la cantidad de productos n puede ser nula");
+		if(data.getCostoProduccion()==null)
+			throw new RotondAndesException("el costo de procucion no puede ser nulo");
+		if(data.getCantidad()<0) 
+			throw new RotondAndesException("la cantidad no puede ser menor a 0");
+		if(data.getValorAlPublico()==null)
+			throw new RotondAndesException("el valor de producion no puede ser nulo");
+		if(data.getId()==null)
+			throw new RotondAndesException("el id no puede ser nulo");
+		if(data.getValorAlPublico()<=0)
+			throw  new RotondAndesException("el valor al publico debe ser positivo");
+		if(data.getCostoProduccion()<=0)
+			throw new RotondAndesException("el costo de producion debe ser mayor a cero");
 	}
 }
