@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Espacio;
 import vos.Representante;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -67,6 +66,16 @@ public class RepresentateModificationServices extends BaseServices implements CR
 	}
 
 	@Override
-	public void integridad(Espacio data) throws RotondAndesException {
+	public void integridad(Representante data) throws RotondAndesException {
+		if(data.getId()==null)
+			throw new RotondAndesException("el representante no puede ser nulo");
+		if(data.getNombre()==null)
+			throw new RotondAndesException("el nombre no puede ser nulo");
+		if(data.getNombre().equals(""))
+			throw new RotondAndesException("el nombre no puede estar vacio");
+		if(data.getTelefono()==null && data.getCorreo()==null)
+			throw new RotondAndesException("tiene que ingresar almenos un telefono o correo");
+		if(data.getRestauranteId()==null)
+			throw new RotondAndesException ("el id del restaurane no puede ser nulo");
 	}
 }
