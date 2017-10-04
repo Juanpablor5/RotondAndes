@@ -23,13 +23,13 @@ public class ZonaServices extends BaseServices implements CRUDR<Zona>,URLS{
 	@Override
 	public Response getAll() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Zona> videos;
+		List<Zona> zona;
 		try {
-			videos = tm.getAllZona();
+			zona = tm.getAllZona();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(videos).build();
+		return Response.status(200).entity(zona).build();
 	}
 
 	@GET
