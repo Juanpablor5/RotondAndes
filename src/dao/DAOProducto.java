@@ -82,7 +82,7 @@ public class DAOProducto extends DAOBase implements CRUD<Producto> {
 		sql += "DESCRIPCION='" + data.getDescripcion() + "',";
 		sql += "TRADUCCION='" + data.getTraduccion() + "',";
 		sql += "TIEMPOPREPARACION=" + data.getTiempoPreparacion()+",";
-		sql += "CATEGORIA_ID"+data.getIdCategoria();
+		sql += "CATEGORIA_ID="+data.getIdCategoria();
 		sql += " WHERE ID = " + data.getId();
 
 		executeModification(sql);
