@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOProducto;
+import dao.DAOProductoIngrediente;
 import dao.DAOIngrediente;
 import dao.DAOMenu;
 import dao.DAOPreferencias;
@@ -2268,6 +2269,139 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daos.setConn(conn);
 			daos.delete(idReserva, id);
+			daosHijo.setConn(conn);
+			data=daosHijo.get(id);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+	
+	public Ingrediente getProductoIngredienteu(long idProducto, long id)  throws RotondAndesException, Exception {
+		Ingrediente data;
+		DAOProductoIngrediente daos = new DAOProductoIngrediente();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.get(idProducto,id);
+			if (data == null)
+				throw new RotondAndesException("El espacio con el id:<" + id + ">no existe");
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public List<Ingrediente> getAllProductoIngrediente(long idProducto) throws SQLException,Exception {
+		List<Ingrediente> data;
+		DAOProductoIngrediente daos = new DAOProductoIngrediente();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.getAll(idProducto);
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+	
+	public Ingrediente addProductoIngrediente(long idProducto, long id) throws RotondAndesException, Exception {
+		DAOProductoIngrediente daos = new DAOProductoIngrediente();
+		DAOIngrediente daosHijo=new DAOIngrediente();
+		Ingrediente data=null;
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			daos.add(idProducto, id);
+			conn.commit();
+			daosHijo.setConn(conn);
+			data=daosHijo.get(id);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public Ingrediente deleteProductoIngrediente(long idProducto, long id) throws RotondAndesException, Exception {
+		DAOProductoIngrediente daos = new DAOProductoIngrediente();
+		DAOIngrediente daosHijo=new DAOIngrediente();
+		Ingrediente data=null;
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			daos.delete(idProducto, id);
 			daosHijo.setConn(conn);
 			data=daosHijo.get(id);
 			conn.commit();
