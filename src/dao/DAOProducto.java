@@ -36,7 +36,8 @@ public class DAOProducto extends DAOBase implements CRUD<Producto> {
 			String descripcion = rs.getString("DESCRIPCION");
 			String traduccionDesc = rs.getString("TRADUCCION");
 			Integer tiempoPreparacion = rs.getInt("TIEMPOPREPARACION");
-			producto = new Producto(id, nombre, descripcion, traduccionDesc, tiempoPreparacion);
+			Long categoria = rs.getLong(" CATEGORIA_ID");
+			producto = new Producto(id, nombre, descripcion, traduccionDesc, tiempoPreparacion,categoria);
 		}
 		return producto;
 	}
@@ -55,7 +56,8 @@ public class DAOProducto extends DAOBase implements CRUD<Producto> {
 			String descripcion = rs.getString("DESCRIPCION");
 			String traduccionDesc = rs.getString("TRADUCCION");
 			Integer tiempoPreparacion = rs.getInt("TIEMPOPREPARACION");
-			data.add(new Producto(id, nombre, descripcion, traduccionDesc, tiempoPreparacion));
+			Long categoria = rs.getLong(" CATEGORIA_ID");
+			data.add(new Producto(id, nombre, descripcion, traduccionDesc, tiempoPreparacion,categoria));
 		}
 		return data;
 	}
@@ -67,8 +69,9 @@ public class DAOProducto extends DAOBase implements CRUD<Producto> {
 		sql += data.getNombre() + "','";
 		sql += data.getDescripcion() + "','";
 		sql += data.getTraduccion() + "',";
-		sql += data.getTiempoPreparacion() + ")";
-
+		sql += data.getTiempoPreparacion() + ",";
+		sql += data.getCategoriaID() +")";
+		
 		executeModification(sql);
 	}
 
@@ -78,7 +81,8 @@ public class DAOProducto extends DAOBase implements CRUD<Producto> {
 		sql += "NOMBRE='" + data.getNombre() + "',";
 		sql += "DESCRIPCION='" + data.getDescripcion() + "',";
 		sql += "TRADUCCION='" + data.getTraduccion() + "',";
-		sql += "TIEMPOPREPARACION=" + data.getTiempoPreparacion();
+		sql += "TIEMPOPREPARACION=" + data.getTiempoPreparacion()+",";
+		sql += "CATEGORIA_ID"+data.getCategoriaID();
 		sql += " WHERE ID = " + data.getId();
 
 		executeModification(sql);
