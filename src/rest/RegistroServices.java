@@ -262,6 +262,21 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}
 	}
+	
+	@Path("{" + CLIENTEID + ": \\d+}/" + PEDIDO)
+	public PedidoCreatorServices getPedidoCliente(@PathParam(CLIENTEID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			if (tm.getRegistro(id).getPermisos() != 2)
+				throw new RotondAndesException("No tiene los permisos necesarios");
+
+			return new PedidoCreatorServices(context);
+		} catch (RotondAndesException ex) {
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
 
 
 	@Override
