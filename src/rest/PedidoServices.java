@@ -1,6 +1,7 @@
 package rest;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -32,8 +33,9 @@ public class PedidoServices extends BaseServices implements URLS{
 		return Response.status(200).entity(data).build();
 	}
 	
-	@Path("{" + PRODUCTOID + ": \\d+}/" + INGREDIENTE)
-	public SubpedidoServices getIngredientes(@PathParam(PRODUCTOID) Long id) {
+	@GET
+	@Path("{" + PRODUCTOID + ": \\d+}/" + MENU)
+	public SubpedidoServices getMenus(@PathParam(PRODUCTOID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.getProducto(id);

@@ -3,6 +3,7 @@ package rest;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -67,6 +68,7 @@ public class ProductoModificationServices extends BaseServices implements CRUDEs
 		return Response.status(200).entity(data).build();
 	}
 	
+	@GET
 	@Path("{" + PRODUCTOID + ": \\d+}/" + INGREDIENTE)
 	public ProductoIngredienteModificationServices getIngrediente(@PathParam(PRODUCTOID) Long id) {
 		System.out.println("asdas2");
