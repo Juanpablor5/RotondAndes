@@ -1,7 +1,5 @@
 package vos;
 
-import java.util.Date;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -22,8 +20,14 @@ public class Pedido {
 	/**
 	 * Fecha de ingreso del pedido.
 	 */
-	@JsonProperty(value = "fecha")
-	private Date fecha;
+	@JsonProperty(value = "fechahora")
+	private String fechahora;
+	
+	/**
+	 * Cédula del cliente que hizo el pedido.
+	 */
+	@JsonProperty(value = "clienteCedula")
+	private Integer clienteCedula;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -35,13 +39,17 @@ public class Pedido {
 	 * 
 	 * @param id
 	 *            - Id del pedido.
-	 * @param fecha
+	 * @param fechahora
 	 *            - Fecha de ingreso del pedido. nombre != null
+	 * @param clienteCedula
+	 *            - Cédula del cliente que hizo el pedido.
 	 */
-	public Pedido(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fecha") Date fecha) {
+	public Pedido(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fechahora") String fechahora,
+			@JsonProperty(value = "clienteCedula") Integer clienteCedula) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
+		this.fechahora = fechahora;
+		this.clienteCedula = clienteCedula;
 	}
 
 	// -------------------------------------------------------------
@@ -73,8 +81,8 @@ public class Pedido {
 	 * 
 	 * @return fecha de ingreso del pedido
 	 */
-	public Date getFecha() {
-		return fecha;
+	public String getFechahora() {
+		return fechahora;
 	}
 
 	/**
@@ -84,7 +92,27 @@ public class Pedido {
 	 * @param fecha
 	 *            - Fecha del pedido
 	 */
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechahora(String fechahora) {
+		this.fechahora = fechahora;
+	}
+
+	/**
+	 * Método getter del atributo clienteCedula
+	 * 
+	 * @return Cédula del cliente que hizo el pedido.
+	 */
+	public Integer getClienteCedula() {
+		return clienteCedula;
+	}
+
+	/**
+	 * Método setter del atributo clienteCedula <b>post: </b> La cédula del cliente que hizo el pedido ha
+	 * sido cambiado con el valor que entra como parámetro.
+	 * 
+	 * @param clienteCedula
+	 *            - Cédula del cliente del pedido
+	 */
+	public void setClienteCedula(Integer clienteCedula) {
+		this.clienteCedula = clienteCedula;
 	}
 }
