@@ -72,7 +72,7 @@ public class ZonaModificationServices extends BaseServices implements CRUDEst<Zo
 		if(data.getNombre()==null)
 			throw new RotondAndesException("nombre no puede ser null");
 		if(data.getNombre().equals(""))
-			throw new RotondAndesException("el nombre no puede ser vacio");
+			throw new RotondAndesException("el nombre no puede ser  vacio");
 	}
 
 }

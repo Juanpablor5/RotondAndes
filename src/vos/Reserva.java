@@ -1,8 +1,8 @@
 package vos;
 
-import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+
 
 /**
  * Clase que representa un Producto.
@@ -22,13 +22,13 @@ public class Reserva {
 	/**
 	 * Fecha de la reserva.
 	 */
-	@JsonProperty(value = "fecha")
-	private Date fechahora;
+	@JsonProperty(value = "fechahora")
+	private String fechahora;
 
 	/**
 	 * Duración de la reserva.
 	 */
-	@JsonProperty(value = "hora")
+	@JsonProperty(value = "duracion")
 	private Integer duracion;
 
 	/**
@@ -47,13 +47,13 @@ public class Reserva {
 	 * Numero telefónico del comensal que hace la reserva.
 	 */
 	@JsonProperty(value = "telefonoReservante")
-	private Integer telefonoReservante;
+	private Long telefonoReservante;
 	
 	/**
 	 * id de la zona a la que pertenece
 	 */
 	@JsonProperty(value = "zona_id")
-	private Integer zona_id;
+	private Long zona_id;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -75,11 +75,11 @@ public class Reserva {
 	 *            - Numero telefónico del comensal que hace la reserva.
 	 * @param zona_id 
 	 */
-	public Reserva(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fecha") Date fechahora,
+	public Reserva(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fechahora") String fechahora,
 			@JsonProperty(value = "duracion") Integer duracion, @JsonProperty(value = "comensales") Integer comensales,
 			@JsonProperty(value = "nombreReservante") String nombreReservante,
-			@JsonProperty(value = "telefonoReservante") Integer telefonoReservante,	
-			@JsonProperty(value = "zona_id") Integer zona_id) {
+			@JsonProperty(value = "telefonoReservante") Long telefonoReservante,	
+			@JsonProperty(value = "zona_id") Long zona_id) {
 		super();
 		this.id = id;
 		this.fechahora = fechahora;
@@ -119,7 +119,7 @@ public class Reserva {
 	 * 
 	 * @return fecha y hora de la reserva.
 	 */
-	public Date getFechahora() {
+	public String getFechahora() {
 		return fechahora;
 	}
 
@@ -130,7 +130,7 @@ public class Reserva {
 	 * @param fechahora
 	 *            - Fecha y hora de la reserva.
 	 */
-	public void setFechahora(Date fechahora) {
+	public void setFechahora(String fechahora) {
 		this.fechahora = fechahora;
 	}
 
@@ -200,7 +200,7 @@ public class Reserva {
 	 * 
 	 * @return Numero telefónico del comensal que hace la reserva.
 	 */
-	public Integer getTelefonoReservante() {
+	public Long getTelefonoReservante() {
 		return telefonoReservante;
 	}
 
@@ -212,7 +212,7 @@ public class Reserva {
 	 * @param telefonoReservante
 	 *            - Numero telefónico del comensal que hace la reserva.
 	 */
-	public void setTelefonoReservante(Integer telefonoReservante) {
+	public void setTelefonoReservante(Long telefonoReservante) {
 		this.telefonoReservante = telefonoReservante;
 	}
 
@@ -220,7 +220,7 @@ public class Reserva {
 	 * dar el id de la zona a la quepertenece
 	 * @return el id de la zona a la que pertenece
 	 */
-	public Integer getZona_id() {
+	public Long getZona_id() {
 		return zona_id;
 	}
 
@@ -228,7 +228,7 @@ public class Reserva {
 	 * cambiar el id de la zona a la que pertenece
 	 * @param zona_id el id de la nueva zona
 	 */
-	public void setZona_id(Integer zona_id) {
+	public void setZona_id(Long zona_id) {
 		this.zona_id = zona_id;
 	}
 
