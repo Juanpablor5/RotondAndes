@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vos.Cliente;
 import vos.Pedido;
 
 public class DAOPedido extends DAOBase implements CRUD<Pedido> {
@@ -54,21 +55,38 @@ public class DAOPedido extends DAOBase implements CRUD<Pedido> {
 
 	@Override
 	public void add(Pedido data) throws SQLException, Exception {
-		String sql = "INSERT INTO " + TABLA +" VALUES (";
+		String sql = "INSERT INTO " + TABLA + " VALUES (";
 		sql += data.getId() + ",'";
 		sql += data.getFechahora() + "',";
 		sql += data.getClienteCedula() + ")";
-		
+
 		executeModification(sql);
+	}
+
+	public void addPedidoCliente(long id, Pedido data) throws SQLException, Exception {
+		String sql = "SELECT CEDULA FROM " + TABLA + ", REGISTRO WHERE REGISTRO.ID = " + TABLA + ".REGISTRO_ID AND "
+				+ TABLA + ".REGISTRO_ID = " + id;
+		ResultSet rs = executeModification(sql);
+		Long cedula = (long) 0;
+		if (rs.next()) {
+			cedula = rs.getLong("CEDULA");
+		}
+		
+		String sql2 = "INSERT INTO " + TABLA + " VALUES (";
+		sql2 += data.getId() + ",'";
+		sql2 += data.getFechahora() + "',";
+		sql2 += cedula + ")";
+		System.out.println(sql2 + "****************");
+		executeModification(sql2);
 	}
 
 	@Override
 	public void update(Pedido data) throws SQLException, Exception {
-		String sql = "UPDATE "+TABLA+" SET ";
+		String sql = "UPDATE " + TABLA + " SET ";
 		sql += "FECHA='" + data.getFechahora() + ",";
 		sql += "CLIENTE_ID=" + data.getClienteCedula();
 		sql += " WHERE ID " + data.getId();
-		
+
 		executeModification(sql);
 	}
 
@@ -76,7 +94,7 @@ public class DAOPedido extends DAOBase implements CRUD<Pedido> {
 	public void delete(Pedido data) throws SQLException, Exception {
 		String sql = "DELETE FROM " + TABLA;
 		sql += " WHERE ID = " + data.getId();
-		
+
 		executeModification(sql);
 	}
 
