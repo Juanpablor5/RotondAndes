@@ -4,22 +4,14 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class PedidoDetail extends Menu {
+public class PedidoDetail extends Pedido {
 	@JsonProperty(value = "menus")
 	private List<Long> menus;
 
-	public PedidoDetail(@JsonProperty(value = "id") Long id, @JsonProperty(value = "cantidad") Integer cantidad,
-			@JsonProperty(value = "costoProduccion") Double costoProduccion,
-			@JsonProperty(value = "valorPublico") Double valorPublico,
-			@JsonProperty(value = "productoEntradaId") Long productoEntradaId,
-			@JsonProperty(value = "productoPlatoFuerteId") Long productoPlatoFuerteId,
-			@JsonProperty(value = "productoPostreId") Long productoPostreId,
-			@JsonProperty(value = "productoBebidaId") Long productoBebidaId,
-			@JsonProperty(value = "productoAcompanamientoId") Long productoAcompanamientoId,
-			@JsonProperty(value = "restauranteId") Long restauranteId,
+	public PedidoDetail(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fechahora") String fechahora,
+			@JsonProperty(value = "clienteCedula") Integer clienteCedula,
 			@JsonProperty(value = "menus") List<Long> menus) {
-		super(id,cantidad, costoProduccion, valorPublico, productoEntradaId, productoPlatoFuerteId, productoPostreId,
-				productoBebidaId, productoAcompanamientoId, restauranteId);
+		super(id, fechahora, clienteCedula);
 		this.menus = menus;
 	}
 	

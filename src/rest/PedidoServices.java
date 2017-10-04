@@ -1,18 +1,15 @@
 package rest;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Pedido;
+import vos.PedidoDetail;
 
 @Path(URLS.PEDIDO)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -20,7 +17,7 @@ import vos.Pedido;
 public class PedidoServices extends BaseServices implements URLS{
 
 	@POST
-	public Response add(Pedido data) {
+	public Response add(PedidoDetail data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			integridad(data);
@@ -33,19 +30,7 @@ public class PedidoServices extends BaseServices implements URLS{
 		return Response.status(200).entity(data).build();
 	}
 	
-	@GET
-	@Path("{" + PRODUCTOID + ": \\d+}/" + MENU)
-	public SubpedidoServices getMenus(@PathParam(PRODUCTOID) Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			tm.getProducto(id);
-			return new SubpedidoServices(context);
-		} catch (Exception e) {
-			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
-		}
-	}
-	
-	public void integridad(Pedido data) throws RotondAndesException {
+	public void integridad(PedidoDetail data) throws RotondAndesException {
 		if(data.getId()==null)
 			throw new RotondAndesException("El id no puede ser null");
 		if(data.getFechahora()==null)
