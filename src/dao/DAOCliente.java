@@ -21,7 +21,7 @@ public class DAOCliente extends DAOBase implements CRUD<Cliente>{
 	/**
 	 * Constante que representa la tabla cliente.
 	 */
-	private final static String TABLA="CLIENTE";
+	private final static String TABLA="CLIENTEINFO";
 	
 	// -------------------------------------------------------------
 	// Métodos

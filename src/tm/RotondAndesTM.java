@@ -1277,6 +1277,7 @@ public class RotondAndesTM {
 		return data;
 	}
 
+	
 	public void addPreferencias(Preferencias data) throws RotondAndesException, Exception {
 		DAOPreferencias daos = new DAOPreferencias();
 		try {

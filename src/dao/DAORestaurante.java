@@ -61,7 +61,8 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 	public void add(Restaurante data) throws SQLException, Exception {
 		String sql = "INSERT INTO " + TABLA +" VALUES (";
 		sql += data.getId() + ",'";
-		sql += data.getNombre() + "')";
+		sql += data.getNombre() + "',";
+		sql += data.getRegristroId() + ")";
 		
 		executeModification(sql);
 	}
@@ -71,6 +72,7 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "NOMBRE='" + data.getNombre() + "',";
 		sql += "PAGINAWEB='" + data.getPaginaWeb()+"',";
+		sql += "REGISTRO_ID=" + data.getRegristroId();
 		
 		executeModification(sql);
 	}
