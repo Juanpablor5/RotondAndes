@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import vos.Cliente;
 import vos.Pedido;
 
 public class DAOPedido extends DAOBase implements CRUD<Pedido> {

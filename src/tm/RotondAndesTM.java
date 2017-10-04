@@ -1632,6 +1632,38 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	
+	public void addPedidoCliente(long id, Pedido data) throws RotondAndesException, Exception {
+		DAOPedido daos = new DAOPedido();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El pedido con el id <" + data.getId() + "> ya existe");
+			daos.addPedidoCliente(id, data);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 
 	public void updatePedido(Pedido data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
