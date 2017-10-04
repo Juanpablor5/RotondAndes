@@ -173,13 +173,13 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 	}
 	
 	@Path("{" + REGISTROID + ": \\d+}/" + REPRESENTANTE)
-	public EspacioModificationServices getRepresentante(@PathParam(REGISTROID) Long id) {
+	public RepresentateModificationServices getRepresentante(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			if (tm.getRegistro(id).getPermisos() != 3)
 				throw new RotondAndesException("No tiene los permisos necesarios");
 
-			return new EspacioModificationServices(context);
+			return new RepresentateModificationServices(context);
 		} catch (RotondAndesException ex) {
 			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
 		} catch (Exception e) {
