@@ -3,7 +3,9 @@ package rest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -28,6 +30,17 @@ public class PedidoServices extends BaseServices implements URLS{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(data).build();
+	}
+	
+	@Path("{" + PRODUCTOID + ": \\d+}/" + INGREDIENTE)
+	public SubpedidoServices getIngredientes(@PathParam(PRODUCTOID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.getProducto(id);
+			return new SubpedidoServices(context);
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
 	}
 	
 	public void integridad(Pedido data) throws RotondAndesException {

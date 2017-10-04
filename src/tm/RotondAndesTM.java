@@ -22,6 +22,7 @@ import dao.DAORepresentante;
 import dao.DAOReserva;
 import dao.DAOReservaMenu;
 import dao.DAORestaurante;
+import dao.DAOSubpedido;
 import dao.DAOTipoComida;
 import vos.Pedido;
 import vos.Preferencias;
@@ -2541,5 +2542,138 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+	
+	public Menu getPedidoMenu(long idPedido, long id)  throws RotondAndesException, Exception {
+		Menu data;
+		DAOSubpedido daos = new DAOSubpedido();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.get(idPedido,id);
+			if (data == null)
+				throw new RotondAndesException("El menú con el id:<" + id + ">no existe");
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public List<Menu> getAllPedidoMenu(long idProducto) throws SQLException,Exception {
+		List<Menu> data;
+		DAOSubpedido daos = new DAOSubpedido();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.getAll(idProducto);
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+	
+	public Menu addPedidoMenu(long idProducto, long id) throws RotondAndesException, Exception {
+		DAOSubpedido daos = new DAOSubpedido();
+		DAOMenu daosHijo=new DAOMenu();
+		Menu data=null;
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			daos.add(idProducto, id);
+			conn.commit();
+			daosHijo.setConn(conn);
+			data=daosHijo.get(id);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public Menu deletePedidoMenu(long idProducto, long id) throws RotondAndesException, Exception {
+		DAOSubpedido daos = new DAOSubpedido();
+		DAOMenu daosHijo=new DAOMenu();
+		Menu data=null;
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			daos.delete(idProducto, id);
+			daosHijo.setConn(conn);
+			data=daosHijo.get(id);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
 	}
 }

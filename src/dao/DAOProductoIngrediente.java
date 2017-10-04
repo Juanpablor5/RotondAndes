@@ -6,9 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 import vos.Ingrediente;
 
+/**
+ * Clase DAO que se conecta la base de datos usando JDBC para resolver los
+ * requerimientos de la aplicación
+ */
 public class DAOProductoIngrediente extends DAOBase{
+	
+	// -------------------------------------------------------------
+	// Constantes
+	// -------------------------------------------------------------
+
+	/**
+	 * Constante que representa la tabla producto-ingrediente.
+	 */
 	private final static String TABLA = "PRODUCTOINGREDIENTE";
+	
+	/**
+	 * Constante que representa la tabla ingrediente.
+	 */
 	private final static String TABLA2 = "INGREDIENTE";
+	
+	// -------------------------------------------------------------
+	// Métodos
+	// -------------------------------------------------------------
 
 	public List<Ingrediente> getAll(long idProducto) throws SQLException, Exception {
 		ArrayList<Ingrediente> data = new ArrayList<>();

@@ -6,7 +6,9 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -73,6 +75,17 @@ public class PedidoModificationServices extends BaseServices implements CRUDR<Pe
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(data).build();
+	}
+	
+	@Path("{" + PRODUCTOID + ": \\d+}/" + MENU)
+	public SubpedidoModificationServices getIngrediente(@PathParam(PRODUCTOID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.getProducto(id);
+			return new SubpedidoModificationServices(context);
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
 	}
 	
 	public void integridad(Pedido data) throws RotondAndesException {
