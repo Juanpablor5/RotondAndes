@@ -63,14 +63,15 @@ public class DAOPedido extends DAOBase implements CRUD<Pedido> {
 		executeModification(sql);
 	}
 
-	public void addPedidoCliente(Pedido data) throws SQLException, Exception {
-		String sql = "SELECT CEDULA FROM CLIENTEINFO, REGISTRO WHERE REGISTRO.ID = CLIENTEINFO.REGISTRO_ID";
+	public void addPedidoCliente(long id, Pedido data) throws SQLException, Exception {
+		String sql = "SELECT CEDULA FROM CLIENTEINFO, REGISTRO WHERE REGISTRO.ID = CLIENTEINFO.REGISTRO_ID AND REGISTRO.ID = "
+				+ id;
 		ResultSet rs = executeModification(sql);
 		Long cedula = (long) 0;
 		if (rs.next()) {
 			cedula = rs.getLong("CEDULA");
 		}
-		
+
 		String sql2 = "INSERT INTO " + TABLA + " VALUES (";
 		sql2 += data.getId() + ",'";
 		sql2 += data.getFechahora() + "',";
