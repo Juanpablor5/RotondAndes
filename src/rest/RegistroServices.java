@@ -127,14 +127,44 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + RESTAURANTEID + ": \\d+}/" + RESTAURANTE)
-	public RestauranteModificationServices getRestaurante(@PathParam(RESTAURANTEID) Long id) {
+	@Path("{" + REGISTROID + ": \\d+}/" + RESTAURANTE)
+	public RestauranteModificationServices getRestaurante(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			if (tm.getRegistro(id).getPermisos() != 3)
 				throw new RotondAndesException("No tiene los permisos necesarios");
 
 			return new RestauranteModificationServices(context);
+		} catch (RotondAndesException ex) {
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+	
+	@Path("{" + REGISTROID + ": \\d+}/" + RESERVA)
+	public ReservaModificationServices getReservas(@PathParam(REGISTROID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			if (tm.getRegistro(id).getPermisos() != 3)
+				throw new RotondAndesException("No tiene los permisos necesarios");
+
+			return new ReservaModificationServices(context);
+		} catch (RotondAndesException ex) {
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+	
+	@Path("{" + REGISTROID + ": \\d+}/" + ESPACIO)
+	public EspacioModificationServices getEspacio(@PathParam(REGISTROID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			if (tm.getRegistro(id).getPermisos() != 3)
+				throw new RotondAndesException("No tiene los permisos necesarios");
+
+			return new EspacioModificationServices(context);
 		} catch (RotondAndesException ex) {
 			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
 		} catch (Exception e) {

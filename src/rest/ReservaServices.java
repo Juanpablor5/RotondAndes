@@ -12,20 +12,19 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Restaurante;
+import vos.Reserva;
 
-@Path(URLS.RESTAURANTE)
+@Path(URLS.RESERVA)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RestauranteServices extends BaseServices implements CRUDR<Restaurante>,URLS{
-
+public class ReservaServices  extends BaseServices implements CRUDR<Reserva>,URLS{
 	@GET
-	@Path("{" + RESTAURANTEID + ": \\d+}")
+	@Path("{" + RESERVAID + ": \\d+}")
 	@Override
-	public Response get(@PathParam(RESTAURANTEID)long id) {
+	public Response get(@PathParam(RESERVAID)long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Restaurante v = tm.getRestaurante(id);
+			Reserva v = tm.getReserva(id);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -38,12 +37,13 @@ public class RestauranteServices extends BaseServices implements CRUDR<Restauran
 	@Override
 	public Response getAll() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Restaurante> data;
+		List<Reserva> data;
 		try {
-			data = tm.getAllRestaurante();
+			data = tm.getAllReserva();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(data).build();
 	}
+
 }

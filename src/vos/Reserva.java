@@ -48,6 +48,12 @@ public class Reserva {
 	 */
 	@JsonProperty(value = "telefonoReservante")
 	private Integer telefonoReservante;
+	
+	/**
+	 * id de la zona a la que pertenece
+	 */
+	@JsonProperty(value = "zona_id")
+	private Integer zona_id;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -67,11 +73,13 @@ public class Reserva {
 	 *            - Nombre del comensal que hace la reserva.
 	 * @param telefonoReservante
 	 *            - Numero telefónico del comensal que hace la reserva.
+	 * @param zona_id 
 	 */
 	public Reserva(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fecha") Date fechahora,
 			@JsonProperty(value = "duracion") Integer duracion, @JsonProperty(value = "comensales") Integer comensales,
 			@JsonProperty(value = "nombreReservante") String nombreReservante,
-			@JsonProperty(value = "telefonoReservante") Integer telefonoReservante) {
+			@JsonProperty(value = "telefonoReservante") Integer telefonoReservante,	
+			@JsonProperty(value = "zona_id") Integer zona_id) {
 		super();
 		this.id = id;
 		this.fechahora = fechahora;
@@ -79,6 +87,7 @@ public class Reserva {
 		this.comensales = comensales;
 		this.nombreReservante = nombreReservante;
 		this.telefonoReservante = telefonoReservante;
+		this.zona_id=zona_id;
 	}
 
 	// -------------------------------------------------------------
@@ -207,4 +216,21 @@ public class Reserva {
 		this.telefonoReservante = telefonoReservante;
 	}
 
+	/**
+	 * dar el id de la zona a la quepertenece
+	 * @return el id de la zona a la que pertenece
+	 */
+	public Integer getZona_id() {
+		return zona_id;
+	}
+
+	/**
+	 * cambiar el id de la zona a la que pertenece
+	 * @param zona_id el id de la nueva zona
+	 */
+	public void setZona_id(Integer zona_id) {
+		this.zona_id = zona_id;
+	}
+
+	
 }

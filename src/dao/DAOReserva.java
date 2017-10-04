@@ -37,7 +37,8 @@ public class DAOReserva extends DAOBase implements CRUD<Reserva>{
 			Integer comensales = rs.getInt("COMENSALES");
 			String nombreReservante = rs.getString("NOMBRERESERVANTE");
 			Integer telefonoReservante = rs.getInt("TELEFONORESERVANTE");
-			reserva = new Reserva(id, fechaHora, duracion, comensales, nombreReservante, telefonoReservante);
+			Integer zonaid=rs.getInt("ZONA_ID");
+			reserva = new Reserva(id, fechaHora, duracion, comensales, nombreReservante, telefonoReservante,zonaid);
 		}
 		return reserva;
 	}
@@ -57,7 +58,8 @@ public class DAOReserva extends DAOBase implements CRUD<Reserva>{
 			Integer comensales = rs.getInt("COMENSALES");
 			String nombreReservante = rs.getString("NOMBRERESERVANTE");
 			Integer telefonoReservante = rs.getInt("TELEFONORESERVANTE");
-			data.add( new Reserva(id, fechaHora, duracion, comensales, nombreReservante, telefonoReservante));
+			Integer zonaid=rs.getInt("ZONA_ID");
+			data.add( new Reserva(id, fechaHora, duracion, comensales, nombreReservante, telefonoReservante,zonaid));
 		}
 		return data;
 	}
@@ -70,7 +72,8 @@ public class DAOReserva extends DAOBase implements CRUD<Reserva>{
 		sql += data.getDuracion() + ",";
 		sql += data.getComensales() + ",'";
 		sql += data.getNombreReservante() + "',";
-		sql += data.getTelefonoReservante() + ")";
+		sql += data.getTelefonoReservante() + ",";
+		sql += data.getZona_id()+ ")";
 		
 		executeModification(sql);
 	}
@@ -82,7 +85,8 @@ public class DAOReserva extends DAOBase implements CRUD<Reserva>{
 		sql += "DURACION=" + data.getDuracion()+",";
 		sql += "COMENSALES=" + data.getComensales()+",";
 		sql += "NOMBRERESERVANTE='" + data.getNombreReservante() + "',";
-		sql += "TELEFONORESERVANTE=" + data.getTelefonoReservante();
+		sql += "TELEFONORESERVANTE=" + data.getTelefonoReservante()+",";
+		sql += "ZONA_ID"+ data.getZona_id();
 		sql += " WHERE ID = " + data.getId();
 		
 		executeModification(sql);
