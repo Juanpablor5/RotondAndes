@@ -21,4 +21,8 @@ public interface URLS {
 	final static String PEDIDOID="pedido_id";
 	final static String TIPOCOMIDA="tiposdecomida";
 	final static String TIPOCOMIDAID="tiposdecomida_id";
+	final static String RESERVA="reservas";
+	final static String RESERVAID="reservas_id";
+	final static String ESPACIO="espacios";
+	final static String ESPACIOID="espacios_id";
 }
