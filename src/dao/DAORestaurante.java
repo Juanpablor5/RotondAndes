@@ -33,8 +33,10 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 		if(rs.next()) {
 			String nombre = rs.getString("NOMBRE");
 			String paginaweb = rs.getString("PAGINAWEB");
+			Integer tipoComida= rs.getInt("TIPOCOMIDA_ID");
 			Integer registroId= rs.getInt("REGISTRO_ID");
-			restaurante = new Restaurante(id, nombre, paginaweb,registroId);
+			Integer zona= rs.getInt("ZONA_ID");
+			restaurante = new Restaurante(id, nombre, paginaweb, tipoComida, registroId, zona);
 		}
 		return restaurante;
 	}
@@ -51,8 +53,10 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 			Long id = rs.getLong("ID");
 			String nombre = rs.getString("NOMBRE");
 			String paginaweb = rs.getString("PAGINAWEB");
+			Integer tipoComida= rs.getInt("TIPOCOMIDA_ID");
 			Integer registroId= rs.getInt("REGISTRO_ID");
-			data.add( new Restaurante(id, nombre, paginaweb,registroId));
+			Integer zona= rs.getInt("ZONA_ID");
+			data.add( new Restaurante(id, nombre, paginaweb, tipoComida, registroId, zona));
 		}
 		return data;
 	}
@@ -60,9 +64,13 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 	@Override
 	public void add(Restaurante data) throws SQLException, Exception {
 		String sql = "INSERT INTO " + TABLA +" VALUES (";
+		
 		sql += data.getId() + ",'";
-		sql += data.getNombre() + "',";
-		sql += data.getRegristroId() + ")";
+		sql += data.getNombre() + "','";
+		sql += data.getPaginaWeb() + "',";
+		sql += data.getTipoComidaId() + ",";
+		sql += data.getRegristroId() + ",";
+		sql += data.getZonaId() + ")";
 		
 		executeModification(sql);
 	}
@@ -70,9 +78,13 @@ public class DAORestaurante extends DAOBase implements CRUD<Restaurante>{
 	@Override
 	public void update(Restaurante data) throws SQLException, Exception {
 		String sql = "UPDATE "+TABLA+" SET ";
+		
 		sql += "NOMBRE='" + data.getNombre() + "',";
 		sql += "PAGINAWEB='" + data.getPaginaWeb()+"',";
-		sql += "REGISTRO_ID=" + data.getRegristroId();
+		sql += "TIPOCOMIDA_ID=" + data.getTipoComidaId()+",";
+		sql += "REGISTRO_ID=" + data.getRegristroId()+",";
+		sql += "ZONA_ID=" + data.getZonaId();
+		sql += " WHERE ID = " + data.getId();
 		
 		executeModification(sql);
 	}

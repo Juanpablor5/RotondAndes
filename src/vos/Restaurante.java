@@ -28,12 +28,24 @@ public class Restaurante {
 	 */
 	@JsonProperty(value = "paginaWeb")
 	private String paginaWeb;
-	
+
 	/**
-	 * id del registro asociado
+	 * id del tipo de comida asociado.
+	 */
+	@JsonProperty(value = "tipoComidaId")
+	private Integer tipoComidaId;
+
+	/**
+	 * id del registro asociado.
 	 */
 	@JsonProperty(value = "regristroId")
 	private Integer regristroId;
+
+	/**
+	 * Id de la zona del restaurante.
+	 */
+	@JsonProperty(value = "regristroId")
+	private Integer zonaId;
 
 	/**
 	 * Método constructor de la clase restaurante. <b>post: </b> Crea el
@@ -47,12 +59,17 @@ public class Restaurante {
 	 *            - URL de la página web del restaurante.
 	 */
 	public Restaurante(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "paginaWeb") String paginaWeb, @JsonProperty(value = "regristroId") Integer regristroId) {
+			@JsonProperty(value = "paginaWeb") String paginaWeb,
+			@JsonProperty(value = "tipoComidaId") Integer tipoComidaId,
+			@JsonProperty(value = "regristroId") Integer regristroId,
+			@JsonProperty(value = "zonaId") Integer zonaId) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.paginaWeb = paginaWeb;
-		this.regristroId= regristroId;
+		this.tipoComidaId = tipoComidaId;
+		this.regristroId = regristroId;
+		this.zonaId = zonaId;
 	}
 
 	// -------------------------------------------------------------
@@ -119,20 +136,60 @@ public class Restaurante {
 	public void setPaginaWeb(String paginaWeb) {
 		this.paginaWeb = paginaWeb;
 	}
-	
+
 	/**
 	 * dar el id del reistro asociado
+	 * 
 	 * @return
 	 */
 	public Integer getRegristroId() {
 		return regristroId;
 	}
-	
+
 	/**
 	 * cambiar el id del registro asociado
+	 * 
 	 * @param regristroId
 	 */
 	public void setRegristroId(Integer regristroId) {
 		this.regristroId = regristroId;
 	}
+
+	/**
+	 * Dar el tipo de comida del restaurante
+	 * 
+	 * @return tipoComidaId
+	 */
+	public Integer getTipoComidaId() {
+		return tipoComidaId;
+	}
+
+	/**
+	 * Cambiar el tipo de comida
+	 * 
+	 * @param regristroId
+	 */
+	public void setTipoComidaId(Integer tipoComidaId) {
+		this.tipoComidaId = tipoComidaId;
+	}
+
+	/**
+	 * Dar la zona del restaurante.
+	 * 
+	 * @return zonaId
+	 */
+	public Integer getZonaId() {
+		return zonaId;
+	}
+
+	/**
+	 * Cambiar la zona del restaurante
+	 * 
+	 * @param regristroId
+	 */
+	public void setZonaId(Integer zonaId) {
+		this.zonaId = zonaId;
+	}
+	
+	
 }

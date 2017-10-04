@@ -3,6 +3,7 @@ package rest;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -20,6 +21,7 @@ public class RestauranteModificationServices extends BaseServices implements CRU
 		this.context=context;
 	}
 	
+	@POST
 	@Override
 	public Response add(Restaurante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
