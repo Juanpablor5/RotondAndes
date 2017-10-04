@@ -17,7 +17,7 @@ public interface URLS {
 	final static String MENUID="menus_id";
 	final static String PREFERECIAS="preferencias";
 	final static String PREFERECIASID="preferencias_id";
-	final static String PEDIDO="pedido";
+	final static String PEDIDO="pedidos";
 	final static String PEDIDOID="pedido_id";
 	final static String TIPOCOMIDA="tiposdecomida";
 	final static String TIPOCOMIDAID="tiposdecomida_id";
