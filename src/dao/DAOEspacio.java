@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import oracle.sql.ZONEIDMAP;
 import vos.Espacio;
 
 /**
@@ -37,8 +38,9 @@ public class DAOEspacio extends DAOBase implements CRUD<Espacio> {
 			Integer capacidad = rs.getInt("CAPACIDAD");
 			Integer necesidadesEspeciales = rs.getInt("NECESIDADESESPECIALES");
 			String condicionesTecnicas = rs.getString("CONDICIONESTECNICAS");
-			espacio = new Espacio(id, acondicionamiento, abierto, capacidad, necesidadesEspeciales,
-					condicionesTecnicas);
+			Integer zonaId = rs.getInt("ZONA_ID");
+			espacio = new Espacio(id, acondicionamiento, abierto, capacidad, necesidadesEspeciales, condicionesTecnicas,
+					zonaId);
 		}
 		return espacio;
 	}
@@ -58,8 +60,9 @@ public class DAOEspacio extends DAOBase implements CRUD<Espacio> {
 			Integer capacidad = rs.getInt("CAPACIDAD");
 			Integer necesidadesEspeciales = rs.getInt("NECESIDADESESPECIALES");
 			String condicionesTecnicas = rs.getString("CONDICIONESTECNICAS");
-			data.add(
-					new Espacio(id, acondicionamiento, abierto, capacidad, necesidadesEspeciales, condicionesTecnicas));
+			Integer zonaId = rs.getInt("ZONA_ID");
+			data.add(new Espacio(id, acondicionamiento, abierto, capacidad, necesidadesEspeciales, condicionesTecnicas,
+					zonaId));
 		}
 		return data;
 	}
@@ -72,7 +75,8 @@ public class DAOEspacio extends DAOBase implements CRUD<Espacio> {
 		sql += data.getAbierto() + ",";
 		sql += data.getCapacidad() + ",";
 		sql += data.getNecesidadesEspeciales() + ",'";
-		sql += data.getCondicionesTecnicas() + "')";
+		sql += data.getCondicionesTecnicas() + "',";
+		sql += data.getZonaId() + ")";
 
 		executeModification(sql);
 	}
@@ -85,6 +89,7 @@ public class DAOEspacio extends DAOBase implements CRUD<Espacio> {
 		sql += "CAPACIDAD=" + data.getCapacidad() + ",";
 		sql += "NECESIDADESESPECIALES=" + data.getNecesidadesEspeciales() + ",";
 		sql += "CONDICIONESTECNICAS='" + data.getCondicionesTecnicas() + "'";
+		sql += "ZONA_ID=" + data.getZonaId();
 		sql += " WHERE ID = " + data.getId();
 
 		executeModification(sql);
@@ -94,7 +99,7 @@ public class DAOEspacio extends DAOBase implements CRUD<Espacio> {
 	public void delete(Espacio data) throws SQLException, Exception {
 		String sql = "DELETE FROM " + TABLA;
 		sql += " WHERE ID = " + data.getId();
-		
+
 		executeModification(sql);
 	}
 

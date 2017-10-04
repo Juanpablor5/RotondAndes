@@ -5,28 +5,26 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Zona;
+import vos.Espacio;
 
-@Path(URLS.ZONA)
+@Path(URLS.ESPACIO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ZonaServices extends BaseServices implements CRUDR<Zona>,URLS{
+public class EspacioServices extends BaseServices implements CRUDR<Espacio>,URLS{
 
-	
 	@GET
-	@Path("{" + ZONAID + ": \\d+}")
+	@Path("{" + ESPACIOID + ": \\d+}")
 	@Override
-	public Response get(@PathParam(ZONAID) long id) {
+	public Response get(long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Zona v = tm.getZona(id);
+			Espacio v = tm.getEspacio(id);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -34,18 +32,18 @@ public class ZonaServices extends BaseServices implements CRUDR<Zona>,URLS{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-	
+
 	@GET
 	@Override
 	public Response getAll() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Zona> zona;
+		List<Espacio> espacio;
 		try {
-			zona = tm.getAllZona();
+			espacio = tm.getAllEspacio();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(zona).build();
+		return Response.status(200).entity(espacio).build();
 	}
 
 }

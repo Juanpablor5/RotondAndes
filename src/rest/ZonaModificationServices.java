@@ -24,7 +24,6 @@ public class ZonaModificationServices extends BaseServices implements CRUDEst<Zo
 	@POST
 	@Override
 	public Response add(Zona data) {
-		System.out.println("dfdsfdf");
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			integridad(data);
@@ -73,7 +72,7 @@ public class ZonaModificationServices extends BaseServices implements CRUDEst<Zo
 		if(data.getNombre()==null)
 			throw new RotondAndesException("nombre no puede ser null");
 		if(data.getNombre().equals(""))
-			throw new RotondAndesException("el nombre no puede contener espacios vacios");
+			throw new RotondAndesException("el nombre no puede ser vacio");
 	}
 
 }

@@ -47,6 +47,12 @@ public class Espacio {
 	 */
 	@JsonProperty(value = "condicionesTecnicas")
 	private String condicionesTecnicas;
+	
+	/**
+	 * Indica la zona del espacio
+	 */
+	@JsonProperty(value = "zonaId")
+	private Integer zonaId;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -74,7 +80,8 @@ public class Espacio {
 			@JsonProperty(value = "acondicionamiento") String acondicionamiento,
 			@JsonProperty(value = "abierto") Integer abierto, @JsonProperty(value = "capacidad") Integer capacidad,
 			@JsonProperty(value = "necesidadesEspeciales") Integer necesidadesEspeciales,
-			@JsonProperty(value = "condicionesTecnicas") String condicionesTecnicas) {
+			@JsonProperty(value = "condicionesTecnicas") String condicionesTecnicas,
+			@JsonProperty(value = "zonaId") Integer zonaId) {
 		super();
 		this.id = id;
 		this.acondicionamiento = acondicionamiento;
@@ -82,6 +89,7 @@ public class Espacio {
 		this.capacidad = capacidad;
 		this.necesidadesEspeciales = necesidadesEspeciales;
 		this.condicionesTecnicas = condicionesTecnicas;
+		this.zonaId = zonaId;
 	}
 
 	// -------------------------------------------------------------
@@ -208,5 +216,26 @@ public class Espacio {
 	 */
 	public void setCondicionesTecnicas(String condicionesTecnicas) {
 		this.condicionesTecnicas = condicionesTecnicas;
+	}
+
+	/**
+	 * Método getter del atributo zonaId.
+	 * 
+	 * @return zona del espacio.
+	 */
+	public Integer getZonaId() {
+		return zonaId;
+	}
+
+	/**
+	 * Método setter del atributo zonaId <b>post: </b> La
+	 * zona del espacio ha sido cambiado con el valor que entra
+	 * como parámetro.
+	 * 
+	 * @param zonaId
+	 *            - zona del espacio.
+	 */
+	public void setZonaId(Integer zonaId) {
+		this.zonaId = zonaId;
 	}
 }
