@@ -1,13 +1,18 @@
 package rest;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Producto;
 
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ProductoCreatorServices extends BaseServices{
 	public ProductoCreatorServices(ServletContext context) {
 		this.context=context;
