@@ -984,6 +984,8 @@ public class RotondAndesTM {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
+			daosHijos.setConn(conn);
+			
 			if (daos.get(data.getId()) != null)
 				throw new RotondAndesException("El menu con el id <" + data.getId() + "> ya existe");
 			
@@ -1022,6 +1024,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daos.cerrarRecursos();
+				daosHijos.cerrarRecursos();
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1039,6 +1042,7 @@ public class RotondAndesTM {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
+			daosHijos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("Ya existe un menu con el <" + data.getId() + ">");
 			if(data.getProductoEntrada()!=null) {
@@ -1074,6 +1078,7 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
+				daosHijos.cerrarRecursos();
 				daos.cerrarRecursos();
 				if (this.conn != null)
 					this.conn.close();
