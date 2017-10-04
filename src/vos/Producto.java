@@ -45,7 +45,7 @@ public class Producto {
 	 * categoria a la que pertenece un producto
 	 */
 	@JsonProperty(value = "idCategoria")
-	private Long categoriaID;
+	private Long idCategoria;
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
@@ -70,14 +70,14 @@ public class Producto {
 			@JsonProperty(value = "descripcion") String descripcion,
 			@JsonProperty(value = "traduccion") String traduccion,
 			@JsonProperty(value = "tiempoPreparacion") Integer tiempoPreparacion,
-			@JsonProperty(value = "idCategoria") Long categoriaID) {
+			@JsonProperty(value = "idCategoria") Long idCategoria) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.traduccion = traduccion;
 		this.tiempoPreparacion = tiempoPreparacion;
-		this.categoriaID=categoriaID;
+		this.idCategoria=idCategoria;
 	}
 
 	// -------------------------------------------------------------
@@ -185,18 +185,21 @@ public class Producto {
 	public void setTiempoPreparacion(Integer tiempoPreparacion) {
 		this.tiempoPreparacion = tiempoPreparacion;
 	}
+
 	/**
 	 * dar el id de la categoria a la que pertenece
 	 * @return
 	 */
-	public Long getCategoriaID() {
-		return categoriaID;
+	public Long getIdCategoria() {
+		return idCategoria;
 	}
+	
 	/**
 	 * cambiar la categoria a la que pertenece un producto
 	 * @param categoriaID
 	 */
-	public void setCategoriaID(Long categoriaID) {
-		this.categoriaID = categoriaID;
+	public void setIdCategoria(Long idCategoria) {
+		this.idCategoria = idCategoria;
 	}
+	
 }
