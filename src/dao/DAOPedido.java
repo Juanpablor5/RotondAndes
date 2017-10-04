@@ -62,14 +62,13 @@ public class DAOPedido extends DAOBase implements CRUD<Pedido> {
 	}
 
 	public void addPedidoCliente(long id, Pedido data) throws SQLException, Exception {
-		String sql = "SELECT CEDULA FROM CLIENTEINFO, REGISTRO WHERE REGISTRO.ID = CLIENTEINFO.REGISTRO_ID AND REGISTRO.ID = "
-				+ id;
+		String sql = "SELECT CEDULA FROM CLIENTEINFO, REGISTRO WHERE REGISTRO.CODIGO = CLIENTEINFO.REGISTRO_ID AND REGISTRO.CODIGO = "+ id;
 		ResultSet rs = executeModification(sql);
 		Long cedula = (long) 0;
 		
 		if (rs.next()) {
 			cedula = rs.getLong("CEDULA");
-		}
+		}else throw new SQLException("registro inexistente");
 
 		String sql2 = "INSERT INTO " + TABLA + " VALUES (";
 		sql2 += data.getId() + ",'";

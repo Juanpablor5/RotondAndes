@@ -24,6 +24,14 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 	// Métodos
 	// -------------------------------------------------------------
 
+	public Long IdRestaurante(Long IDRegistro) {
+		String sql="SELECT ID FROM RESTAURANTE,REGISTRO WHERE REGISTRO.CODIGO=RESTAURANTE.REGISTRO_ID AND REGISTRO.CODIGO="+IDRegistro;
+		
+		
+		return IDRegistro;
+		
+	}
+	
 	@Override
 	public Menu get(long id) throws SQLException, Exception {
 		Menu menu = null;

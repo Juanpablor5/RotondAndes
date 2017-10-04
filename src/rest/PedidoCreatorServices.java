@@ -3,6 +3,7 @@ package rest;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,14 +14,14 @@ import vos.Pedido;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PedidoCreatorServices extends BaseServices{
+public class PedidoCreatorServices extends BaseServices implements URLS{
 	
 	public PedidoCreatorServices(ServletContext context) {
 		this.context=context;
 	}
 	
 	@POST
-	public Response add(long id, Pedido data) {
+	public Response add(@PathParam(REGISTROID)long id, Pedido data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			integridad(data);
