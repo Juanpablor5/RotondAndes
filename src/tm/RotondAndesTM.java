@@ -978,12 +978,35 @@ public class RotondAndesTM {
 
 	public void addMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
+		DAOProducto daosHijos=new DAOProducto();
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			if (daos.get(data.getId()) != null)
 				throw new RotondAndesException("El menu con el id <" + data.getId() + "> ya existe");
+			
+			if(data.getProductoEntrada()!=null) {
+				if(daosHijos.get(data.getProductoEntrada()).getIdCategoria()!=1)
+					throw new RotondAndesException("el producto no esuna entrada");
+			}
+			if(data.getProductoFuerte()!=null) {
+				if(daosHijos.get(data.getProductoFuerte()).getIdCategoria()!=2)
+					throw new RotondAndesException("el producto no es un palto fuerte");
+			}
+			if(data.getProductoPostre()!=null) {
+				if(daosHijos.get(data.getProductoPostre()).getIdCategoria()!=3)
+					throw new RotondAndesException("el producto no es un postre");
+			}
+			if(data.getProductoBebida()!=null) {
+				if(daosHijos.get(data.getProductoBebida()).getIdCategoria()!=4)
+					throw new RotondAndesException("el producto no es una bebida");
+			}
+			if(data.getProductoAcompanamiento()!=null) {
+				if(daosHijos.get(data.getProductoAcompanamiento()).getIdCategoria()!=5)
+					throw new RotondAndesException("el producto no es un acompanamiento");
+			}
+			
 			daos.add(codigo,data);
 			conn.commit();
 
@@ -1010,12 +1033,34 @@ public class RotondAndesTM {
 
 	public void updateMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
+		DAOProducto daosHijos=new DAOProducto();
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("Ya existe un menu con el <" + data.getId() + ">");
+			if(data.getProductoEntrada()!=null) {
+				if(daosHijos.get(data.getProductoEntrada()).getIdCategoria()!=1)
+					throw new RotondAndesException("el producto no esuna entrada");
+			}
+			if(data.getProductoFuerte()!=null) {
+				if(daosHijos.get(data.getProductoFuerte()).getIdCategoria()!=2)
+					throw new RotondAndesException("el producto no es un palto fuerte");
+			}
+			if(data.getProductoPostre()!=null) {
+				if(daosHijos.get(data.getProductoPostre()).getIdCategoria()!=3)
+					throw new RotondAndesException("el producto no es un postre");
+			}
+			if(data.getProductoBebida()!=null) {
+				if(daosHijos.get(data.getProductoBebida()).getIdCategoria()!=4)
+					throw new RotondAndesException("el producto no es una bebida");
+			}
+			if(data.getProductoAcompanamiento()!=null) {
+				if(daosHijos.get(data.getProductoAcompanamiento()).getIdCategoria()!=5)
+					throw new RotondAndesException("el producto no es un acompanamiento");
+			}
+			
 			daos.update(codigo,data);
 
 		} catch (SQLException e) {
