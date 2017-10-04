@@ -9,7 +9,7 @@ import vos.Menu;
 /**
  * Clase DAO que se conecta la base de datos usando JDBC para resolver los requerimientos de la aplicación
  */
-public class DAOMenu extends DAOBase implements CRUD<Menu>{
+public class DAOMenu extends DAOBase{
 	
 	// -------------------------------------------------------------
 	// Constantes
@@ -24,15 +24,15 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 	// Métodos
 	// -------------------------------------------------------------
 
-	public Long IdRestaurante(Long IDRegistro) {
+	public Long IdRestaurante(Long IDRegistro) throws SQLException, Exception{
 		String sql="SELECT ID FROM RESTAURANTE,REGISTRO WHERE REGISTRO.CODIGO=RESTAURANTE.REGISTRO_ID AND REGISTRO.CODIGO="+IDRegistro;
-		
-		
-		return IDRegistro;
-		
+		ResultSet rs=executeModification(sql);
+		if(rs.next()) {
+			return rs.getLong("ID");
+		}
+		return null;
 	}
 	
-	@Override
 	public Menu get(long id) throws SQLException, Exception {
 		Menu menu = null;
 		String sql = "SELECT * FROM " +TABLA+" WHERE ID =" + id;
@@ -52,7 +52,6 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 		return menu;
 	}
 
-	@Override
 	public List<Menu> getAll() throws SQLException, Exception {
 		ArrayList<Menu> data = new ArrayList<Menu>();
 
@@ -76,8 +75,10 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 		return data;
 	}
 
-	@Override
-	public void add(Menu data) throws SQLException, Exception {
+	public void add(Long codigo,Menu data) throws SQLException, Exception {
+		Long id=IdRestaurante(codigo);
+		if(id==null)throw new SQLException("no se puede obtener el codigo");
+		
 		String sql = "INSERT INTO " + TABLA +" VALUES (";
 		sql += data.getId() + ",'";
 		sql += data.getCantidad() + ",";
@@ -88,13 +89,20 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 		sql += data.getProductoBebida()+",";
 		sql += data.getProductoPostre()+",";
 		sql += data.getProductoAcompanamiento()+",";
-		sql += data.getRestauranteID()+")";
+		sql += id+")";
 		
 		executeModification(sql);
 	}
 
-	@Override
-	public void update(Menu data) throws SQLException, Exception {
+
+	public void update(Long codigo,Menu data) throws SQLException, Exception {
+		Long id=IdRestaurante(codigo);
+		if(id==null)throw new SQLException("no se puede obtener el codigo");
+		
+		if(get(data.getId()).getRestauranteID().equals(id))
+			throw new SQLException("no puede alterar un menu ajeno");
+		
+		
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "CANTIDAD=" + data.getCantidad() + ",";
 		sql += "COSTODEPRODUCION=" + data.getCostoProduccion()+",";
@@ -103,15 +111,19 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 		sql += "PRODUCTOPLATOFUERTE_ID="+data.getProductoFuerte()+",";
 		sql += "PRODUCTOBEBIDA_ID="+data.getProductoBebida()+",";
 		sql += "PRODUCTOPOSTRE_ID="+data.getProductoPostre()+",";
-		sql += "PRODUCTOACOMPANAMIENTO_ID="+data.getProductoPostre()+",";
-		sql += "RESTAURANTE_ID="+data.getRestauranteID();
+		sql += "PRODUCTOACOMPANAMIENTO_ID="+data.getProductoPostre();
 		sql += " WHERE ID = " + data.getId();
 		
 		executeModification(sql);
 	}
 
-	@Override
-	public void delete(Menu data) throws SQLException, Exception {
+	public void delete(Long codigo,Menu data) throws SQLException, Exception {
+		Long id=IdRestaurante(codigo);
+		if(id==null)throw new SQLException("no se puede obtener el codigo");
+		
+		if(get(data.getId()).getRestauranteID().equals(id))
+			throw new SQLException("no puede alterar un menu ajeno");
+		
 		String sql = "DELETE FROM " + TABLA;
 		sql += " WHERE ID = " + data.getId();
 		

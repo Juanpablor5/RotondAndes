@@ -976,7 +976,7 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public void addMenu(Menu data) throws RotondAndesException, Exception {
+	public void addMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
 		try {
 			////// Transacción
@@ -984,7 +984,7 @@ public class RotondAndesTM {
 			daos.setConn(conn);
 			if (daos.get(data.getId()) != null)
 				throw new RotondAndesException("El menu con el id <" + data.getId() + "> ya existe");
-			daos.add(data);
+			daos.add(codigo,data);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -1008,7 +1008,7 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateMenu(Menu data) throws RotondAndesException, Exception {
+	public void updateMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
 		try {
 			////// Transacción
@@ -1016,7 +1016,7 @@ public class RotondAndesTM {
 			daos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("Ya existe un menu con el <" + data.getId() + ">");
-			daos.update(data);
+			daos.update(codigo,data);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -1039,7 +1039,7 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteMenu(Menu data) throws RotondAndesException, Exception {
+	public void deleteMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
 		try {
 			////// Transacción
@@ -1047,7 +1047,7 @@ public class RotondAndesTM {
 			daos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("No existe un menu con el id<" + data.getId() + ">");
-			daos.delete(data);
+			daos.delete(codigo,data);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
