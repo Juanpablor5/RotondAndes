@@ -2,31 +2,32 @@ package rest;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Producto;
+import vos.Ingrediente;
 
-@Path(URLS.PRODUCTO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ProductoServices extends BaseServices implements CRUDR<Producto>,URLS{
+public class ProductoIngredienteServices extends BaseServices implements URLS{
+	public ProductoIngredienteServices(ServletContext context) {
+		this.context=context;
+	}
 	
 	@GET
-	@Path("{" + PRODUCTOID + ": \\d+}")
-	@Override
-	public Response get(@PathParam(PRODUCTOID)long id) {
+	@Path("{" + INGREDIENTEID + ": \\d+}")
+	public Response get(@PathParam(PRODUCTOID)long idProducto,@PathParam(INGREDIENTEID)long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Producto v = tm.getProducto(id);
+			Ingrediente v = tm.getProductoIngredienteu(idProducto,id);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -34,28 +35,18 @@ public class ProductoServices extends BaseServices implements CRUDR<Producto>,UR
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-
+	
 	@GET
-	@Override
-	public Response getAll() {
+	public Response getAll(@PathParam(PRODUCTOID)long idProducto) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Producto> espacio;
+		List<Ingrediente> data;
 		try {
-			espacio = tm.getAllProducto();
+			data = tm.getAllProductoIngrediente(idProducto);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(espacio).build();
+		return Response.status(200).entity(data).build();
 	}
 	
-	@Path("{" + PRODUCTOID + ": \\d+}/" + INGREDIENTE)
-	public ProductoIngredienteServices getIngredientes(@PathParam(PRODUCTOID) Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			tm.getReserva(id);
-			return new ProductoIngredienteServices(context);
-		} catch (Exception e) {
-			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
-		}
-	}
+	
 }

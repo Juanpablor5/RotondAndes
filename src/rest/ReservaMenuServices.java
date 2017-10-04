@@ -49,5 +49,4 @@ public class ReservaMenuServices extends BaseServices implements URLS{
 		}
 		return Response.status(200).entity(data).build();
 	}
-	
 }
