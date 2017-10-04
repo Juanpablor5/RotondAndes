@@ -96,7 +96,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		return Response.status(200).entity(data).build();
 	}
 
-	@Path("{" + REGISTROID + ": \\d+}/" + CLIENTE)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + CLIENTE)
 	public ClienteModificationServices getCliente(@PathParam(REGISTROID) Long id) {
 
 		RotondAndesTM tm = new RotondAndesTM(getPath());
@@ -112,7 +112,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + REGISTROID + ": \\d+}/" + ZONA)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + ZONA)
 	public ZonaModificationServices getZona(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -127,7 +127,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + REGISTROID + ": \\d+}/" + RESTAURANTE)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + RESTAURANTE)
 	public RestauranteModificationServices getRestaurante(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -142,7 +142,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + REGISTROID + ": \\d+}/" + RESERVA)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + RESERVA)
 	public ReservaModificationServices getReservas(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -157,7 +157,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + REGISTROID + ": \\d+}/" + ESPACIO)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + ESPACIO)
 	public EspacioModificationServices getEspacio(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -172,7 +172,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + REGISTROID + ": \\d+}/" + REPRESENTANTE)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + RESTAURANTE)
 	public RepresentateModificationServices getRepresentante(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -187,7 +187,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + REGISTROID + ": \\d+}/" + INGREDIENTE)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + INGREDIENTE)
 	public IngredienteModificationServices getIngrediente(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -195,6 +195,21 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 				throw new RotondAndesException("No tiene los permisos necesarios");
 
 			return new IngredienteModificationServices(context);
+		} catch (RotondAndesException ex) {
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+	
+	@Path("{" + REGISTROID + ": \\d+}/" + INGREDIENTE)
+	public IngredienteCreatorServices getIngredienteCliente(@PathParam(REGISTROID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			if (tm.getRegistro(id).getPermisos() != 2)
+				throw new RotondAndesException("No tiene los permisos necesarios");
+
+			return new IngredienteCreatorServices(context);
 		} catch (RotondAndesException ex) {
 			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
 		} catch (Exception e) {

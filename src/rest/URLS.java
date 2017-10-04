@@ -27,4 +27,5 @@ public interface URLS {
 	final static String ESPACIOID="espacios_id";
 	final static String REPRESENTANTE="representantes";
 	final static String REPRESENTANTEID="representantes_id";
+	final static String CHANGE="change";
 }
