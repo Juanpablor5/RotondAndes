@@ -68,6 +68,7 @@ public class DAOPedido extends DAOBase implements CRUD<Pedido> {
 				+ id;
 		ResultSet rs = executeModification(sql);
 		Long cedula = (long) 0;
+		
 		if (rs.next()) {
 			cedula = rs.getLong("CEDULA");
 		}
