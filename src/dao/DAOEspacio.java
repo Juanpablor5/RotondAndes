@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import oracle.sql.ZONEIDMAP;
 import vos.Espacio;
 
 /**
@@ -88,7 +86,7 @@ public class DAOEspacio extends DAOBase implements CRUD<Espacio> {
 		sql += "ABIERTO=" + data.getAbierto() + ",";
 		sql += "CAPACIDAD=" + data.getCapacidad() + ",";
 		sql += "NECESIDADESESPECIALES=" + data.getNecesidadesEspeciales() + ",";
-		sql += "CONDICIONESTECNICAS='" + data.getCondicionesTecnicas() + "'";
+		sql += "CONDICIONESTECNICAS='" + data.getCondicionesTecnicas() + "',";
 		sql += "ZONA_ID=" + data.getZonaId();
 		sql += " WHERE ID = " + data.getId();
 

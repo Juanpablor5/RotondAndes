@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,7 +22,7 @@ public class EspacioServices extends BaseServices implements CRUDR<Espacio>,URLS
 	@GET
 	@Path("{" + ESPACIOID + ": \\d+}")
 	@Override
-	public Response get(long id) {
+	public Response get(@PathParam(ESPACIOID)long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			Espacio v = tm.getEspacio(id);
