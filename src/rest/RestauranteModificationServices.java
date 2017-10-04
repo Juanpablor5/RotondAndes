@@ -2,6 +2,8 @@ package rest;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,6 +34,7 @@ public class RestauranteModificationServices extends BaseServices implements CRU
 		return Response.status(200).entity(data).build();
 	}
 
+	@PUT
 	@Override
 	public Response update(Restaurante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
@@ -46,6 +49,7 @@ public class RestauranteModificationServices extends BaseServices implements CRU
 		return Response.status(200).entity(data).build();
 	}
 
+	@DELETE
 	@Override
 	public Response delete(Restaurante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());

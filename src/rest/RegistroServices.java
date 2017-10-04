@@ -127,7 +127,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path("{" + RESTAURANTEID + ": \\d+}/" + ZONA)
+	@Path("{" + RESTAURANTEID + ": \\d+}/" + RESTAURANTE)
 	public RestauranteModificationServices getRestaurante(@PathParam(RESTAURANTEID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
