@@ -251,7 +251,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 	public PedidoModificationServices getPedido(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			if (tm.getRegistro(id).getPermisos() != 2)
+			if (tm.getRegistro(id).getPermisos() != 3)
 				throw new RotondAndesException("No tiene los permisos necesarios");
 
 			return new PedidoModificationServices(context);

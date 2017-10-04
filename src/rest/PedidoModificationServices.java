@@ -33,6 +33,7 @@ public class PedidoModificationServices extends BaseServices implements CRUDR<Pe
 		}
 	}
 
+	@GET
 	@Override
 	public Response getAll() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
