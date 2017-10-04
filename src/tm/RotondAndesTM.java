@@ -30,6 +30,7 @@ import vos.Espacio;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.Producto;
+import vos.ProductoDetail;
 import vos.Registro;
 import vos.Representante;
 import vos.Reserva;
@@ -2426,5 +2427,42 @@ public class RotondAndesTM {
 			}
 		}
 		return data;
+	}
+
+	public void addProductoCliente(ProductoDetail data) throws SQLException ,Exception{
+		DAOProducto daos = new DAOProducto();
+		DAOProductoIngrediente daosHijos= new DAOProductoIngrediente();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El producto con el id <" + data.getId() + "> ya existe");
+			daos.add(data);
+			conn.commit();
+			daosHijos.setConn(conn);
+			for(Long idIngrediente :data.getIngredientes())
+				daosHijos.add(data.getId(), idIngrediente);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 }

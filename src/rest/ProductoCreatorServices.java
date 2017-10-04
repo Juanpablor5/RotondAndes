@@ -10,20 +10,21 @@ import javax.ws.rs.core.Response;
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Producto;
+import vos.ProductoDetail;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ProductoCreatorServices extends BaseServices{
+public class ProductoCreatorServices extends BaseServices implements URLS{
 	public ProductoCreatorServices(ServletContext context) {
 		this.context=context;
 	}
 	
 	@POST
-	public Response add(Producto data) {
+	public Response add(ProductoDetail data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			integridad(data);
-			tm.addProducto(data);
+			tm.addProductoCliente(data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {

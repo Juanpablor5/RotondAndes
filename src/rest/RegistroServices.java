@@ -219,6 +219,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 	
 	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + PRODUCTO)
 	public ProductoModificationServices getProducto(@PathParam(REGISTROID) Long id) {
+		System.out.println("asdas3");
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			if (tm.getRegistro(id).getPermisos() != 3)

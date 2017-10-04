@@ -52,7 +52,7 @@ public class ProductoServices extends BaseServices implements CRUDR<Producto>,UR
 	public ProductoIngredienteServices getIngredientes(@PathParam(PRODUCTOID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.getReserva(id);
+			tm.getProducto(id);
 			return new ProductoIngredienteServices(context);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
