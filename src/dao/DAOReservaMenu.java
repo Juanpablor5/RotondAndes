@@ -25,7 +25,13 @@ public class DAOReservaMenu extends DAOBase {
 			Integer cantidad = rs.getInt("CANTIDAD");
 			Double costoProduccion = rs.getDouble("COSTODEPRODUCION");
 			Double valorPublico = rs.getDouble("VALORALPUBLICO");
-			data.add(new Menu(id, cantidad, costoProduccion, valorPublico));
+			Long entrada=rs.getLong("PRODUCTOENTRADA_ID");
+			Long fuerte=rs.getLong("PRODUCTOPLATOFUERTE_ID");
+			Long bebida=rs.getLong("PRODUCTOBEBIDA_ID");
+			Long postre=rs.getLong("PRODUCTOPOSTRE_ID");
+			Long acompanamiento=rs.getLong("PRODUCTOACOMPANAMIENTO_ID");
+			Long restaurante=rs.getLong("RESTAURANTE_ID");
+			data.add(new Menu(id, cantidad, costoProduccion, valorPublico, entrada, fuerte, bebida, postre, acompanamiento, restaurante));
 		}
 		return data;
 	}
@@ -41,7 +47,13 @@ public class DAOReservaMenu extends DAOBase {
 			Integer cantidad = rs.getInt("CANTIDAD");
 			Double costoProduccion = rs.getDouble("COSTODEPRODUCION");
 			Double valorPublico = rs.getDouble("VALORALPUBLICO");
-			menu = new Menu(id, cantidad, costoProduccion, valorPublico);
+			Long entrada=rs.getLong("PRODUCTOENTRADA_ID");
+			Long fuerte=rs.getLong("PRODUCTOPLATOFUERTE_ID");
+			Long bebida=rs.getLong("PRODUCTOBEBIDA_ID");
+			Long postre=rs.getLong("PRODUCTOPOSTRE_ID");
+			Long acompanamiento=rs.getLong("PRODUCTOACOMPANAMIENTO_ID");
+			Long restaurante=rs.getLong("RESTAURANTE_ID");
+			menu = new Menu(id, cantidad, costoProduccion, valorPublico, entrada, fuerte, bebida, postre, acompanamiento, restaurante);
 		}
 		return menu;
 	}

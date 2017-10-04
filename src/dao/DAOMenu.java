@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import vos.Menu;
 
 /**
@@ -34,7 +33,13 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 			Integer cantidad = rs.getInt("CANTIDAD");
 			Double costoProduccion = rs.getDouble("COSTODEPRODUCION");
 			Double valorPublico = rs.getDouble("VALORALPUBLICO");
-			menu = new Menu(id, cantidad, costoProduccion, valorPublico);
+			Long entrada=rs.getLong("PRODUCTOENTRADA_ID");
+			Long fuerte=rs.getLong("PRODUCTOPLATOFUERTE_ID");
+			Long bebida=rs.getLong("PRODUCTOBEBIDA_ID");
+			Long postre=rs.getLong("PRODUCTOPOSTRE_ID");
+			Long acompanamiento=rs.getLong("PRODUCTOACOMPANAMIENTO_ID");
+			Long restaurante=rs.getLong("RESTAURANTE_ID");
+			menu = new Menu(id, cantidad, costoProduccion, valorPublico, entrada, fuerte, bebida, postre, acompanamiento, restaurante);
 		}
 		return menu;
 	}
@@ -52,7 +57,13 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 			Integer cantidad = rs.getInt("CANTIDAD");
 			Double costoProduccion = rs.getDouble("COSTODEPRODUCION");
 			Double valorPublico = rs.getDouble("VALORALPUBLICO");
-			data.add( new Menu(id, cantidad, costoProduccion, valorPublico));
+			Long entrada=rs.getLong("PRODUCTOENTRADA_ID");
+			Long fuerte=rs.getLong("PRODUCTOPLATOFUERTE_ID");
+			Long bebida=rs.getLong("PRODUCTOBEBIDA_ID");
+			Long postre=rs.getLong("PRODUCTOPOSTRE_ID");
+			Long acompanamiento=rs.getLong("PRODUCTOACOMPANAMIENTO_ID");
+			Long restaurante=rs.getLong("RESTAURANTE_ID");
+			data.add(new Menu(id, cantidad, costoProduccion, valorPublico, entrada, fuerte, bebida, postre, acompanamiento, restaurante));
 		}
 		return data;
 	}
@@ -63,7 +74,13 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 		sql += data.getId() + ",'";
 		sql += data.getCantidad() + ",";
 		sql += data.getCostoProduccion() + ",";
-		sql += data.getValorAlPublico() + ")";
+		sql += data.getValorAlPublico() + ",";
+		sql += data.getProductoEntrada()+",";
+		sql += data.getProductoFuerte()+",";
+		sql += data.getProductoBebida()+",";
+		sql += data.getProductoPostre()+",";
+		sql += data.getProductoAcompanamiento()+",";
+		sql += data.getRestauranteID()+")";
 		
 		executeModification(sql);
 	}
@@ -73,7 +90,13 @@ public class DAOMenu extends DAOBase implements CRUD<Menu>{
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "CANTIDAD=" + data.getCantidad() + ",";
 		sql += "COSTODEPRODUCION=" + data.getCostoProduccion()+",";
-		sql += "VALORALPUBLICO=" + data.getValorAlPublico();
+		sql += "VALORALPUBLICO=" + data.getValorAlPublico()+",";
+		sql += "PRODUCTOENTRADA_ID="+data.getProductoEntrada()+",";
+		sql += "PRODUCTOPLATOFUERTE_ID="+data.getProductoFuerte()+",";
+		sql += "PRODUCTOBEBIDA_ID="+data.getProductoBebida()+",";
+		sql += "PRODUCTOPOSTRE_ID="+data.getProductoPostre()+",";
+		sql += "PRODUCTOACOMPANAMIENTO_ID="+data.getProductoPostre()+",";
+		sql += "RESTAURANTE_ID="+data.getRestauranteID();
 		sql += " WHERE ID = " + data.getId();
 		
 		executeModification(sql);

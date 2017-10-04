@@ -67,6 +67,7 @@ public class DAOPedido extends DAOBase implements CRUD<Pedido> {
 		String sql = "SELECT CEDULA FROM CLIENTEINFO, REGISTRO WHERE REGISTRO.ID = CLIENTEINFO.REGISTRO_ID";
 		ResultSet rs = executeModification(sql);
 		Long cedula = (long) 0;
+		
 		if (rs.next()) {
 			cedula = rs.getLong("CEDULA");
 		}

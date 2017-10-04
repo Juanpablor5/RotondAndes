@@ -34,7 +34,24 @@ public class Menu {
 	 */
 	@JsonProperty(value = "valorAlPublico")
 	private Double valorAlPublico;
+	
+	@JsonProperty(value = "productoEntrada")
+	private Long productoEntrada;
+	
+	@JsonProperty(value = "productoFuerte")
+	private Long productoFuerte;
 
+	@JsonProperty(value = "productoBebida")
+	private Long productoBebida;
+	
+	@JsonProperty(value = "productoPostre")
+	private Long productoPostre;
+	
+	@JsonProperty(value = "productoAcompanamiento")
+	private Long productoAcompanamiento;
+	
+	@JsonProperty(value = "restauranteID")
+	private Long restauranteID;
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
@@ -51,15 +68,34 @@ public class Menu {
 	 *            - Descripción del menú.
 	 * @param valorAlPublico
 	 *            - Traducción de descripción del menú.
+	 * @param productoEntrada 
+	 * @param productoFuerte 
+	 * @param productoBebida 
+	 * @param productoAcompanamiento 
+	 * @param restauranteID 
+	 * @param procutoPostre 
 	 */
-	public Menu(@JsonProperty(value = "id") Long id, @JsonProperty(value = "cantidad") Integer cantidad,
+	public Menu(@JsonProperty(value = "id") Long id,
+			@JsonProperty(value = "cantidad") Integer cantidad,
 			@JsonProperty(value = "costoProduccion") Double costoProduccion,
-			@JsonProperty(value = "valorAlPublico") Double valorAlPublico) {
+			@JsonProperty(value = "valorAlPublico") Double valorAlPublico,
+			@JsonProperty(value = "productoEntrada") long productoEntrada,
+			@JsonProperty(value = "productoFuerte") long productoFuerte,
+			@JsonProperty(value = "productoBebida") long productoBebida,
+			@JsonProperty(value = "productoPostre") Long productoPostre,
+			@JsonProperty(value = "productoAcompanamiento") Long productoAcompanamiento,
+			@JsonProperty(value = "restauranteID") Long restauranteID) {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
 		this.costoProduccion = costoProduccion;
 		this.valorAlPublico = valorAlPublico;
+		this.productoEntrada=productoEntrada;
+		this.productoFuerte=productoFuerte;
+		this.productoBebida=productoBebida;
+		this.productoPostre=productoPostre;
+		this.productoAcompanamiento=productoAcompanamiento;
+		this.restauranteID=restauranteID;
 	}
 
 	// -------------------------------------------------------------
@@ -147,4 +183,59 @@ public class Menu {
 		this.valorAlPublico = valorAlPublico;
 	}
 
+	public long getProductoEntrada() {
+		return productoEntrada;
+	}
+
+	public void setProductoEntrada(long productoEntrada) {
+		this.productoEntrada = productoEntrada;
+	}
+
+	public long getProductoFuerte() {
+		return productoFuerte;
+	}
+
+	public void setProductoFuerte(long productoFuerte) {
+		this.productoFuerte = productoFuerte;
+	}
+
+	public Long getProductoBebida() {
+		return productoBebida;
+	}
+
+	public void setProductoBebida(Long productoBebida) {
+		this.productoBebida = productoBebida;
+	}
+
+	public Long getProductoPostre() {
+		return productoPostre;
+	}
+
+	public void setProductoPostre(Long productoPostre) {
+		this.productoPostre = productoPostre;
+	}
+
+	public Long getProductoAcompanamiento() {
+		return productoAcompanamiento;
+	}
+
+	public void setProductoAcompanamiento(Long productoAcompanamiento) {
+		this.productoAcompanamiento = productoAcompanamiento;
+	}
+
+	public Long getRestauranteID() {
+		return restauranteID;
+	}
+
+	public void setRestauranteID(Long restauranteID) {
+		this.restauranteID = restauranteID;
+	}
+
+	public void setProductoEntrada(Long productoEntrada) {
+		this.productoEntrada = productoEntrada;
+	}
+
+	public void setProductoFuerte(Long productoFuerte) {
+		this.productoFuerte = productoFuerte;
+	}
 }
