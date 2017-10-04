@@ -2388,7 +2388,7 @@ public class RotondAndesTM {
 			daos.setConn(conn);
 			data = daos.get(idProducto,id);
 			if (data == null)
-				throw new RotondAndesException("El espacio con el id:<" + id + ">no existe");
+				throw new RotondAndesException("El pedido con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
