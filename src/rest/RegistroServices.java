@@ -216,6 +216,37 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}
 	}
+	
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + PRODUCTO)
+	public ProductoModificationServices getProducto(@PathParam(REGISTROID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			if (tm.getRegistro(id).getPermisos() != 3)
+				throw new RotondAndesException("No tiene los permisos necesarios");
+
+			return new ProductoModificationServices(context);
+		} catch (RotondAndesException ex) {
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+	
+	@Path("{" + REGISTROID + ": \\d+}/" + PRODUCTO)
+	public ProductoCreatorServices getProductoCliente(@PathParam(REGISTROID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			if (tm.getRegistro(id).getPermisos() != 2)
+				throw new RotondAndesException("No tiene los permisos necesarios");
+
+			return new ProductoCreatorServices(context);
+		} catch (RotondAndesException ex) {
+			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+
 
 	@Override
 	public void integridad(Registro data) throws RotondAndesException {
