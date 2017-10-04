@@ -64,8 +64,7 @@ public class DAOIngrediente extends DAOBase implements CRUD<Ingrediente> {
 		sql += data.getId() + ",'";
 		sql += data.getNombre() + "','";
 		sql += data.getDescripcion() + "','";
-		sql += data.getTraduccion() + ")";
-		
+		sql += data.getTraduccion() + "')";
 		executeModification(sql);
 	}
 
@@ -74,7 +73,7 @@ public class DAOIngrediente extends DAOBase implements CRUD<Ingrediente> {
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "NOMBRE='" + data.getNombre() + "',";
 		sql += "DESCRIPCION='" + data.getDescripcion()+"',";
-		sql += "TRADUCCION='" + data.getTraduccion();
+		sql += "TRADUCCION='" + data.getTraduccion() + "'";
 		sql += " WHERE ID = " + data.getId();
 		
 		executeModification(sql);
