@@ -12,20 +12,19 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Espacio;
+import vos.Representante;
 
-@Path(URLS.ESPACIO)
+@Path(URLS.REPRESENTANTE)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class EspacioServices extends BaseServices implements CRUDR<Espacio>,URLS{
-
+public class RepresentanteServices extends BaseServices implements CRUDR<Representante>,URLS{
 	@GET
-	@Path("{" + ESPACIOID + ": \\d+}")
+	@Path("{" + REPRESENTANTEID + ": \\d+}")
 	@Override
-	public Response get(@PathParam(ESPACIOID)long id) {
+	public Response get(@PathParam(REPRESENTANTEID)long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Espacio v = tm.getEspacio(id);
+			Representante v = tm.getRepresentante(id);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -38,12 +37,12 @@ public class EspacioServices extends BaseServices implements CRUDR<Espacio>,URLS
 	@Override
 	public Response getAll() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Espacio> espacio;
+		List<Representante> data;
 		try {
-			espacio = tm.getAllEspacio();
+			data = tm.getAllRepresentate();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(espacio).build();
+		return Response.status(200).entity(data).build();
 	}
 }

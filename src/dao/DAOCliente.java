@@ -78,7 +78,7 @@ public class DAOCliente extends DAOBase implements CRUD<Cliente>{
 		
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "NOMBRE='" + data.getNombre() + "',";
-		sql += "FECHADEINGRESO='" + formato.format(data.getRegristroId())+ "',";
+		sql += "FECHADEINGRESO='" + formato.format(data.getFechaIngreso())+ "',";
 		sql += "REGISTRO_ID="+data.getRegristroId();
 		sql += " WHERE CEDULA = " + data.getCedula();
 		

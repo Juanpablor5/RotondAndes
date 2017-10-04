@@ -17,6 +17,7 @@ import dao.DAOZona;
 import dao.DAOCliente;
 import dao.DAOEspacio;
 import dao.DAORegistro;
+import dao.DAORepresentante;
 import dao.DAOReserva;
 import dao.DAORestaurante;
 import dao.DAOTipoComida;
@@ -28,6 +29,7 @@ import vos.Ingrediente;
 import vos.Menu;
 import vos.Producto;
 import vos.Registro;
+import vos.Representante;
 import vos.Reserva;
 import vos.Restaurante;
 import vos.TipoComida;
@@ -1823,6 +1825,162 @@ public class RotondAndesTM {
 			daos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("No existe una reserva con el id<" + data.getId() + ">");
+			daos.delete(data);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public List<Representante> getAllRepresentate() throws SQLException, Exception {
+		List<Representante> data;
+		DAORepresentante daos = new DAORepresentante();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.getAll();
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public Representante getRepresentante(long id) throws RotondAndesException, Exception {
+		Representante data;
+		DAORepresentante daos = new DAORepresentante();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.get(id);
+			if (data == null)
+				throw new RotondAndesException("El espacio con el id:<" + id + ">no existe");
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
+
+	public void addRepresentante(Representante data) throws RotondAndesException, Exception {
+		DAORepresentante daos = new DAORepresentante();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if (daos.get(data.getId()) != null)
+				throw new RotondAndesException("El espacio con el id <" + data.getId() + "> ya existe");
+			daos.add(data);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void updateRepresentante(Representante data) throws RotondAndesException, Exception {
+		DAORepresentante daos = new DAORepresentante();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("Ya existe un espacio con el <" + data.getId() + ">");
+			daos.update(data);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void deleteRepresentante(Representante data) throws RotondAndesException, Exception {
+		DAORepresentante daos = new DAORepresentante();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			if (daos.get(data.getId()) == null)
+				throw new RotondAndesException("No existe un espacio con el id<" + data.getId() + ">");
 			daos.delete(data);
 
 		} catch (SQLException e) {

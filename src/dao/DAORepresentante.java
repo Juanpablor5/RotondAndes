@@ -35,7 +35,8 @@ public class DAORepresentante extends DAOBase implements CRUD<Representante> {
 			String nombre = rs.getString("NOMBRE");
 			Integer telefono = rs.getInt("TELEFONO");
 			String correo = rs.getString("CORREO");
-			representante = new Representante(id, nombre, telefono, correo);
+			Long restauranteid=rs.getLong("RESTAURANTE_ID");
+			representante = new Representante(id, nombre, telefono, correo,restauranteid);
 		}
 		return representante;
 	}
@@ -53,7 +54,8 @@ public class DAORepresentante extends DAOBase implements CRUD<Representante> {
 			String nombre = rs.getString("NOMBRE");
 			Integer telefono = rs.getInt("TELEFONO");
 			String correo = rs.getString("CORREO");
-			data.add(new Representante(id, nombre, telefono, correo));
+			Long restauranteid=rs.getLong("RESTAURANTE_ID");
+			data.add(new Representante(id, nombre, telefono, correo,restauranteid));
 		}
 		return data;
 	}
@@ -64,7 +66,8 @@ public class DAORepresentante extends DAOBase implements CRUD<Representante> {
 		sql += data.getId() + ",'";
 		sql += data.getNombre() + "',";
 		sql += data.getTelefono() + ",'";
-		sql += data.getCorreo() + "')";
+		sql += data.getCorreo() + "',";
+		sql += data.getRestauranteId() + ")";
 
 		executeModification(sql);
 	}
@@ -74,7 +77,8 @@ public class DAORepresentante extends DAOBase implements CRUD<Representante> {
 		String sql = "UPDATE " + TABLA + " SET ";
 		sql += "NOMBRE='" + data.getNombre() + "',";
 		sql += "TELEFONO='" + data.getTelefono() + "',";
-		sql += "CORREO='" + data.getCorreo()+"'";
+		sql += "CORREO='" + data.getCorreo()+"',";
+		sql += "RESTAURANTE_ID="+ data.getRestauranteId();
 		sql += " WHERE ID = " + data.getId();
 
 		executeModification(sql);
@@ -87,5 +91,4 @@ public class DAORepresentante extends DAOBase implements CRUD<Representante> {
 
 		executeModification(sql);
 	}
-
 }

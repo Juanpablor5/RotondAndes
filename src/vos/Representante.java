@@ -34,6 +34,9 @@ public class Representante {
 	 */
 	@JsonProperty(value = "correo")
 	private String correo;
+	
+	@JsonProperty(value = "restauranteId")
+	private Long restauranteId;
 
 	/**
 	 * Método constructor de la clase representante. <b>post: </b> Crea el
@@ -47,14 +50,17 @@ public class Representante {
 	 *            - Teléfono del representante.
 	 * @param correo
 	 *            - Correo electrónico del representante.
+	 * @param restauranteId 
 	 */
 	public Representante(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "telefono") Integer telefono, @JsonProperty(value = "correo") String correo) {
+			@JsonProperty(value = "telefono") Integer telefono, @JsonProperty(value = "correo") String correo,
+			@JsonProperty(value = "restauranteId") Long restauranteId) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.correo = correo;
+		this.restauranteId=restauranteId;
 	}
 
 	// -------------------------------------------------------------
@@ -140,4 +146,19 @@ public class Representante {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
+	/**
+	 * dar el restaurante al que pertenec el representante
+	 * @return el restaurante al que pertenece el representante
+	 */
+	public Long getRestauranteId() {
+		return restauranteId;
+	}
+	/**
+	 * cambiar el restaurante e que pertenece el representante
+	 * @param restauranteId el nuevo restaurante al que va a pertenecer el representante
+	 */
+	public void setRestauranteId(Long restauranteId) {
+		this.restauranteId = restauranteId;
+	}
+	
 }
