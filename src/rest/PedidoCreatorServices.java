@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Pedido;
+import vos.PedidoDetail;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -21,7 +22,7 @@ public class PedidoCreatorServices extends BaseServices implements URLS{
 	}
 	
 	@POST
-	public Response add(@PathParam(REGISTROID)long id, Pedido data) {
+	public Response add(@PathParam(REGISTROID)long id, PedidoDetail data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			integridad(data);

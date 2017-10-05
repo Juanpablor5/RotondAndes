@@ -42,17 +42,15 @@ public class DAOSubpedido extends DAOBase {
 		while (rs.next()) {
 			Long id = rs.getLong("ID");
 			Integer cantidad = rs.getInt("CANTIDAD");
-			Double costoProduccion = rs.getDouble("COSTODEPRODUCCION");
-			Double valorAlPublico = rs.getDouble("VALORALPUBLICO");
-			Long productoEntradaId = rs.getLong("ID");
-			Long productoPlatoFuerteId = rs.getLong("ID");
-			Long productoBebidaId = rs.getLong("ID");
-			Long productoPostreId = rs.getLong("ID");
-			Long productoAcompanamientoId = rs.getLong("ID");
-			Long restauranteId = rs.getLong("ID");
-			data.add(new Menu(id, cantidad, costoProduccion, valorAlPublico, productoEntradaId,
-					productoPlatoFuerteId, productoBebidaId, productoPostreId, productoAcompanamientoId,
-					restauranteId));
+			Double costoProduccion = rs.getDouble("COSTODEPRODUCION");
+			Double valorPublico = rs.getDouble("VALORALPUBLICO");
+			Long entrada=rs.getLong("PRODUCTOENTRADA_ID");
+			Long fuerte=rs.getLong("PRODUCTOPLATOFUERTE_ID");
+			Long bebida=rs.getLong("PRODUCTOBEBIDA_ID");
+			Long postre=rs.getLong("PRODUCTOPOSTRE_ID");
+			Long acompanamiento=rs.getLong("PRODUCTOACOMPANAMIENTO_ID");
+			Long restaurante=rs.getLong("RESTAURANTE_ID");
+			data.add(new Menu(id, cantidad, costoProduccion, valorPublico, entrada, fuerte, bebida, postre, acompanamiento, restaurante));
 		}
 		return data;
 	}
@@ -66,17 +64,15 @@ public class DAOSubpedido extends DAOBase {
 		ResultSet rs = executeModification(sql);
 		if (rs.next()) {
 			Integer cantidad = rs.getInt("CANTIDAD");
-			Double costoProduccion = rs.getDouble("COSTODEPRODUCCION");
-			Double valorAlPublico = rs.getDouble("VALORALPUBLICO");
-			Long productoEntradaId = rs.getLong("ID");
-			Long productoPlatoFuerteId = rs.getLong("ID");
-			Long productoBebidaId = rs.getLong("ID");
-			Long productoPostreId = rs.getLong("ID");
-			Long productoAcompanamientoId = rs.getLong("ID");
-			Long restauranteId = rs.getLong("ID");
-			ingrediente = new Menu(id, cantidad, costoProduccion, valorAlPublico, productoEntradaId,
-					productoPlatoFuerteId, productoBebidaId, productoPostreId, productoAcompanamientoId,
-					restauranteId);
+			Double costoProduccion = rs.getDouble("COSTODEPRODUCION");
+			Double valorPublico = rs.getDouble("VALORALPUBLICO");
+			Long entrada=rs.getLong("PRODUCTOENTRADA_ID");
+			Long fuerte=rs.getLong("PRODUCTOPLATOFUERTE_ID");
+			Long bebida=rs.getLong("PRODUCTOBEBIDA_ID");
+			Long postre=rs.getLong("PRODUCTOPOSTRE_ID");
+			Long acompanamiento=rs.getLong("PRODUCTOACOMPANAMIENTO_ID");
+			Long restaurante=rs.getLong("RESTAURANTE_ID");
+			ingrediente = new Menu(id, cantidad, costoProduccion, valorPublico, entrada, fuerte, bebida, postre, acompanamiento, restaurante);
 		}
 		return ingrediente;
 	}

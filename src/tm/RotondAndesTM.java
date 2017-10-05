@@ -292,8 +292,9 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void addPedidoCliente(long id, Pedido data) throws RotondAndesException, Exception {
+	public void addPedidoCliente(long id, PedidoDetail data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
+		DAOSubpedido  daosHijos=new DAOSubpedido();
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -301,6 +302,10 @@ public class RotondAndesTM {
 			if (daos.get(data.getId()) != null)
 				throw new RotondAndesException("El pedido con el id <" + data.getId() + "> ya existe");
 			daos.addPedidoCliente(id, data);
+			conn.commit();
+			daosHijos.setConn(conn);
+			for(Long idMenu :data.getMenus())
+				daosHijos.add(data.getId(), idMenu);
 			conn.commit();
 
 		} catch (SQLException e) {

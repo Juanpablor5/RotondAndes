@@ -23,7 +23,7 @@ public class PedidoModificationServices extends BaseServices implements CRUDR<Pe
 	@GET
 	@Path("{" + PEDIDOID + ": \\d+}")
 	@Override
-	public Response get(long id) {
+	public Response get(@PathParam(PEDIDOID) long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			Pedido v = tm.getPedido(id);
@@ -47,6 +47,7 @@ public class PedidoModificationServices extends BaseServices implements CRUDR<Pe
 		}
 		return Response.status(200).entity(zona).build();
 	}
+	
 	
 	public PedidoModificationServices(ServletContext context) {
 		this.context=context;
@@ -77,9 +78,8 @@ public class PedidoModificationServices extends BaseServices implements CRUDR<Pe
 		return Response.status(200).entity(data).build();
 	}
 	
-	@GET
-	@Path("{" + PRODUCTOID + ": \\d+}/" + MENU)
-	public SubpedidoModificationServices getMenus(@PathParam(PRODUCTOID) Long id) {
+	@Path("{" + PEDIDOID + ": \\d+}/" + MENU)
+	public SubpedidoModificationServices getMenus(@PathParam(PEDIDOID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.getProducto(id);
