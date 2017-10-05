@@ -2051,6 +2051,38 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
+	
+	public Registro login(String contrasenia, String usuario) throws RotondAndesException, Exception{
+		Registro data;
+		DAORegistro daos = new DAORegistro();
+		try {
+			////// Transacción
+			this.conn = darConexion();
+			daos.setConn(conn);
+			data = daos.get(usuario, contrasenia);
+			if (data == null)
+				throw new RotondAndesException("El registro no existe");
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daos.cerrarRecursos();
+				if (this.conn != null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return data;
+	}
 
 	public Representante getRepresentante(long id) throws RotondAndesException, Exception {
 		Representante data;

@@ -14,46 +14,31 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import sun.util.logging.resources.logging;
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Registro;
+import vos.login;
 
 @Path(URLS.REGISTRO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RegistroServices extends BaseServices implements CRUDRest<Registro>, URLS {
+public class RegistroServices extends BaseServices implements URLS {
 
 	@GET
-	@Override
-	public Response getAll() {
+	@Path("{usu}-{con}")
+	public Response get(@PathParam("usu")String usu,@PathParam("con")String con ) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Registro> videos;
+		Registro videos;
 		try {
-			videos = tm.getAllResgistro();
+			videos = tm.login(con,usu);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(videos).build();
 	}
 
-	@GET
-	@Path("{" + REGISTROID + ": \\d+}")
-	@Override
-	public Response get(@PathParam(REGISTROID) long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			Registro v = tm.getRegistro(id);
-			System.out.println(v);
-			return Response.status(200).entity(v).build();
-		} catch (RotondAndesException ex) {
-			return Response.status(404).entity(doErrorMessage(ex)).build();
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-	}
-
 	@POST
-	@Override
 	public Response add(Registro data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -68,7 +53,6 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 	}
 
 	@PUT
-	@Override
 	public Response update(Registro data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -83,7 +67,6 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 	}
 
 	@DELETE
-	@Override
 	public Response delete(Registro data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
@@ -294,7 +277,6 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 	}
 
 
-	@Override
 	public void integridad(Registro data) throws RotondAndesException {
 		if (data.getCodigo() == null)
 			throw new RotondAndesException("el codigo no puede ser null");

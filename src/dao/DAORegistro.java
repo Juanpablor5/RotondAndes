@@ -54,6 +54,19 @@ public class DAORegistro extends DAOBase implements CRUD<Registro>{
 		}
 		return data;
 	}
+	
+	public Registro get(String usuario,String contrasenia) throws SQLException, Exception {
+		Registro data = null;
+		String sql = "SELECT * FROM "+TABLA+" WHERE USUARIO='" + usuario +"' AND CONTRASENIA='"+contrasenia+"'";
+		System.out.println(sql);
+		ResultSet rs =executeModification(sql);
+		if(rs.next()) {
+			Long codigo = rs.getLong("CODIGO");
+			Integer permisos= rs.getInt("PERMISOS");
+			data = new Registro(codigo, usuario, contrasenia,permisos);
+		}
+		return data;
+	}
 
 	@Override
 	public void update(Registro data) throws SQLException, Exception {
