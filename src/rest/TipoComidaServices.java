@@ -36,7 +36,7 @@ public class TipoComidaServices extends BaseServices implements CRUDRest<TipoCom
 	}
 
 	@GET
-	@Path("{" + TIPOCOMIDA + ": \\d+}")
+	@Path("{" + TIPOCOMIDAID + ": \\d+}")
 	@Override
 	public Response get(@PathParam(TIPOCOMIDAID) long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
