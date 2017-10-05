@@ -48,7 +48,6 @@ public class ProductoServices extends BaseServices implements CRUDR<Producto>,UR
 		return Response.status(200).entity(espacio).build();
 	}
 	
-	@GET
 	@Path("{" + PRODUCTOID + ": \\d+}/" + INGREDIENTE)
 	public ProductoIngredienteServices getIngredientes(@PathParam(PRODUCTOID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
