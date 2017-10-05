@@ -2,11 +2,8 @@ URL's DE EJEMPLO - PRUEBAS EN POSTMAN
 
 REGISTROS:
 
-	GET (Dar todos los registros)
-	http://localhost:8080/RotondAndes/rest/registros
-	
-	GET (Dar registro por código 1234)
-	http://localhost:8080/RotondAndes/rest/registros/1234
+	GET (retorna el regsitro si el login es correcto (el codigo asociado se usa para las operaciones en la aplicacion))
+	http://localhost:8080/RotondAndes/rest/registros/ADIMIN-12345
 	
 	POST (Registra un nuevo usuario, el usuario no puede tener espacios)
 	http://localhost:8080/RotondAndes/rest/registros
