@@ -172,7 +172,7 @@ public class RegistroServices extends BaseServices implements CRUDRest<Registro>
 		}
 	}
 	
-	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + RESTAURANTE)
+	@Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + REPRESENTANTE)
 	public RepresentateModificationServices getRepresentante(@PathParam(REGISTROID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
