@@ -79,7 +79,7 @@ public class DAOSubpedido extends DAOBase {
 	
 	public void add(long idPedido, long id) throws SQLException, Exception {
 		String sql = "INSERT INTO " + TABLA;
-		sql += " VALUES (" + idPedido + "," + id + ")";
+		sql += "  (PEDIDO_ID,MENU_ID) VALUES (" + idPedido + "," + id + ")";
 
 		System.out.println(sql);
 		executeModification(sql);

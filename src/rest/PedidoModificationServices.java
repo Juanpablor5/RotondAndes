@@ -82,7 +82,7 @@ public class PedidoModificationServices extends BaseServices implements CRUDR<Pe
 	public SubpedidoModificationServices getMenus(@PathParam(PEDIDOID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.getProducto(id);
+			tm.getPedido(id);
 			return new SubpedidoModificationServices(context);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
