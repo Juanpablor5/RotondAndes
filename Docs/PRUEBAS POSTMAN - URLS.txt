@@ -1,33 +1,491 @@
 URL's DE EJEMPLO - PRUEBAS EN POSTMAN
 
-GET (TODOS LOS REGISTROS)
-http://localhost:8080/RotondAndes/rest/registros
+REGISTROS:
 
-GET (VIDEO POR CODIGO)
-http://localhost:8080/RotondAndes/rest/registros/123
+	GET (Dar todos los registros)
+	http://localhost:8080/RotondAndes/rest/registros
+	
+	GET (Dar registro por código 1234)
+	http://localhost:8080/RotondAndes/rest/registros/1234
+	
+	POST (Registra un nuevo usuario, el usuario no puede tener espacios)
+	http://localhost:8080/RotondAndes/rest/registros
+	JSON:
+	{
+	    "codigo": 7,
+	    "usuario": "james bond",
+	    "contrasena": "007",
+	    "permisos": 3
+	}
+	
+	PUT (Actualiza los datos de un usuario)
+	http://localhost:8080/RotondAndes/rest/registros
+	JSON:
+	{
+	    "codigo": 7,
+	    "usuario": "agente007",
+	    "contrasena": "007",
+	    "permisos": 3
+	}
+	
+	DELETE (Elimina el registro de un usuario con el id ingresado)
+	http://localhost:8080/RotondAndes/rest/registros
+	JSON:
+	{
+	    "codigo": 7
+	}
+	
+INGREDIENTES:
+	
+	GET (Dar todos los ingredientes)
+	http://localhost:8080/RotondAndes/rest/ingredientes
+	
+	GET (Dar ingrediente por id 1)
+	http://localhost:8080/RotondAndes/rest/ingredientes/1
+	
+	POST (Registra un ingrediente nuevo. Sólo los administradores y restaurantes pueden agregar 
+	un ingrediente. El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/ingredientes
+	JSON:
+	{
+        "id": 6,
+        "nombre": "Carne",
+        "descripcion": "Es el producto derivado del ganado utilizado para diversos productos.",
+        "traduccion": "It is the product derived from livestock used for various products."
+	}
+	
+	PUT (Actualiza los datos de un ingrediente. Sólo los administradores y restaurantes pueden actualizar
+    un ingrediente. El código 12345 es administrador.)
+    http://localhost:8080/RotondAndes/rest/registros/change/12345/ingredientes
+    JSON:
+    {
+        "id": 6,
+        "nombre": "Carne Asada",
+        "descripcion": "Es el producto derivado del ganado utilizado para diversos productos. Es asada si se asa a la parrilla o a la pancha",
+        "traduccion": "It is the product derived from livestock used for various products. It is roasted if broiled or pancha"
+	}
+	
+	DELETE (Elimina el ingrediente con el id ingresado. Sólo los administradores pueden eliminar
+  	un ingrediente. El código 12345 es administrador.)
+  	http://localhost:8080/RotondAndes/rest/registros/change/12345/ingredientes
+  	JSON:
+  	{
+        "id": 6
+	}
+	
+PRODUCTOS:
+	
+	GET (Dar todos los productos)
+	http://localhost:8080/RotondAndes/rest/productos
+	
+	GET (Dar producto por id 2)
+	http://localhost:8080/RotondAndes/rest/productos/2
+	
+	GET(Dar los ingredientes de un producto por id)
+	http://localhost:8080/RotondAndes/rest/productos/100/ingredientes
 
+	POST (Registra un nuevo producto. Sólo los administradores y restaurantes pueden agregar un producto.
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/productos
+	JSON:
+	{
+        "id": 24,
+        "nombre": "Patacones",
+        "descripcion": "Es una comida a base de trozos aplanados fritos de plátano verde",
+        "traduccion": "Is a meal based on flat fried pieces of green banana",
+        "tiempoPreparacion": 10,
+        "idCategoria": 1
+    }
+    
+    POST (Registra un ingrediente a un producto ingresado por id. Sólo el administrador puede 
+    agregar ingredientes nuevos al producto, el ingrediente debe haberse ingresado con anterioridad.
+    El código 12345 es administrador. Producto a cambiar id 3. Ingrediente a ingresar id 4.)
+    http://localhost:8080/RotondAndes/rest/registros/change/12345/productos/3/ingredientes/4
+    
+    PUT (Actualiza los datos de un producto. Sólo los administradores y restaurantes pueden actualizar
+    un producto. El código 12345 es administrador.)
+    http://localhost:8080/RotondAndes/rest/registros/change/12345/productos
+    JSON:
+    {
+        "id": 24,
+        "nombre": "Patacones",
+        "descripcion": "Es una comida a base de trozos aplanados fritos de plátano verde, se usa mucho en zonas costeras y también es muy utilizado en los platos tipicos.",
+        "traduccion": "It is a meal based on fried pieces of green banana, used a lot in coastal areas and is also widely used in typical dishes",
+        "tiempoPreparacion": 10,
+        "idCategoria": 1
+    }
+    
+    DELETE (Elimina un ingrediente por id de un producto de id ingresado. El código 12345 es administrador.
+    Producto a cambiar id 3. Ingrediente a eliminar id 4.)
+    http://localhost:8080/RotondAndes/rest/registros/change/12345/productos/3/ingredientes/4
+    
+    DELETE (Elimina el producto con el id ingresado. Sólo los administradores y restaurantes pueden eliminar
+    un producto.)
+    JSON:
+    {
+        "id": 24
+    }
+	
+MENUS:
+	
+	GET (Dar todos los menús)
+	http://localhost:8080/RotondAndes/rest/menus
+	
+	GET (Dar menú por id 2)
+	http://localhost:8080/RotondAndes/rest/menus/2
+	
+	POST (Registra un nuevo menú. Sólo el restaurante puede registrar un nuevo menú.
+	El código 54321 es restaurante.)
+	http://localhost:8080/RotondAndes/rest/registros/54321/menus
+	JSON:
+	{
+        "id": 8,
+        "cantidad": 22,
+        "costoProduccion": 4000,
+        "valorAlPublico": 10000,
+        "productoEntrada": 4,
+        "productoFuerte": 2,
+        "productoBebida": 7,
+        "productoPostre": 6,
+        "productoAcompanamiento": 8,
+        "restauranteID": 54321
+    }
+    
+    PUT (Actualiza los datos del menú. Sólo los restaurantes pueden actualizar los datos del menú.
+    El código 54321 es restaurante.)
+    http://localhost:8080/RotondAndes/rest/registros/54321/menus
+    JSON:
+    {
+        "id": 8,
+        "cantidad": 22,
+        "costoProduccion": 4000,
+        "valorAlPublico": 10000,
+        "productoFuerte": 2,
+        "productoBebida": 7,
+        "productoAcompanamiento": 8,
+        "restauranteID": 54321
+    }
+    
+    DELETE (Elimina el menú con el id dado. Sólo los restaurantes pueden eliminar el menú. 
+    El código 54321 es restaurante.)
+    http://localhost:8080/RotondAndes/rest/registros/54321/menus
+    {
+        "id": 8
+    }
+    
+ZONAS:
 
-POST 
-http://localhost:8080/RotondAndes/rest/registros
-JSON:
-{
-    "codigo": 7,
-    "usuario": "james bond",
-    "contrasena": "007",
-    "permisos": 3
-}
+	GET (Dar todas las zonas)
+	http://localhost:8080/RotondAndes/rest/zonas
 
-PUT
-http://localhost:8080/RotondAndes/rest/registros
-{
-    "codigo": 7,
-    "usuario": "agente007",
-    "contrasena": "007",
-    "permisos": 3
-}
+	GET (Dar una zona por id 1)
+	http://localhost:8080/RotondAndes/rest/zonas/1 
+	
+	POST (Crear una nueva zona. El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/zonas
+	JSON: 
+	{
+	    "id": 4,
+	    "nombre": "COMIDALENTA"
+	}
+	
+	PUT 
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/zonas (crear una nueva zona el codigo12345 es admin)
+	JSON:
+	{
+	    "id": 4,
+	    "nombre": "COMIDAMUYLENTA"
+	}
+	
+	DELETE 
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/zonas
+	JSON:
+	{
+	    "id": 4
+	}
+	
+ESPACIOS:
 
-DELETE
-http://localhost:8080/RotondAndes/rest/registros
-{
-    "codigo": 7
-}
+	GET (Dar todos los espacios)
+	http://localhost:8080/RotondAndes/rest/espacios 
+	
+	GET (Dar el espacio con id 1)
+	http://localhost:8080/RotondAndes/rest/espacios/1 
+	
+	POST (Registra un espacio nuevo. Sólo los administradores pueden agregar espacios. 
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/espacios
+	JSON:
+	{
+	    "id": 56,
+	    "acondicionamiento": "Ambiente fiesteroX2",
+	    "abierto": 1,
+	    "capacidad": 125,
+	    "necesidadesEspeciales": 0,
+	    "condicionesTecnicas": "Aire acondicionado, Asadores, Acondicionar para grupos grandes",
+	    "zonaId": 1
+	}
+	
+	PUT (Actualiza los datos de un espacio. Sólo los administradores pueden actualizar datos de espacios. 
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/espacios
+	JSON:
+	{
+	    "id": 56,
+	    "acondicionamiento": "Ambiente fiesteroX2",
+	    "abierto": 1,
+	    "capacidad": 125,
+	    "necesidadesEspeciales": 0,
+	    "condicionesTecnicas": "Aire acondicionado, Asadores, Acondicionar para grupos grandes",
+	    "zonaId": 1
+	}
+	
+	DELETE (Elimina los datos de un espacio. Sólo los administradores pueden eliminar datos de espacios. 
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/espacios
+	JSON:
+	{
+	    "id": 56
+	}
+	
+RESTAURANTES:
+
+	GET (Dar todos los restaurantes)
+	http://localhost:8080/RotondAndes/rest/restaurantes
+	
+	GET (Dar un restaurante con id 1)
+	http://localhost:8080/RotondAndes/rest/restaurantes/1
+	
+	POST (Agregar un restaurante. Sólo los administradores pueden agregar un restaurante. 
+	El código 12345 es administrador. Para agregar un restaurante el usuario debe estar registrado con el
+	código)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/restaurantes
+	JSON:
+	{
+        "id": 64,
+        "nombre": "El Corral",
+        "paginaWeb": "http://www.elcorral.com/",
+        "tipoComidaId": 2,
+        "regristroId": 455,
+        "zonaId": 1
+    }
+    
+	PUT (Alterar datos de un restaurante. Sólo los administradores pueden alterar datos de un restaurante. 
+	El código 12345 es administrador.) 
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/restaurantes
+	JSON:
+	{
+        "id": 64,
+        "nombre": "El Corral Competencia",
+        "paginaWeb": "http://www.elcorralcompetencia.com",
+        "tipoComidaId": 2,
+        "regristroId": 455,
+        "zonaId": 1
+    }
+    
+    DELETE (Eliminar un restaurante de id 64. Sólo los administradores pueden eliminar un restaurante. 
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/restaurantes
+	JSON:
+	{
+        "id": 64
+    }
+    
+RESERVAS:
+
+	GET (Dar todas las reservas)
+	http://localhost:8080/RotondAndes/rest/reservas 
+	
+	GET (Dar reserva con id 1)
+	http://localhost:8080/RotondAndes/rest/reservas/1 
+	
+	POST (Agregar una nueva reserva. Sólo el administrador puede agregar reservas. 
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/reservas 
+	JSON:
+	{
+	    "id": 76,
+	    "fechahora": "05/08/2017 3:30:00 PM",
+	    "duracion": 180,
+	    "comensales": 25,
+	    "nombreReservante": "Juan Pablo",
+	    "telefonoReservante": 3112544415,
+	    "zona_id": 1
+	}
+	
+	PUT (Altera una reserva existente. Sólo el administrador puede editar reservas. 
+	El código 12345 es administrador.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/reservas 
+	JSON:
+	{
+	    "id": 76,
+	    "fechahora": "05/08/2017 3:30:00 PM",
+	    "duracion": 180,
+	    "comensales": 25,
+	    "nombreReservante": "Juan Pablo Rocha",
+	    "telefonoReservante": 3112544415,
+	    "zona_id": 1
+	}
+	
+	DELETE (Eliminar una reserva)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/reservas 
+	JSON:
+	{
+	    "id": 76
+	}
+	
+TIPOCOMIDA:
+	
+	GET (Dar todos los tipos de comida disponibles)
+	http://localhost:8080/RotondAndes/rest/tiposdecomida
+	
+	Get (Dar un tipo de comida de id 4)
+	http://localhost:8080/RotondAndes/rest/tiposdecomida/4
+	
+	POST(Agregar un nuevo tipo de comida)
+	http://localhost:8080/RotondAndes/rest/tiposdecomida
+	JSON:
+	{
+        "id": 6,
+        "nombre": "Dulce"
+    }
+    
+    PUT(Actualizar un tipo de comida)
+    http://localhost:8080/RotondAndes/rest/tiposdecomida
+    JSON:
+    {
+        "id": 6,
+        "nombre": "Salado"
+    }
+    
+    DELETE (Eliminar un tipo de comida de id 6)
+    JSON:
+    {
+        "id": 6
+    }
+	
+MENURESERVA:
+
+	GET (Dar los menus asociados a una reserva)
+	http://localhost:8080/RotondAndes/rest/reservas/1/menus 
+	
+	GET (Dar el menu con id 1 si está en la reserva 1)
+	http://localhost:8080/RotondAndes/rest/reservas/1/menus/1 
+	
+	POST (Arreglar a la reserva 1 el menu 2)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/reservas/1/menus/2 
+	
+	DELETE (Eliminar el menu 2 de la reserva 1)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/reservas/1/menus/2 
+	
+REPRESENTANTE:
+
+	GET (Dar todos los representantes registrados)
+	http://localhost:8080/RotondAndes/rest/clientes
+	
+	GET (Dar un representantes con id 1)
+	http://localhost:8080/RotondAndes/rest/representantes/1
+	
+	POST (Agregar un nuevo representante. El administrador 12345 lo asigna.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/representantes
+	JSON:
+	{
+	    "id": 2,
+	    "nombre": "Juan Pablo Rocha",
+	    "telefono": 32121,
+	    "correo": "jpr.arango10@uniandes.edu.co",
+	    "restauranteId": 1
+	}
+	
+	PUT	(Actualizar el representante de un restaurante. El administrador 12345 lo actualiza.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/representantes
+	JSON:
+	{
+	    "id": 2,
+	    "nombre": "Juan Pablo Rocha Arango",
+	    "telefono": 32121,
+	    "correo": "jpr.arango10@uniandes.edu.co",
+	    "restauranteId": 1
+	}
+	
+	DELETE(Eliminar un representante de id 2)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/representantes
+	JSON:
+	{
+	    "id": 2
+	}
+	
+CLIENTE:
+
+	GET (Dar todos los clientes registrados)
+	http://localhost:8080/RotondAndes/rest/clientes
+	
+	GET (Dar un cliente por cedula 102081)
+	http://localhost:8080/RotondAndes/rest/clientes/102081
+	
+	POST (Agregar un nuevo cliente a la base de datos. El administrador 12345 lo hace.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/clientes
+	JSON:
+	{
+        "cedula": 66542,
+        "nombre": "Mororola In Da House",
+        "fechaIngreso": "2017-01-27",
+        "regristroId": 5040
+    }
+    
+    PUT (Actualiza los datos de un cliente. El administrador 12345 lo hace.)
+    http://localhost:8080/RotondAndes/rest/registros/change/12345/clientes
+    JSON:
+	{
+        "cedula": 66542,
+        "nombre": "Mororola Solito",
+        "fechaIngreso": "2017-01-27",
+        "regristroId": 5040
+    }
+    
+    DELETE (Eliminar el cliente de cedula 66542)
+    JSON:
+    {
+        "cedula": 66542
+    }
+	
+PEDIDO:
+
+	GET (Dar todos los pedidos hechos. El administrador 12345 lo hace.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/pedidos 
+	
+	GET (Dar pedido con id 1. El administrador 12345 lo hace.)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/pedidos/1 
+	
+	
+	POST (Agregar un pedido sin un cliente)
+	http://localhost:8080/RotondAndes/rest/pedidos 
+	JSON:
+	{
+	    "id": 61,
+	    "fechahora": "05/08/2017 11:30:00 PM",
+	    "menus":[2]
+	}
+	
+	POST (Agregar un pedido al cliente desde el registro del cliente)
+	http://localhost:8080/RotondAndes/rest/registros/1234/pedidos 
+	JSON:
+	{
+	    "id": 667,
+	    "fechahora": "05/08/2017 11:30:00 PM",
+	    "menus":[2]
+	}
+
+SUBPEDIDO:	
+	
+	GET	(Dar los menus del pedido 1)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/pedidos/1/menus 
+	
+	GET (Dar el menu 1 si esta en el pedido 1)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/pedidos/1/menus/1 
+	
+	POST (Agregarle al pedido 1 el menu 2)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/pedidos/1/menus/2 
+	
+	DELETE (Quitar el al pedido 1 el menu 2)
+	http://localhost:8080/RotondAndes/rest/registros/change/12345/pedidos/1/menus/2 
