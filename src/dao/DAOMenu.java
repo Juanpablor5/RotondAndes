@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,6 +11,15 @@ import vos.Menu;
  * Clase DAO que se conecta la base de datos usando JDBC para resolver los requerimientos de la aplicación
  */
 public class DAOMenu extends DAOBase{
+	
+	public DAOMenu(Connection conn) {
+		super();
+		setConn(conn);
+	}
+	
+	public DAOMenu() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	// -------------------------------------------------------------
 	// Constantes

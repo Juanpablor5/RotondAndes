@@ -3,47 +3,46 @@ package vos;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import em.Check.SISTRANS_Check;
+import em.Checks;
+import em.Columna.SISTRANS_Columna;
+import em.DateAnotation;
+import em.Foreing.ForeignKey;
+import em.Id.SISTRANS_Id;
+import em.Tabla;
 
-/**
- * Clase que representa un Cliente.
- */
+@Tabla
 public class Cliente {
-
 	// -------------------------------------------------------------
-	// Atributos
+	// ATRIBUTOS
 	// -------------------------------------------------------------
-
-	/**
-	 * Cédula del cliente.
-	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "cedula")
 	private Long cedula;
 
-	/**
-	 * Nombre del cliente.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value=Checks.DIFERENT,of="")
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	/**
-	 * Fecha de ingreso del cliente.
-	 */
+	@SISTRANS_Columna(valorPorDefecto="SYSDATE")
+	@DateAnotation
 	@JsonProperty(value = "fechaIngreso")
 	private Date fechaIngreso;
-	
-	/**
-	 * id del registro asociado
-	 */
-	@JsonProperty(value = "regristroId")
-	private Integer regristroId;
 
+	@ForeignKey(unique=true)
+	@JsonProperty(value = "regristro")
+	private Registro regristro;
 	// -------------------------------------------------------------
 	// Constructor
-	// -------------------------------------------------------------
-
+	// -------------------------------------------------------------	
+	public Cliente() {
+		// constructorEntity
+	}
+	
 	/**
-	 * Método constructor de la clase cliente. <b>post: </b> Crea el cliente con
-	 * los valores que entran como parámetro.
+	 * Método constructor de la clase cliente. <b>post: </b> Crea el cliente con los
+	 * valores que entran como parámetro.
 	 * 
 	 * @param cedula
 	 *            - Cédula del cliente.
@@ -51,15 +50,16 @@ public class Cliente {
 	 *            - Nombre del cliente. nombre != null
 	 * @param fechaIngreso
 	 *            - Fecha de ingreso del cliente.
-	 * @param regristroId 
+	 * @param regristroId
 	 */
 	public Cliente(@JsonProperty(value = "cedula") Long cedula, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "fechaIngreso") Date fechaIngreso, @JsonProperty(value = "regristroId") Integer regristroId) {
+			@JsonProperty(value = "fechaIngreso") Date fechaIngreso,
+			@JsonProperty(value = "regristro") Registro regristro) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.fechaIngreso = fechaIngreso;
-		this.regristroId= regristroId;
+		this.regristro = regristro;
 	}
 
 	// -------------------------------------------------------------
@@ -96,8 +96,8 @@ public class Cliente {
 	}
 
 	/**
-	 * Método setter del atributo nombre <b>post: </b> El nombre del cliente ha
-	 * sido cambiado con el valor que entra como parámetro.
+	 * Método setter del atributo nombre <b>post: </b> El nombre del cliente ha sido
+	 * cambiado con el valor que entra como parámetro.
 	 * 
 	 * @param nombre
 	 *            - Nombre del cliente.
@@ -116,9 +116,8 @@ public class Cliente {
 	}
 
 	/**
-	 * Método setter del atributo fehchaIngreso <b>post: </b> La fecha de
-	 * ingreso del cliente ha sido cambiado con el valor que entra como
-	 * parámetro.
+	 * Método setter del atributo fehchaIngreso <b>post: </b> La fecha de ingreso
+	 * del cliente ha sido cambiado con el valor que entra como parámetro.
 	 * 
 	 * @param fechaIngreso
 	 *            - Fecha de ingreso del cliente.
@@ -126,20 +125,22 @@ public class Cliente {
 	public void setFechaIngreso(Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
-	
+
 	/**
 	 * dar el id del reistro asociado
+	 * 
 	 * @return
 	 */
-	public Integer getRegristroId() {
-		return regristroId;
+	public Registro getRegristro() {
+		return regristro;
 	}
-	
+
 	/**
 	 * cambiar el id del registro asociado
+	 * 
 	 * @param regristroId
 	 */
-	public void setRegristroId(Integer regristroId) {
-		this.regristroId = regristroId;
+	public void setRegristro(Registro regristro) {
+		this.regristro = regristro;
 	}
 }

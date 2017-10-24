@@ -54,14 +54,14 @@ public class RotondAndesTM {
 	private String connectionDataPath;
 
 	/**
-	 * Atributo que guarda el usuario que se va a usar para conectarse a la base
-	 * de datos.
+	 * Atributo que guarda el usuario que se va a usar para conectarse a la base de
+	 * datos.
 	 */
 	private String user;
 
 	/**
-	 * Atributo que guarda la clave que se va a usar para conectarse a la base
-	 * de datos.
+	 * Atributo que guarda la clave que se va a usar para conectarse a la base de
+	 * datos.
 	 */
 	private String password;
 
@@ -72,8 +72,8 @@ public class RotondAndesTM {
 	private String url;
 
 	/**
-	 * Atributo que guarda el driver que se va a usar para conectarse a la base
-	 * de datos.
+	 * Atributo que guarda el driver que se va a usar para conectarse a la base de
+	 * datos.
 	 */
 	private String driver;
 
@@ -83,11 +83,11 @@ public class RotondAndesTM {
 	private Connection conn;
 
 	/**
-	 * Metodo constructor de la clase VideoAndesMaster, esta clase modela y
-	 * contiene cada una de las Transacciónes y la logica de negocios que estas
-	 * conllevan. <b>post: </b> Se crea el objeto VideoAndesTM, se inicializa el
-	 * path absoluto del archivo de conexion y se inicializa los atributos que
-	 * se usan par la conexion a la base de datos.
+	 * Metodo constructor de la clase VideoAndesMaster, esta clase modela y contiene
+	 * cada una de las Transacciónes y la logica de negocios que estas conllevan.
+	 * <b>post: </b> Se crea el objeto VideoAndesTM, se inicializa el path absoluto
+	 * del archivo de conexion y se inicializa los atributos que se usan par la
+	 * conexion a la base de datos.
 	 * 
 	 * @param contextPathP
 	 *            - path absoluto en el servidor del contexto del deploy actual
@@ -98,34 +98,22 @@ public class RotondAndesTM {
 	}
 
 	public void addCliente(Cliente data) throws RotondAndesException, Exception {
-		DAOCliente daos = new DAOCliente();
-		try {
-			////// Transacción
-			this.conn = darConexion();
-			daos.setConn(conn);
+		updateConnection();
+		try (DAOCliente daos = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
 			if (daos.get(data.getCedula()) != null)
 				throw new RotondAndesException("El cliente con la cedula <" + data.getCedula() + "> ya existe");
-			daos.add(data);
+			daos.create(data);
 			conn.commit();
-
+			// ------------------------
+			// END
+			// ------------------------
 		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
+			sqlException(e);
 		} finally {
-			try {
-				daos.cerrarRecursos();
-				if (this.conn != null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
+			closeConection();
 		}
 	}
 
@@ -150,7 +138,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -186,7 +175,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -197,40 +187,40 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void addMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
+	public void addMenu(Long codigo, Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
-		DAOProducto daosHijos=new DAOProducto();
+		DAOProducto daosHijos = new DAOProducto();
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			daosHijos.setConn(conn);
-			
+
 			if (daos.get(data.getId()) != null)
 				throw new RotondAndesException("El menu con el id <" + data.getId() + "> ya existe");
-			
-			if(data.getProductoEntrada()!=null) {
-				if(daosHijos.get(data.getProductoEntrada()).getIdCategoria()!=1)
+
+			if (data.getProductoEntrada() != null) {
+				if (daosHijos.get(data.getProductoEntrada()).getIdCategoria() != 1)
 					throw new RotondAndesException("el producto no esuna entrada");
 			}
-			if(data.getProductoFuerte()!=null) {
-				if(daosHijos.get(data.getProductoFuerte()).getIdCategoria()!=2)
+			if (data.getProductoFuerte() != null) {
+				if (daosHijos.get(data.getProductoFuerte()).getIdCategoria() != 2)
 					throw new RotondAndesException("el producto no es un palto fuerte");
 			}
-			if(data.getProductoPostre()!=null) {
-				if(daosHijos.get(data.getProductoPostre()).getIdCategoria()!=3)
+			if (data.getProductoPostre() != null) {
+				if (daosHijos.get(data.getProductoPostre()).getIdCategoria() != 3)
 					throw new RotondAndesException("el producto no es un postre");
 			}
-			if(data.getProductoBebida()!=null) {
-				if(daosHijos.get(data.getProductoBebida()).getIdCategoria()!=4)
+			if (data.getProductoBebida() != null) {
+				if (daosHijos.get(data.getProductoBebida()).getIdCategoria() != 4)
 					throw new RotondAndesException("el producto no es una bebida");
 			}
-			if(data.getProductoAcompanamiento()!=null) {
-				if(daosHijos.get(data.getProductoAcompanamiento()).getIdCategoria()!=5)
+			if (data.getProductoAcompanamiento() != null) {
+				if (daosHijos.get(data.getProductoAcompanamiento()).getIdCategoria() != 5)
 					throw new RotondAndesException("el producto no es un acompanamiento");
 			}
-			
-			daos.add(codigo,data);
+
+			daos.add(codigo, data);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -243,8 +233,10 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
-				daosHijos.cerrarRecursos();
+				daos.close();
+				;
+				daosHijos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -257,7 +249,7 @@ public class RotondAndesTM {
 
 	public void addPedido(PedidoDetail data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
-		DAOSubpedido  daosHijos=new DAOSubpedido();
+		DAOSubpedido daosHijos = new DAOSubpedido();
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -267,7 +259,7 @@ public class RotondAndesTM {
 			daos.add(data);
 			conn.commit();
 			daosHijos.setConn(conn);
-			for(Long idMenu :data.getMenus())
+			for (Long idMenu : data.getMenus())
 				daosHijos.add(data.getId(), idMenu);
 			conn.commit();
 
@@ -281,7 +273,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -294,7 +287,7 @@ public class RotondAndesTM {
 
 	public void addPedidoCliente(long id, PedidoDetail data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
-		DAOSubpedido  daosHijos=new DAOSubpedido();
+		DAOSubpedido daosHijos = new DAOSubpedido();
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -304,7 +297,7 @@ public class RotondAndesTM {
 			daos.addPedidoCliente(id, data);
 			conn.commit();
 			daosHijos.setConn(conn);
-			for(Long idMenu :data.getMenus())
+			for (Long idMenu : data.getMenus())
 				daosHijos.add(data.getId(), idMenu);
 			conn.commit();
 
@@ -318,7 +311,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -331,8 +325,8 @@ public class RotondAndesTM {
 
 	public Menu addPedidoMenu(long idProducto, long id) throws RotondAndesException, Exception {
 		DAOSubpedido daos = new DAOSubpedido();
-		DAOMenu daosHijo=new DAOMenu();
-		Menu data=null;
+		DAOMenu daosHijo = new DAOMenu();
+		Menu data = null;
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -340,7 +334,7 @@ public class RotondAndesTM {
 			daos.add(idProducto, id);
 			conn.commit();
 			daosHijo.setConn(conn);
-			data=daosHijo.get(id);
+			data = daosHijo.get(id);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -353,7 +347,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -386,7 +381,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -418,7 +414,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -429,9 +426,9 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void addProductoCliente(ProductoDetail data) throws SQLException ,Exception{
+	public void addProductoCliente(ProductoDetail data) throws SQLException, Exception {
 		DAOProducto daos = new DAOProducto();
-		DAOProductoIngrediente daosHijos= new DAOProductoIngrediente();
+		DAOProductoIngrediente daosHijos = new DAOProductoIngrediente();
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -441,7 +438,7 @@ public class RotondAndesTM {
 			daos.add(data);
 			conn.commit();
 			daosHijos.setConn(conn);
-			for(Long idIngrediente :data.getIngredientes())
+			for (Long idIngrediente : data.getIngredientes())
 				daosHijos.add(data.getId(), idIngrediente);
 			conn.commit();
 
@@ -455,7 +452,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -468,8 +466,8 @@ public class RotondAndesTM {
 
 	public Ingrediente addProductoIngrediente(long idProducto, long id) throws RotondAndesException, Exception {
 		DAOProductoIngrediente daos = new DAOProductoIngrediente();
-		DAOIngrediente daosHijo=new DAOIngrediente();
-		Ingrediente data=null;
+		DAOIngrediente daosHijo = new DAOIngrediente();
+		Ingrediente data = null;
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -477,7 +475,7 @@ public class RotondAndesTM {
 			daos.add(idProducto, id);
 			conn.commit();
 			daosHijo.setConn(conn);
-			data=daosHijo.get(id);
+			data = daosHijo.get(id);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -490,7 +488,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -523,7 +522,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -555,7 +555,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -587,7 +588,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -600,8 +602,8 @@ public class RotondAndesTM {
 
 	public Menu addReservaMenu(long idReserva, long id) throws RotondAndesException, Exception {
 		DAOReservaMenu daos = new DAOReservaMenu();
-		DAOMenu daosHijo=new DAOMenu();
-		Menu data=null;
+		DAOMenu daosHijo = new DAOMenu();
+		Menu data = null;
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -609,7 +611,7 @@ public class RotondAndesTM {
 			daos.add(idReserva, id);
 			conn.commit();
 			daosHijo.setConn(conn);
-			data=daosHijo.get(id);
+			data = daosHijo.get(id);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -622,7 +624,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -655,7 +658,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -687,7 +691,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -719,7 +724,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -735,42 +741,31 @@ public class RotondAndesTM {
 	 * 
 	 * @return Connection - la conexion a la base de datos
 	 * @throws SQLException
-	 *             - Cualquier error que se genere durante la conexion a la base
-	 *             de datos
+	 *             - Cualquier error que se genere durante la conexion a la base de
+	 *             datos
 	 */
 	private Connection darConexion() throws SQLException {
 		System.out.println("Connecting to: " + url + " With user: " + user);
 		return DriverManager.getConnection(url, user, password);
 	}
 
-	public void deleteCliente(Cliente data) throws RotondAndesException, Exception {
-		DAOCliente daos = new DAOCliente();
-		try {
-			////// Transacción
-			this.conn = darConexion();
-			daos.setConn(conn);
+	public void deleteCliente(Cliente data) throws RotondAndesException, SQLException {
+		updateConnection();
+		try (DAOCliente daos = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
 			if (daos.get(data.getCedula()) == null)
 				throw new RotondAndesException("No existe un cliente con la cedula<" + data.getCedula() + ">");
-			daos.delete(data);
-
+			daos.remove(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
 		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
+			sqlException(e);
 		} finally {
-			try {
-				daos.cerrarRecursos();
-				if (this.conn != null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
+			closeConection();
 		}
 	}
 
@@ -794,7 +789,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -825,7 +821,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -836,7 +833,7 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void deleteMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
+	public void deleteMenu(Long codigo, Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
 		try {
 			////// Transacción
@@ -844,7 +841,7 @@ public class RotondAndesTM {
 			daos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("No existe un menu con el id<" + data.getId() + ">");
-			daos.delete(codigo,data);
+			daos.delete(codigo, data);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -856,7 +853,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -887,7 +885,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -900,15 +899,15 @@ public class RotondAndesTM {
 
 	public Menu deletePedidoMenu(long idProducto, long id) throws RotondAndesException, Exception {
 		DAOSubpedido daos = new DAOSubpedido();
-		DAOMenu daosHijo=new DAOMenu();
-		Menu data=null;
+		DAOMenu daosHijo = new DAOMenu();
+		Menu data = null;
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			daos.delete(idProducto, id);
 			daosHijo.setConn(conn);
-			data=daosHijo.get(id);
+			data = daosHijo.get(id);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -921,7 +920,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -953,7 +953,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -984,7 +985,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -997,15 +999,15 @@ public class RotondAndesTM {
 
 	public Ingrediente deleteProductoIngrediente(long idProducto, long id) throws RotondAndesException, Exception {
 		DAOProductoIngrediente daos = new DAOProductoIngrediente();
-		DAOIngrediente daosHijo=new DAOIngrediente();
-		Ingrediente data=null;
+		DAOIngrediente daosHijo = new DAOIngrediente();
+		Ingrediente data = null;
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			daos.delete(idProducto, id);
 			daosHijo.setConn(conn);
-			data=daosHijo.get(id);
+			data = daosHijo.get(id);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -1018,7 +1020,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1050,7 +1053,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1081,7 +1085,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1112,7 +1117,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1125,15 +1131,15 @@ public class RotondAndesTM {
 
 	public Menu deleteReservaMenu(long idReserva, long id) throws RotondAndesException, Exception {
 		DAOReservaMenu daos = new DAOReservaMenu();
-		DAOMenu daosHijo=new DAOMenu();
-		Menu data=null;
+		DAOMenu daosHijo = new DAOMenu();
+		Menu data = null;
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
 			daos.delete(idReserva, id);
 			daosHijo.setConn(conn);
-			data=daosHijo.get(id);
+			data = daosHijo.get(id);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -1146,7 +1152,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1178,7 +1185,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1209,7 +1217,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1240,7 +1249,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1251,32 +1261,22 @@ public class RotondAndesTM {
 		}
 	}
 
-	public List<Cliente> getAllCliente() throws SQLException, Exception {
-		List<Cliente> data;
-		DAOCliente daos = new DAOCliente();
-		try {
-			////// Transacción
-			this.conn = darConexion();
-			daos.setConn(conn);
+	public List<Cliente> getAllCliente() throws SQLException{
+		List<Cliente> data = null;
+		updateConnection();
+		try (DAOCliente daos = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
 			data = daos.getAll();
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
 		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
+			sqlException(e);
 		} finally {
-			try {
-				daos.cerrarRecursos();
-				if (this.conn != null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
+			closeConection();
 		}
 		return data;
 	}
@@ -1299,7 +1299,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1329,7 +1330,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1342,36 +1344,43 @@ public class RotondAndesTM {
 	}
 
 	public List<Menu> getAllMenu() throws SQLException, Exception {
-		List<Menu> data;
-		DAOMenu daos = new DAOMenu();
-		try {
-			////// Transacción
-			this.conn = darConexion();
-			daos.setConn(conn);
+		List<Menu> data = null;
+		updateConnection();
+		try (DAOMenu daos = new DAOMenu(conn)) {
 			data = daos.getAll();
 		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
+			sqlException(e);
 		} finally {
-			try {
-				daos.cerrarRecursos();
-				if (this.conn != null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
+			closeConection();
 		}
 		return data;
 	}
 
-	
+	private void updateConnection() throws SQLException {
+		try {
+			this.conn = darConexion();
+		} catch (SQLException e) {
+			sqlException(e);
+		}
+	}
+
+	private static void sqlException(SQLException e) throws SQLException {
+		System.err.println("SQLException:" + e.getMessage());
+		e.printStackTrace();
+		throw e;
+	}
+
+	private void closeConection() throws SQLException {
+		try {
+			if (this.conn != null)
+				this.conn.close();
+		} catch (SQLException exception) {
+			System.err.println("SQLException closing resources:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		}
+	}
+
 	public List<Pedido> getAllPedido() throws SQLException, Exception {
 		List<Pedido> data;
 		DAOPedido daos = new DAOPedido();
@@ -1390,7 +1399,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1402,7 +1412,7 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public List<Menu> getAllPedidoMenu(long idProducto) throws SQLException,Exception {
+	public List<Menu> getAllPedidoMenu(long idProducto) throws SQLException, Exception {
 		List<Menu> data;
 		DAOSubpedido daos = new DAOSubpedido();
 		try {
@@ -1420,7 +1430,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1450,7 +1461,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1480,7 +1492,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1492,7 +1505,7 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public List<Ingrediente> getAllProductoIngrediente(long idProducto) throws SQLException,Exception {
+	public List<Ingrediente> getAllProductoIngrediente(long idProducto) throws SQLException, Exception {
 		List<Ingrediente> data;
 		DAOProductoIngrediente daos = new DAOProductoIngrediente();
 		try {
@@ -1510,7 +1523,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1540,7 +1554,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1570,7 +1585,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1582,7 +1598,7 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public List<Menu> getAllReservaMenu(long idReserva) throws SQLException,Exception {
+	public List<Menu> getAllReservaMenu(long idReserva) throws SQLException, Exception {
 		List<Menu> data;
 		DAOReservaMenu daos = new DAOReservaMenu();
 		try {
@@ -1600,7 +1616,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1611,7 +1628,7 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
+
 	public List<Registro> getAllResgistro() throws SQLException, Exception {
 		List<Registro> data;
 		DAORegistro daos = new DAORegistro();
@@ -1630,7 +1647,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1660,7 +1678,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1690,7 +1709,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1701,7 +1721,7 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
+
 	public List<Zona> getAllZona() throws SQLException, Exception {
 		List<Zona> data;
 		DAOZona daos = new DAOZona();
@@ -1720,7 +1740,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1733,33 +1754,23 @@ public class RotondAndesTM {
 	}
 
 	public Cliente getCliente(long id) throws RotondAndesException, Exception {
-		Cliente data;
-		DAOCliente daos = new DAOCliente();
-		try {
-			////// Transacción
-			this.conn = darConexion();
-			daos.setConn(conn);
+		Cliente data = null;
+		updateConnection();
+		try (DAOCliente daos = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
 			data = daos.get(id);
 			if (data == null)
 				throw new RotondAndesException("El cliente con el codigo:<" + id + ">no existe");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
 		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
+			sqlException(e);
 		} finally {
-			try {
-				daos.cerrarRecursos();
-				if (this.conn != null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
+			closeConection();
 		}
 		return data;
 	}
@@ -1784,7 +1795,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1795,7 +1807,7 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
+
 	public Ingrediente getIngrediente(long id) throws RotondAndesException, Exception {
 		Ingrediente data;
 		DAOIngrediente daos = new DAOIngrediente();
@@ -1816,7 +1828,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1848,7 +1861,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1880,7 +1894,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1892,14 +1907,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Menu getPedidoMenu(long idPedido, long id)  throws RotondAndesException, Exception {
+	public Menu getPedidoMenu(long idPedido, long id) throws RotondAndesException, Exception {
 		Menu data;
 		DAOSubpedido daos = new DAOSubpedido();
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			data = daos.get(idPedido,id);
+			data = daos.get(idPedido, id);
 			if (data == null)
 				throw new RotondAndesException("El menú con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
@@ -1912,7 +1927,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1944,7 +1960,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1955,7 +1972,7 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
+
 	public Producto getProducto(long id) throws RotondAndesException, Exception {
 		Producto data;
 		DAOProducto daos = new DAOProducto();
@@ -1976,7 +1993,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1988,14 +2006,14 @@ public class RotondAndesTM {
 		return data;
 	}
 
-	public Ingrediente getProductoIngredienteu(long idProducto, long id)  throws RotondAndesException, Exception {
+	public Ingrediente getProductoIngredienteu(long idProducto, long id) throws RotondAndesException, Exception {
 		Ingrediente data;
 		DAOProductoIngrediente daos = new DAOProductoIngrediente();
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			data = daos.get(idProducto,id);
+			data = daos.get(idProducto, id);
 			if (data == null)
 				throw new RotondAndesException("El pedido con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
@@ -2008,7 +2026,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2040,7 +2059,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2051,8 +2071,8 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
-	public Registro login(String contrasenia, String usuario) throws RotondAndesException, Exception{
+
+	public Registro login(String contrasenia, String usuario) throws RotondAndesException, Exception {
 		Registro data;
 		DAORegistro daos = new DAORegistro();
 		try {
@@ -2072,7 +2092,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2104,7 +2125,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2136,7 +2158,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2147,15 +2170,15 @@ public class RotondAndesTM {
 		}
 		return data;
 	}
-	
-	public Menu getReservaMenu(long idReserva, long id)  throws RotondAndesException, Exception {
+
+	public Menu getReservaMenu(long idReserva, long id) throws RotondAndesException, Exception {
 		Menu data;
 		DAOReservaMenu daos = new DAOReservaMenu();
 		try {
 			////// Transacción
 			this.conn = darConexion();
 			daos.setConn(conn);
-			data = daos.get(idReserva,id);
+			data = daos.get(idReserva, id);
 			if (data == null)
 				throw new RotondAndesException("El espacio con el id:<" + id + ">no existe");
 		} catch (SQLException e) {
@@ -2168,7 +2191,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2200,7 +2224,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2232,7 +2257,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2264,7 +2290,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2277,9 +2304,9 @@ public class RotondAndesTM {
 	}
 
 	/**
-	 * Metodo que inicializa los atributos que se usan para la conexion a la
-	 * base de datos. <b>post: </b> Se han inicializado los atributos que se
-	 * usan par la conexion a la base de datos.
+	 * Metodo que inicializa los atributos que se usan para la conexion a la base de
+	 * datos. <b>post: </b> Se han inicializado los atributos que se usan par la
+	 * conexion a la base de datos.
 	 */
 	private void initConnectionData() {
 		try {
@@ -2298,34 +2325,23 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateCliente(Cliente data) throws RotondAndesException, Exception {
-		DAOCliente daos = new DAOCliente();
-		try {
-			////// Transacción
-			this.conn = darConexion();
-			daos.setConn(conn);
-			if (daos.get(data.getCedula()) == null)
+	public void updateCliente(Cliente data) throws RotondAndesException, SQLException {
+		updateConnection();
+		try (DAOCliente clientes = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			if (clientes.get(data.getCedula()) == null)
 				throw new RotondAndesException("Ya existe un cliente con la cedula <" + data.getCedula() + ">");
-			daos.update(data);
-
+			clientes.update(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
 		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
+			sqlException(e);
 		} finally {
-			try {
-				daos.cerrarRecursos();
-				if (this.conn != null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
+			closeConection();
 		}
 	}
 
@@ -2349,7 +2365,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2359,7 +2376,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void updateIngrediente(Ingrediente data) throws RotondAndesException, Exception {
 		DAOIngrediente daos = new DAOIngrediente();
 		try {
@@ -2380,7 +2397,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2391,9 +2409,9 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updateMenu(Long codigo,Menu data) throws RotondAndesException, Exception {
+	public void updateMenu(Long codigo, Menu data) throws RotondAndesException, Exception {
 		DAOMenu daos = new DAOMenu();
-		DAOProducto daosHijos=new DAOProducto();
+		DAOProducto daosHijos = new DAOProducto();
 		try {
 			////// Transacción
 			this.conn = darConexion();
@@ -2401,28 +2419,28 @@ public class RotondAndesTM {
 			daosHijos.setConn(conn);
 			if (daos.get(data.getId()) == null)
 				throw new RotondAndesException("Ya existe un menu con el <" + data.getId() + ">");
-			if(data.getProductoEntrada()!=null) {
-				if(daosHijos.get(data.getProductoEntrada()).getIdCategoria()!=1)
+			if (data.getProductoEntrada() != null) {
+				if (daosHijos.get(data.getProductoEntrada()).getIdCategoria() != 1)
 					throw new RotondAndesException("el producto no esuna entrada");
 			}
-			if(data.getProductoFuerte()!=null) {
-				if(daosHijos.get(data.getProductoFuerte()).getIdCategoria()!=2)
+			if (data.getProductoFuerte() != null) {
+				if (daosHijos.get(data.getProductoFuerte()).getIdCategoria() != 2)
 					throw new RotondAndesException("el producto no es un palto fuerte");
 			}
-			if(data.getProductoPostre()!=null) {
-				if(daosHijos.get(data.getProductoPostre()).getIdCategoria()!=3)
+			if (data.getProductoPostre() != null) {
+				if (daosHijos.get(data.getProductoPostre()).getIdCategoria() != 3)
 					throw new RotondAndesException("el producto no es un postre");
 			}
-			if(data.getProductoBebida()!=null) {
-				if(daosHijos.get(data.getProductoBebida()).getIdCategoria()!=4)
+			if (data.getProductoBebida() != null) {
+				if (daosHijos.get(data.getProductoBebida()).getIdCategoria() != 4)
 					throw new RotondAndesException("el producto no es una bebida");
 			}
-			if(data.getProductoAcompanamiento()!=null) {
-				if(daosHijos.get(data.getProductoAcompanamiento()).getIdCategoria()!=5)
+			if (data.getProductoAcompanamiento() != null) {
+				if (daosHijos.get(data.getProductoAcompanamiento()).getIdCategoria() != 5)
 					throw new RotondAndesException("el producto no es un acompanamiento");
 			}
-			
-			daos.update(codigo,data);
+
+			daos.update(codigo, data);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -2434,8 +2452,10 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daosHijos.cerrarRecursos();
-				daos.cerrarRecursos();
+				daosHijos.close();
+				;
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2445,7 +2465,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void updatePedido(Pedido data) throws RotondAndesException, Exception {
 		DAOPedido daos = new DAOPedido();
 		try {
@@ -2466,7 +2486,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2497,7 +2518,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2507,7 +2529,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void updateProducto(Producto data) throws RotondAndesException, Exception {
 		DAOProducto daos = new DAOProducto();
 		try {
@@ -2528,7 +2550,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2559,7 +2582,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2590,7 +2614,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2600,7 +2625,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void updateReserva(Reserva data) throws RotondAndesException, Exception {
 		DAOReserva daos = new DAOReserva();
 		try {
@@ -2621,7 +2646,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2652,7 +2678,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2662,7 +2689,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void updateTipoComida(TipoComida data) throws RotondAndesException, Exception {
 		DAOTipoComida daos = new DAOTipoComida();
 		try {
@@ -2683,7 +2710,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -2714,7 +2742,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daos.cerrarRecursos();
+				daos.close();
+				;
 				if (this.conn != null)
 					this.conn.close();
 			} catch (SQLException exception) {

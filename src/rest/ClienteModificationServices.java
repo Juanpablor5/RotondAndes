@@ -68,7 +68,7 @@ public class ClienteModificationServices extends BaseServices implements CRUDEst
 
 	@Override
 	public void integridad(Cliente data) throws RotondAndesException {
-		if(data.getRegristroId()==null)
+		if(data.getRegristro()==null)
 			throw new RotondAndesException("el registro id");
 		if(data.getCedula()==null)
 			throw new RotondAndesException("la cedua no puede ser null");

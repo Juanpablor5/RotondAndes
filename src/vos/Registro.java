@@ -2,36 +2,35 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * Clase que representa un Registro.
- */
+import em.Check;
+import em.Check.SISTRANS_Check;
+import em.Checks;
+import em.Columna;
+import em.Id;
+import em.Tabla;
+import em.Columna.SISTRANS_Columna;
+import em.Id.SISTRANS_Id;
+@Tabla
 public class Registro {
-
 	// -------------------------------------------------------------
-	// Atributos
+	// ATRIBUTOS
 	// -------------------------------------------------------------
-
-	/**
-	 * Código representativo de cada cliente.
-	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "codigo")
 	private Long codigo;
 
-	/**
-	 * Usuario del cliente.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value=Checks.DIFERENT,of="")
 	@JsonProperty(value = "usuario")
 	private String usuario;
 
-	/**
-	 * Contraseña del usuario.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value=Checks.DIFERENT,of="")
 	@JsonProperty(value = "contrasena")
 	private String contrasena;
 
-	/**
-	 * Permisos que tiene cada cliente representados por números.{3:admin, 2:rest, 1:cliente}
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value=Checks.BETWEEN, of="0",to="3")
 	@JsonProperty(value = "permisos")
 	private Integer permisos;
 

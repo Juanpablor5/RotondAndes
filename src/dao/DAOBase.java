@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public abstract class DAOBase {
+public abstract class DAOBase implements AutoCloseable {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -18,44 +18,57 @@ public abstract class DAOBase {
 	protected Connection conn;
 
 	/**
-	 * Metodo constructor que crea DAOVideo
-	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
+	 * Metodo constructor que crea DAOVideo <b>post: </b> Crea la instancia del DAO
+	 * e inicializa el Arraylist de recursos
 	 */
+	private boolean closed;
+
 	public DAOBase() {
 		recursos = new ArrayList<Object>();
+		closed = false;
 	}
 
 	/**
 	 * Metodo que cierra todos los recursos que estan enel arreglo de recursos
 	 * <b>post: </b> Todos los recurso del arreglo de recursos han sido cerrados
 	 */
-	public void cerrarRecursos() {
-		for(Object ob : recursos){
-			if(ob instanceof PreparedStatement)
-				try {
-					((PreparedStatement) ob).close();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+	public final void close() {
+		if (!closed) {
+			System.out.println("cerrando...");
+			for (Object ob : recursos)
+				if (ob instanceof PreparedStatement)
+					try {
+						((PreparedStatement) ob).close();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+			closed = true;
 		}
 	}
 
 	/**
-	 * Metodo que inicializa la connection del DAO a la base de datos con la conexión que entra como parametro.
-	 * @param con  - connection a la base de datos
+	 * Metodo que inicializa la connection del DAO a la base de datos con la
+	 * conexión que entra como parametro.
+	 * 
+	 * @param con
+	 *            - connection a la base de datos
 	 */
-	public void setConn(Connection con){
+	public void setConn(Connection con) {
 		this.conn = con;
 	}
-	
+
 	/**
 	 * realiza algun cambio en la base de datos
-	 * @param sql la sentencia sql a ejecutar
+	 * 
+	 * @param sql
+	 *            la sentencia sql a ejecutar
 	 * @return el resultado de la sentencia que se ejecuto
-	 * @throws SQLException - Cualquier error que la base de datos arroje.
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 * @throws SQLException
+	 *             - Cualquier error que la base de datos arroje.
+	 * @throws Exception
+	 *             - Cualquier error que no corresponda a la base de datos
 	 */
-	protected ResultSet executeModification(String sql)throws SQLException, Exception {
+	protected ResultSet executeModification(String sql) throws SQLException, Exception {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		return prepStmt.executeQuery();

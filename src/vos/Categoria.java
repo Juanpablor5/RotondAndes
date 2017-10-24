@@ -2,9 +2,16 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Columna;
+import em.Id;
+import em.Id.SISTRANS_Id;
+import em.Tabla;
+import em.Columna.SISTRANS_Columna;
+
 /**
  * Clase que representa un Categoría.
  */
+@Tabla
 public class Categoria {
 
 	// -------------------------------------------------------------
@@ -14,12 +21,14 @@ public class Categoria {
 	/**
 	 * Id de la categoría.
 	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "id")
 	private Long id;
 
 	/**
 	 * Nombre de la categoría.
 	 */
+	@SISTRANS_Columna
 	@JsonProperty(value = "nombre")
 	private String nombre;
 

@@ -2,33 +2,40 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Check;
+import em.Check.SISTRANS_Check;
+import em.Checks;
+import em.Columna;
+import em.Id;
+import em.Id.SISTRANS_Id;
+import em.Tabla;
+import em.Columna.SISTRANS_Columna;
+import em.Foreing.ForeignKey;
+
 /**
  * Clase que representa un Producto.
  */
+@Tabla
 public class Preferencias {
 
 	// -------------------------------------------------------------
 	// Atributos
 	// -------------------------------------------------------------
-
-	/**
-	 * Id de la preferencia.
-	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "id")
 	private Long id;
-
-	/**
-	 * El mayor precio con el que se desea filtrar.
-	 */
+	
+	@SISTRANS_Columna
+	@SISTRANS_Check(of = "0", value = Checks.HIGHEREQUAL)
 	@JsonProperty(value = "precioMenor")
 	private Double precioMenor;
 
-	/**
-	 * El menor precio con el que se desea filtrar.
-	 */
+	@SISTRANS_Columna
 	@JsonProperty(value = "precioMayor")
 	private Double precioMayor;
 
+	@ForeignKey(unique=true)
+	private Cliente cliente;
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
