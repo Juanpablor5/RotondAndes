@@ -282,7 +282,7 @@ public class RegistroServices extends BaseServices implements URLS {
 			throw new RotondAndesException("el codigo no puede ser null");
 		if (data.getUsuario() == null)
 			throw new RotondAndesException("el usuario no puede ser null");
-		if (data.getContrasena() == null)
+		if (data.getContrasenia() == null)
 			throw new RotondAndesException("la contrasenia no piede ser null");
 		if (data.getPermisos() == null)
 			throw new RotondAndesException("el permiso no puede se null");
@@ -292,9 +292,9 @@ public class RegistroServices extends BaseServices implements URLS {
 			throw new RotondAndesException("un usuario no puede tener espacios");
 		if (data.getUsuario().length() > 100)
 			throw new RotondAndesException("la cadena ususrio supera el limite permitido de caracteres");
-		if (data.getContrasena().equals(""))
+		if (data.getContrasenia().equals(""))
 			throw new RotondAndesException("no puede agregar un usuario vacio");
-		if (data.getContrasena().length() > 100)
+		if (data.getContrasenia().length() > 100)
 			throw new RotondAndesException("la cadena ususrio supera el limite permitido de caracteres");
 		if (data.getPermisos() <= 0 || data.getPermisos() > 3)
 			throw new RotondAndesException("el permiso no es valido");

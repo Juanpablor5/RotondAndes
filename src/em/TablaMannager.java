@@ -1,6 +1,8 @@
 package em;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +22,8 @@ public class TablaMannager extends Connector {
 	private final static SimpleDateFormat formatoDate = new SimpleDateFormat("dd/MM/YYYY");
 	private final static SimpleDateFormat formatoTime = new SimpleDateFormat("dd/MM/YYYY");
 	private final String TABLA;
-	
-	public TablaMannager(Class<?> clase,Connection conn) {
+
+	public TablaMannager(Class<?> clase, Connection conn) {
 		setConn(conn);
 		TABLA = clase.getSimpleName();
 	}
@@ -36,8 +38,8 @@ public class TablaMannager extends Connector {
 			idsA[i] = ids.get(i);
 		return idsA;
 	}
-	
-	public <T> void create(Class<T> clase,T objeto) throws SQLException {
+
+	public <T> void create(Class<T> clase, T objeto) throws SQLException {
 		List<String> tabla = new LinkedList<>();
 		List<String> values = new LinkedList<>();
 
@@ -63,24 +65,36 @@ public class TablaMannager extends Connector {
 		ResultSet rs = executeModification(sql);
 
 		while (rs.next()) {
-			data.add(extract(clase,rs));
+			data.add(extract(clase, rs));
 		}
 		return data;
 	}
-	
-	public  Object get(Class<?> class1,Object object) throws SQLException {
+
+	public Object get(Class<?> class1, Object object) throws SQLException {
 		String sql = "SELECT * FROM " + TABLA;
-		sql += SearchSentence(class1,object);
-		
+		sql += SearchSentence(class1, object);
+
 		ResultSet rs = executeModification(sql);
 
 		if (rs.next()) {
-			return extract(class1,rs);
+			return extract(class1, rs);
 		}
 		return null;
 	}
 
-	public <T> T update(Class<T> clase,T registro) throws SQLException {
+	public Object getWithForeing(Class<?> class1, Field field, Object object) throws SQLException {
+		String sql = "SELECT * FROM " + TABLA;
+		sql += SearchSentence(field,object);
+
+		ResultSet rs = executeModification(sql);
+
+		if (rs.next()) {
+			return extract(class1, rs);
+		}
+		return null;
+	}
+
+	public <T> T update(Class<T> clase, T registro) throws SQLException {
 		try {
 			List<String> seters = new LinkedList<>();
 
@@ -92,8 +106,8 @@ public class TablaMannager extends Connector {
 
 				}
 			}
-			executeModification(
-					"UPDATE " + TABLA + " SET " + Arista.listFormatString(seters, ",") + SearchSentence(clase,registro));
+			executeModification("UPDATE " + TABLA + " SET " + Arista.listFormatString(seters, ",")
+					+ SearchSentence(clase, registro));
 			return registro;
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
@@ -102,15 +116,15 @@ public class TablaMannager extends Connector {
 
 	}
 
-	public <T> T remove(Class<T> clase,T references) throws SQLException {
+	public <T> T remove(Class<T> clase, T references) throws SQLException {
 		String sql = "DELETE FROM " + TABLA;
-		sql += SearchSentence(clase,references);
+		sql += SearchSentence(clase, references);
 
 		executeModification(sql);
 		return references;
 	}
 
-	private <T> T extract(Class<T> clase,ResultSet rs) throws SQLException {
+	private <T> T extract(Class<T> clase, ResultSet rs) throws SQLException {
 		try {
 			T t = clase.newInstance();
 			for (Field field : clase.getDeclaredFields()) {
@@ -124,27 +138,6 @@ public class TablaMannager extends Connector {
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 			throw new SQLException("no hay constructor vacio en la clase " + TABLA);
-		}
-	}
-
-	private Object getRs(ResultSet rs, Field field) throws SQLException {
-		try {
-			if (field.getType().equals(Integer.class))
-				return rs.getInt(field.getName());
-			if (field.getType().equals(Long.class))
-				return rs.getLong(field.getName());
-			if (field.getType().equals(Double.class))
-				return rs.getDouble(field.getName());
-			if (field.getType().equals(Date.class))
-				if (field.getAnnotation(DateAnotation.class).completa())
-					return formatoTime.parse(rs.getString(field.getName()));
-				else return rs.getDate(field.getName());
-			if(field.getType().equals(String.class))
-				return rs.getString(field.getName());
-			return rs.getObject(field.getName());
-		} catch (ParseException e) {
-			e.printStackTrace();
-			throw new SQLException("error formato de fechas");
 		}
 	}
 
@@ -163,6 +156,44 @@ public class TablaMannager extends Connector {
 		}
 	}
 
+	private String SearchSentence(Field fieldB, Object objectA) throws SQLException {
+		try {
+			List<String> search = new LinkedList<>();
+			Field[] idsForeings = ids(fieldB.getType());
+			for (Field f : idsForeings) {
+				Method method = fieldB.getType().getMethod(getMethod(f.getName()));
+				search.add(fieldB.getName() + "_" + f.getName() + " = " + method.invoke(objectA));
+			}
+			return " WHERE" + Arista.listFormatString(search, " AND ");
+		} catch (IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException
+				| IllegalAccessException e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}
+	}
+
+	private Object getRs(ResultSet rs, Field field) throws SQLException {
+		try {
+			if (field.getType().equals(Integer.class))
+				return rs.getInt(field.getName());
+			if (field.getType().equals(Long.class))
+				return rs.getLong(field.getName());
+			if (field.getType().equals(Double.class))
+				return rs.getDouble(field.getName());
+			if (field.getType().equals(Date.class))
+				if (field.getAnnotation(DateAnotation.class).completa())
+					return formatoTime.parse(rs.getString(field.getName()));
+				else
+					return rs.getDate(field.getName());
+			if (field.getType().equals(String.class))
+				return rs.getString(field.getName());
+			return rs.getObject(field.getName());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new SQLException("error formato de fechas");
+		}
+	}
+
 	private String format(Field field, Object value) throws SQLException {
 		if (Tipos.is(field.getType(), Tipo.INTEGER) || Tipos.is(field.getType(), Tipo.NUMBER))
 			return value.toString();
@@ -175,6 +206,10 @@ public class TablaMannager extends Connector {
 				return "'" + formatoDate.format((Date) value) + "'";
 		}
 		throw new SQLException("el id no es un tipo permitido");
+	}
+
+	private String getMethod(String str) {
+		return "get" + Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
 
 }

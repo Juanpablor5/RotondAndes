@@ -2,11 +2,8 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import em.Check;
 import em.Check.SISTRANS_Check;
 import em.Checks;
-import em.Columna;
-import em.Id;
 import em.Id.SISTRANS_Id;
 import em.Tabla;
 import em.Columna.SISTRANS_Columna;
@@ -21,7 +18,7 @@ public class Preferencias {
 	// -------------------------------------------------------------
 	// Atributos
 	// -------------------------------------------------------------
-	@SISTRANS_Id
+	@SISTRANS_Id(AutoIncrement=true)
 	@JsonProperty(value = "id")
 	private Long id;
 	
@@ -31,6 +28,7 @@ public class Preferencias {
 	private Double precioMenor;
 
 	@SISTRANS_Columna
+	@SISTRANS_Check(of = "0", value = Checks.HIGHEREQUAL)
 	@JsonProperty(value = "precioMayor")
 	private Double precioMayor;
 
@@ -39,7 +37,9 @@ public class Preferencias {
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
-
+	public Preferencias() {
+		// TODO Auto-generated constructor stub
+	}
 	/**
 	 * Método constructor de la clase producto. <b>post: </b> Crea el producto
 	 * con los valores que entran como parámetro.

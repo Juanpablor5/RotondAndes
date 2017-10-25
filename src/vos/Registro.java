@@ -26,8 +26,8 @@ public class Registro {
 
 	@SISTRANS_Columna
 	@SISTRANS_Check(value=Checks.DIFERENT,of="")
-	@JsonProperty(value = "contrasena")
-	private String contrasena;
+	@JsonProperty(value = "contrasenia")
+	private String contrasenia;
 
 	@SISTRANS_Columna
 	@SISTRANS_Check(value=Checks.BETWEEN, of="0",to="3")
@@ -56,11 +56,11 @@ public class Registro {
 	 *            - Traducción de descripción del cliente a registrar.
 	 */
 	public Registro(@JsonProperty(value = "codigo") Long codigo, @JsonProperty(value = "usuario") String usuario,
-			@JsonProperty(value = "contrasena") String contrasena, @JsonProperty(value = "permisos") Integer permisos) {
+			@JsonProperty(value = "contrasena") String contrasenia, @JsonProperty(value = "permisos") Integer permisos) {
 		super();
 		this.codigo = codigo;
 		this.usuario = usuario;
-		this.contrasena = contrasena;
+		this.contrasenia = contrasenia;
 		this.permisos = permisos;
 	}
 
@@ -113,8 +113,8 @@ public class Registro {
 	 * 
 	 * @return Contraseña del cliente a registrar.
 	 */
-	public String getContrasena() {
-		return contrasena;
+	public String getContrasenia() {
+		return contrasenia;
 	}
 
 	/**
@@ -125,8 +125,8 @@ public class Registro {
 	 * @param contraseña
 	 *            - Contraseña del cliente a registrar.
 	 */
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
 	}
 
 	/**

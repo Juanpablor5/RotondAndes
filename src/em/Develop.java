@@ -13,11 +13,12 @@ import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
 import em.Many.ManytoMany;
 import vos.Cliente;
+import vos.Preferencias;
 import vos.Registro;
 
 public class Develop {
 	public static void main(String[] args) throws GenericException {
-		new Develop(Registro.class,Cliente.class);
+		new Develop(Registro.class,Cliente.class,Preferencias.class);
 	}
 	
 	private final Hashtable<String, Arista> aristas = new Hashtable<>();

@@ -72,7 +72,7 @@ public class DAORegistro extends DAOBase implements CRUD<Registro>{
 	public void update(Registro data) throws SQLException, Exception {
 		String sql = "UPDATE "+TABLA+" SET ";
 		sql += "USUARIO='" + data.getUsuario() + "',";
-		sql += "CONTRASENIA='" + data.getContrasena()+"',";
+		sql += "CONTRASENIA='" + data.getContrasenia()+"',";
 		sql += "PERMISOS=" + data.getPermisos();
 		sql += "WHERE CODIGO = " + data.getCodigo();
 		
@@ -94,7 +94,7 @@ public class DAORegistro extends DAOBase implements CRUD<Registro>{
 		String sql = "INSERT INTO "+TABLA+" VALUES (";
 		sql += data.getCodigo() + ",'";
 		sql += data.getUsuario() + "','";
-		sql += data.getContrasena() + "',";
+		sql += data.getContrasenia() + "',";
 		sql += data.getPermisos() + ")";
 		
 		executeModification(sql);

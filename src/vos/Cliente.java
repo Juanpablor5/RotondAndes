@@ -22,26 +22,30 @@ public class Cliente {
 	private Long cedula;
 
 	@SISTRANS_Columna
-	@SISTRANS_Check(value=Checks.DIFERENT,of="")
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	@SISTRANS_Columna(valorPorDefecto="SYSDATE")
+	@SISTRANS_Columna(valorPorDefecto = "SYSDATE")
 	@DateAnotation
 	@JsonProperty(value = "fechaIngreso")
 	private Date fechaIngreso;
 
 	@Reference
-	@ForeignKey(unique=true)
-	@JsonProperty(value = "regristro")
-	private Registro regristro;
+	@ForeignKey(unique = true)
+	private Registro registro;
+
+	@Reference(mappedBy = "cliente")
+	@JsonProperty(value = "preferencias")
+	private Preferencias preferencias;
+
 	// -------------------------------------------------------------
 	// Constructor
-	// -------------------------------------------------------------	
+	// -------------------------------------------------------------
 	public Cliente() {
 		// constructorEntity
 	}
-	
+
 	/**
 	 * Método constructor de la clase cliente. <b>post: </b> Crea el cliente con los
 	 * valores que entran como parámetro.
@@ -56,12 +60,12 @@ public class Cliente {
 	 */
 	public Cliente(@JsonProperty(value = "cedula") Long cedula, @JsonProperty(value = "nombre") String nombre,
 			@JsonProperty(value = "fechaIngreso") Date fechaIngreso,
-			@JsonProperty(value = "regristro") Registro regristro) {
+			@JsonProperty(value = "preferencias") Preferencias preferencias) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.fechaIngreso = fechaIngreso;
-		this.regristro = regristro;
+		this.preferencias=preferencias;
 	}
 
 	// -------------------------------------------------------------
@@ -128,21 +132,20 @@ public class Cliente {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	/**
-	 * dar el id del reistro asociado
-	 * 
-	 * @return
-	 */
-	public Registro getRegristro() {
-		return regristro;
+	public Registro getRegistro() {
+		return registro;
 	}
 
-	/**
-	 * cambiar el id del registro asociado
-	 * 
-	 * @param regristroId
-	 */
-	public void setRegristro(Registro regristro) {
-		this.regristro = regristro;
+	public void setRegistro(Registro registro) {
+		this.registro = registro;
 	}
+
+	public Preferencias getPreferencias() {
+		return preferencias;
+	}
+
+	public void setPreferencias(Preferencias preferencias) {
+		this.preferencias = preferencias;
+	}
+
 }
