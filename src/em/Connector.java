@@ -18,7 +18,6 @@ abstract class Connector implements AutoCloseable{
 
 	public final void close() {
 		if (!closed) {
-			System.out.println("cerrando...");
 			for (Object ob : recursos)
 				if (ob instanceof PreparedStatement)
 					try {

@@ -111,6 +111,7 @@ public class RotondAndesTM {
 			// END
 			// ------------------------
 		} catch (SQLException e) {
+			conn.rollback();
 			sqlException(e);
 		} finally {
 			closeConection();

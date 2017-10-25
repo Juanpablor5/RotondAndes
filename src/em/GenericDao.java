@@ -1,6 +1,8 @@
 package em;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +13,6 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
-
 import em.Columna.SISTRANS_Columna;
 import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
@@ -45,7 +46,6 @@ public abstract class GenericDao<T> extends Connector {
 		for (Field field : clase.getDeclaredFields()) {
 			if (field.isAnnotationPresent(SISTRANS_Columna.class) || (field.isAnnotationPresent(Id.SISTRANS_Id.class)
 					&& !field.getAnnotation(SISTRANS_Id.class).AutoIncrement())) {
-				field.setAccessible(true);
 				tabla.add(field.getName());
 				try {
 					values.add(format(field, field.get(objeto)));
@@ -70,11 +70,11 @@ public abstract class GenericDao<T> extends Connector {
 		}
 		return data;
 	}
-	
+
 	public final T get(T registro) throws SQLException {
 		String sql = "SELECT * FROM " + TABLA;
 		sql += SearchSentence(registro);
-		
+
 		ResultSet rs = executeModification(sql);
 
 		if (rs.next()) {
@@ -101,8 +101,8 @@ public abstract class GenericDao<T> extends Connector {
 
 			for (Field field : clase.getDeclaredFields()) {
 				if (field.isAnnotationPresent(SISTRANS_Columna.class)) {
-					field.setAccessible(true);
-					seters.add(field.getName() + " = " + format(field, field.get(registro)));
+					Method method=clase.getMethod(getMethod(field.getName()));
+					seters.add(field.getName() + " = " + format(field, method.invoke(registro)));
 				} else if (field.isAnnotationPresent(ForeignKey.class)) {
 
 				}
@@ -110,7 +110,7 @@ public abstract class GenericDao<T> extends Connector {
 			executeModification(
 					"UPDATE " + TABLA + " SET " + Arista.listFormatString(seters, ",") + SearchSentence(registro));
 			return registro;
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
@@ -140,11 +140,13 @@ public abstract class GenericDao<T> extends Connector {
 			for (Field field : clase.getDeclaredFields()) {
 				if (field.isAnnotationPresent(Id.SISTRANS_Id.class)
 						|| field.isAnnotationPresent(SISTRANS_Columna.class)) {
-					field.setAccessible(true);
-					field.set(t, getRs(rs, field));
+					Method method = clase.getMethod(setMethod(field.getName()), field.getType());
+					method.invoke(t,  getRs(rs, field));
 				} else if (field.isAnnotationPresent(Reference.class)) {
-					field.setAccessible(true);
-					field.set(t, (new TablaMannager(field.getType(), conn)).get(field.getType(), references(field,rs)));
+					TablaMannager tm = new TablaMannager(field.getType(), conn);
+					Method method = clase.getMethod(setMethod(field.getName()), field.getType());
+					method.invoke(t, tm.get(field.getType(), references(field.getType(), field, rs)));
+					tm.close();
 				} else if (field.isAnnotationPresent(ForeignKey.class)) {
 
 				} else if (field.isAnnotationPresent(ManytoMany.class)) {
@@ -152,15 +154,68 @@ public abstract class GenericDao<T> extends Connector {
 				}
 			}
 			return t;
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 			throw new SQLException("no hay constructor vacio en la clase " + TABLA);
 		}
 	}
 
-	private Object[] references(Field field, ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
+	private Field[] ids(Class<?> clase) {
+		List<Field> ids = new LinkedList<>();
+		for (Field f : clase.getDeclaredFields())
+			if (f.isAnnotationPresent(SISTRANS_Id.class))
+				ids.add(f);
+		Field[] idsA = new Field[ids.size()];
+		for (int i = 0; i < ids.size(); i++)
+			idsA[i] = ids.get(i);
+		return idsA;
+	}
+
+	private <S> S references(Class<S> clase, Field field, ResultSet rs) throws SQLException {
+		try {
+			S s;
+			s = clase.newInstance();
+
+			Field[] idsForeings = ids(clase);
+			for (Field f : idsForeings) {
+				Method method = clase.getMethod(setMethod(f.getName()), f.getType());
+				method.invoke(s, getRs(field.getName() + "_" + f.getName(), rs, f.getType()));
+			}
+			return s;
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}
+	}
+
+	private String setMethod(String str) {
+		return "set" + Character.toUpperCase(str.charAt(0)) + str.substring(1);
+	}
+	
+	private String getMethod(String str) {
+		return "get" + Character.toUpperCase(str.charAt(0)) + str.substring(1);
+	}
+
+	private Object getRs(String name, ResultSet rs, Class<?> field) throws SQLException {
+		try {
+			if (field.equals(Integer.class))
+				return rs.getInt(name);
+			if (field.equals(Long.class))
+				return rs.getLong(name);
+			if (field.equals(Double.class))
+				return rs.getDouble(name);
+			if (field.equals(Date.class))
+				if (field.getAnnotation(DateAnotation.class).completa())
+					return formatoTime.parse(rs.getString(name));
+				else
+					return rs.getDate(name);
+			if (field.equals(String.class))
+				return rs.getString(name);
+			return rs.getObject(field.getName());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new SQLException("error formato de fechas");
+		}
 	}
 
 	private Object getRs(ResultSet rs, Field field) throws SQLException {
@@ -174,8 +229,9 @@ public abstract class GenericDao<T> extends Connector {
 			if (field.getType().equals(Date.class))
 				if (field.getAnnotation(DateAnotation.class).completa())
 					return formatoTime.parse(rs.getString(field.getName()));
-				else return rs.getDate(field.getName());
-			if(field.getType().equals(String.class))
+				else
+					return rs.getDate(field.getName());
+			if (field.getType().equals(String.class))
 				return rs.getString(field.getName());
 			return rs.getObject(field.getName());
 		} catch (ParseException e) {
@@ -200,11 +256,11 @@ public abstract class GenericDao<T> extends Connector {
 			List<String> search = new LinkedList<>();
 
 			for (Field field : ids) {
-				field.setAccessible(true);
-				search.add(field.getName() + " = " + format(field, field.get(object)));
+				Method method=clase.getMethod(getMethod(field.getName()));
+				search.add(field.getName() + " = " + format(field, method.invoke(object)));
 			}
 			return " WHERE" + Arista.listFormatString(search, " AND ");
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}

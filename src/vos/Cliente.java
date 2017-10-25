@@ -9,6 +9,7 @@ import em.Columna.SISTRANS_Columna;
 import em.DateAnotation;
 import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
+import em.Reference;
 import em.Tabla;
 
 @Tabla
@@ -30,6 +31,7 @@ public class Cliente {
 	@JsonProperty(value = "fechaIngreso")
 	private Date fechaIngreso;
 
+	@Reference
 	@ForeignKey(unique=true)
 	@JsonProperty(value = "regristro")
 	private Registro regristro;

@@ -2,6 +2,8 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Id.SISTRANS_Id;
+
 /**
  * Clase que representa un Producto.
  */
@@ -14,6 +16,7 @@ public class Producto {
 	/**
 	 * Id del producto.
 	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "id")
 	private Long id;
 

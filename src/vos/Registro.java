@@ -37,6 +37,10 @@ public class Registro {
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
+	
+	public Registro() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Método constructor de la clase Registro. <b>post: </b> Crea el cliente a

@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,26 +68,14 @@ public class TablaMannager extends Connector {
 		return data;
 	}
 	
-	public <T> T get(Class<T> clase,T registro) throws SQLException {
+	public  Object get(Class<?> class1,Object object) throws SQLException {
 		String sql = "SELECT * FROM " + TABLA;
-		sql += SearchSentence(clase,registro);
+		sql += SearchSentence(class1,object);
 		
 		ResultSet rs = executeModification(sql);
 
 		if (rs.next()) {
-			return extract(clase,rs);
-		}
-		return null;
-	}
-
-	public <T> T get(Class<T> clase,Object... ids) throws SQLException {
-		String sql = "SELECT * FROM " + TABLA;
-		sql += SearchSentence(clase,ids);
-
-		ResultSet rs = executeModification(sql);
-
-		if (rs.next()) {
-			return extract(clase,rs);
+			return extract(class1,rs);
 		}
 		return null;
 	}
@@ -113,15 +100,6 @@ public class TablaMannager extends Connector {
 			throw new SQLException(e.getMessage());
 		}
 
-	}
-
-	public <T> T remove(Class<T> clase,Object... ids) throws SQLException {
-		T t = get(clase,ids);
-		String sql = "DELETE FROM " + TABLA;
-		sql += SearchSentence(clase,ids);
-
-		executeModification(sql);
-		return t;
 	}
 
 	public <T> T remove(Class<T> clase,T references) throws SQLException {
@@ -170,22 +148,11 @@ public class TablaMannager extends Connector {
 		}
 	}
 
-	private <T> String SearchSentence(Class<T> clase,Object[] objects) throws SQLException {
-		Hashtable<Class<?>, Object> hash = new Hashtable<>();
-		for (Object object : objects)
-			hash.put(object.getClass(), object);
-		List<String> search = new LinkedList<>();
-
-		for (Field field : ids(clase))
-			search.add(field.getName() + " = " + format(field, hash.get(field.getType())));
-		return " WHERE" + Arista.listFormatString(search, " AND ");
-	}
-
-	private <T> String SearchSentence(Class<T> clase, T object) throws SQLException {
+	private String SearchSentence(Class<?> class1, Object object) throws SQLException {
 		try {
 			List<String> search = new LinkedList<>();
 
-			for (Field field : ids(clase)) {
+			for (Field field : ids(class1)) {
 				field.setAccessible(true);
 				search.add(field.getName() + " = " + format(field, field.get(object)));
 			}
