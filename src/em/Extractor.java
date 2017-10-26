@@ -129,10 +129,9 @@ public class Extractor<T> {
 						set(field, t, tm.get(references(field.getType(), field, rs)));
 						tm.close();
 					} else {
-						if (field.getType().equals(List.class)) {
-							System.out.println(((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0]);
+						if (field.getType().equals(List.class)) 
 							referencesList.add(field);
-						}else 
+						else 
 							references.add(field);
 					}
 				} else if (field.isAnnotationPresent(ManytoMany.class)) {

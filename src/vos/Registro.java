@@ -2,11 +2,8 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import em.Check;
 import em.Check.SISTRANS_Check;
 import em.Checks;
-import em.Columna;
-import em.Id;
 import em.Tabla;
 import em.Columna.SISTRANS_Columna;
 import em.Id.SISTRANS_Id;
@@ -15,11 +12,10 @@ public class Registro {
 	// -------------------------------------------------------------
 	// ATRIBUTOS
 	// -------------------------------------------------------------
-	@SISTRANS_Id
-	@JsonProperty(value = "codigo")
+	@SISTRANS_Id(AutoIncrement=true)
 	private Long codigo;
 
-	@SISTRANS_Columna
+	@SISTRANS_Columna(unique=true)
 	@SISTRANS_Check(value=Checks.DIFERENT,of="")
 	@JsonProperty(value = "usuario")
 	private String usuario;
@@ -55,10 +51,10 @@ public class Registro {
 	 * @param permisos
 	 *            - Traducción de descripción del cliente a registrar.
 	 */
-	public Registro(@JsonProperty(value = "codigo") Long codigo, @JsonProperty(value = "usuario") String usuario,
+	public Registro(Long codigo,@JsonProperty(value = "usuario") String usuario,
 			@JsonProperty(value = "contrasena") String contrasenia, @JsonProperty(value = "permisos") Integer permisos) {
 		super();
-		this.codigo = codigo;
+		this.codigo=codigo;
 		this.usuario = usuario;
 		this.contrasenia = contrasenia;
 		this.permisos = permisos;

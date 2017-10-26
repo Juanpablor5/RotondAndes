@@ -34,6 +34,7 @@ abstract class Connector implements AutoCloseable{
 	}
 	
 	protected ResultSet executeModification(String sql) throws SQLException {
+		System.out.println(sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		return prepStmt.executeQuery();

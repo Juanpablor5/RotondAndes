@@ -19,6 +19,7 @@ public interface Foreing {
 	@Target(ElementType.FIELD)
 	public @interface ForeignKey {
 		boolean unique() default false;
+		boolean nullable() default false;
 	}
 	
 	static public String CREATE(Arista arista) throws GenericException {
@@ -38,7 +39,7 @@ public interface Foreing {
 			for (Field foreingField : filedsForeings) {
 				String n = field.getName() + "_" + foreingField.getName();
 				stringRef.add(n);
-				SQL += n + " " + Id.type(foreingField, foreingField.getAnnotation(SISTRANS_Id.class)) + " NOT NULL,\n";
+				SQL += n + " " + Id.type(foreingField, foreingField.getAnnotation(SISTRANS_Id.class)) +((field.getAnnotation(ForeignKey.class).nullable())?"\n": " NOT NULL,\n");
 			}
 
 			SQL += "CONSTRAINT FK_" + arista.getTableName() + (i + 1) + " FOREIGN KEY ("
