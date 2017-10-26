@@ -7,39 +7,45 @@ import em.Checks;
 import em.Tabla;
 import em.Columna.SISTRANS_Columna;
 import em.Id.SISTRANS_Id;
+import em.Reference;
+
 @Tabla
 public class Usuario {
 	// -------------------------------------------------------------
 	// ATRIBUTOS
 	// -------------------------------------------------------------
-	@SISTRANS_Id(AutoIncrement=true)
+	@SISTRANS_Id(AutoIncrement = true)
 	private Long codigo;
 
-	@SISTRANS_Columna(unique=true)
-	@SISTRANS_Check(value=Checks.DIFERENT,of="")
+	@SISTRANS_Columna(unique = true)
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nickName")
 	private String nickName;
 
 	@SISTRANS_Columna
-	@SISTRANS_Check(value=Checks.DIFERENT,of="")
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "contrasenia")
 	private String contrasenia;
-	
+
 	@SISTRANS_Columna
-	@SISTRANS_Check(value=Checks.DIFERENT,of="")
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "correo")
 	private String correo;
 
 	@SISTRANS_Columna
-	@SISTRANS_Check(value=Checks.BETWEEN, of="0",to="3")
+	@SISTRANS_Check(value = Checks.BETWEEN, of = "0", to = "3")
 	@JsonProperty(value = "permisos")
 	private Integer permisos;
+
+	@Reference(mappedBy = "registro")
+	private Cliente cliente;
 
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
-	
-	public Usuario () {}
+
+	public Usuario() {
+	}
 
 	/**
 	 * Método constructor de la clase Registro. <b>post: </b> Crea el cliente a
@@ -54,13 +60,13 @@ public class Usuario {
 	 * @param permisos
 	 *            - Traducción de descripción del cliente a registrar.
 	 */
-	public Usuario(Long codigo,@JsonProperty(value = "nickName") String nickName,
-			@JsonProperty(value = "contrasena") String contrasenia,@JsonProperty(value = "correo")
-			String correo, @JsonProperty(value = "permisos") Integer permisos) {
+	public Usuario(Long codigo, @JsonProperty(value = "nickName") String nickName,
+			@JsonProperty(value = "contrasena") String contrasenia, @JsonProperty(value = "correo") String correo,
+			@JsonProperty(value = "permisos") Integer permisos) {
 		super();
-		this.codigo=codigo;
+		this.codigo = codigo;
 		this.nickName = nickName;
-		this.correo=correo;
+		this.correo = correo;
 		this.contrasenia = contrasenia;
 		this.permisos = permisos;
 	}
@@ -119,9 +125,8 @@ public class Usuario {
 	}
 
 	/**
-	 * Método setter del atributo contraseña <b>post: </b> La contraseña del
-	 * cliente a registrar ha sido cambiado con el valor que entra como
-	 * parámetro.
+	 * Método setter del atributo contraseña <b>post: </b> La contraseña del cliente
+	 * a registrar ha sido cambiado con el valor que entra como parámetro.
 	 * 
 	 * @param contraseña
 	 *            - Contraseña del cliente a registrar.
@@ -140,9 +145,8 @@ public class Usuario {
 	}
 
 	/**
-	 * Método setter del atributo permisos <b>post: </b> Los permisos del
-	 * cliente a registrar ha sido cambiado con el valor que entra como
-	 * parámetro.
+	 * Método setter del atributo permisos <b>post: </b> Los permisos del cliente a
+	 * registrar ha sido cambiado con el valor que entra como parámetro.
 	 * 
 	 * @param permisos
 	 *            - Permisos del cliente a registrar.
@@ -158,4 +162,13 @@ public class Usuario {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 }

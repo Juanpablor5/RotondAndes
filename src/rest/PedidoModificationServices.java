@@ -18,7 +18,7 @@ import vos.Pedido;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PedidoModificationServices extends BaseServices implements CRUDR<Pedido>,URLS{
+public class PedidoModificationServices extends BaseServices implements URLS{
 
 	@GET
 	@Path("{" + PEDIDOID + ": \\d+}")

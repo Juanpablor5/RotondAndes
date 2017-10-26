@@ -19,7 +19,7 @@ import vos.Producto;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ProductoModificationServices extends BaseServices implements CRUDEst<Producto>,URLS {
+public class ProductoModificationServices extends BaseServices implements URLS {
 	public ProductoModificationServices(ServletContext context) {
 		this.context=context;
 	}

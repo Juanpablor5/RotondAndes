@@ -17,7 +17,7 @@ import vos.Restaurante;
 @Path(URLS.RESTAURANTE)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RestauranteServices extends BaseServices implements CRUDR<Restaurante>,URLS{
+public class RestauranteServices extends BaseServices implements URLS{
 
 	@GET
 	@Path("{" + RESTAURANTEID + ": \\d+}")

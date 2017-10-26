@@ -15,7 +15,7 @@ import vos.Zona;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ZonaModificationServices extends BaseServices implements CRUDEst<Zona>{
+public class ZonaModificationServices extends BaseServices{
 	
 	public ZonaModificationServices(ServletContext context) {
 		this.context=context;

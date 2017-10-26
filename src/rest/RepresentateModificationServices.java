@@ -15,7 +15,7 @@ import vos.Representante;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RepresentateModificationServices extends BaseServices implements CRUDEst<Representante> {
+public class RepresentateModificationServices extends BaseServices {
 
 	public RepresentateModificationServices(ServletContext context) {
 		this.context=context;

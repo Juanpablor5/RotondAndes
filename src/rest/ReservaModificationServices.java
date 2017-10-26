@@ -18,7 +18,7 @@ import vos.Reserva;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ReservaModificationServices extends BaseServices implements CRUDEst<Reserva>,URLS{
+public class ReservaModificationServices extends BaseServices implements URLS{
 	public ReservaModificationServices(ServletContext context) {
 		this.context=context;
 	}

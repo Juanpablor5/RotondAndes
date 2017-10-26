@@ -26,7 +26,7 @@ public class GenericDao<T> extends Connector {
 
 	public GenericDao(Class<T> clase, Connection conn) {
 		this.clase = clase;
-		extr= new Extractor<>(clase);
+		extr = new Extractor<>(clase);
 		setConn(conn);
 		TABLA = clase.getSimpleName();
 		List<Field> ids = new LinkedList<>();
@@ -172,10 +172,8 @@ public class GenericDao<T> extends Connector {
 				if (field.isAnnotationPresent(SISTRANS_Columna.class)) {
 					seters.add(field.getName() + " = " + format(field, get(field, registro)));
 				} else if (field.isAnnotationPresent(ForeignKey.class)) {
-					if (get(field, registro) != null) {
+					if (get(field, registro) != null)
 						seters.addAll(foreings(field, get(field, registro)));
-					} else if (!field.getAnnotation(ForeignKey.class).nullable())
-						throw new SQLException("la llave foranea: " + field.getName() + " no puede ser nula");
 				}
 			}
 			executeModification(
@@ -191,6 +189,14 @@ public class GenericDao<T> extends Connector {
 		String sql = "DELETE FROM " + TABLA;
 		sql += SearchSentence(references);
 
+		executeModification(sql);
+	}
+
+	public final void removeAllSub(Object padre) throws SQLException {
+		Class<?> claseP = padre.getClass();
+		String sql = "DELETE FROM " + TABLA;
+		sql += " WHERE" + SearchSentence(fieldOfClass(claseP), padre);
+		
 		executeModification(sql);
 	}
 

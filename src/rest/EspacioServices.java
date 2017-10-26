@@ -17,7 +17,7 @@ import vos.Espacio;
 @Path(URLS.ESPACIO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class EspacioServices extends BaseServices implements CRUDR<Espacio>,URLS{
+public class EspacioServices extends BaseServices implements URLS{
 
 	@GET
 	@Path("{" + ESPACIOID + ": \\d+}")

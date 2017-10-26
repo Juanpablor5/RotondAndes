@@ -16,7 +16,7 @@ import vos.*;
 
 public class Develop {
 	public static void main(String[] args) throws GenericException {
-		new Develop(Usuario.class);
+		new Develop(Usuario.class, Cliente.class);
 	}
 	
 	private final Hashtable<String, Arista> aristas = new Hashtable<>();

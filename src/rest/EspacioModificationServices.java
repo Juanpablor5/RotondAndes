@@ -15,7 +15,7 @@ import vos.Espacio;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class EspacioModificationServices extends BaseServices implements CRUDEst<Espacio>{
+public class EspacioModificationServices extends BaseServices{
 	
 	public EspacioModificationServices(ServletContext context) {
 		this.context=context;

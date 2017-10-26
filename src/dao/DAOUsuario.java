@@ -16,7 +16,7 @@ public class DAOUsuario extends GenericDao<Usuario>{
 		String sql = "SELECT * FROM "+TABLA+" WHERE nickName ='" + usuario +"' AND CONTRASENIA='"+contrasenia+"'";
 		ResultSet rs =executeModification(sql);
 		
-		return extr.extract(rs);
+		return extr.extractDetail(rs,conn);
 	}
 	
 	public boolean existAdmin() throws SQLException {

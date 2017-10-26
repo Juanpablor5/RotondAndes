@@ -20,7 +20,7 @@ import vos.TipoComida;
 @Path(URLS.TIPOCOMIDA)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TipoComidaServices extends BaseServices implements CRUDRest<TipoComida>,URLS{
+public class TipoComidaServices extends BaseServices implements URLS{
 	
 	@GET
 	@Override

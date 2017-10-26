@@ -17,7 +17,7 @@ import vos.Menu;
 @Path(URLS.MENU)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class MenuServices extends BaseServices implements CRUDR<Menu>,URLS{
+public class MenuServices extends BaseServices implements URLS{
 	@GET
 	@Path("{" + MENUID + ": \\d+}")
 	@Override

@@ -17,7 +17,7 @@ import vos.Zona;
 @Path(URLS.ZONA)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ZonaServices extends BaseServices implements CRUDR<Zona>,URLS{
+public class ZonaServices extends BaseServices implements URLS{
 
 	
 	@GET

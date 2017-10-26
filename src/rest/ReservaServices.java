@@ -18,7 +18,7 @@ import vos.Reserva;
 @Path(URLS.RESERVA)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ReservaServices  extends BaseServices implements CRUDR<Reserva>,URLS{
+public class ReservaServices  extends BaseServices implements URLS{
 	@GET
 	@Path("{" + RESERVAID + ": \\d+}")
 	@Override

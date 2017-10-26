@@ -15,7 +15,7 @@ import vos.Restaurante;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RestauranteModificationServices extends BaseServices implements CRUDEst<Restaurante>{
+public class RestauranteModificationServices extends BaseServices{
 
 	public RestauranteModificationServices(ServletContext context) {
 		this.context=context;

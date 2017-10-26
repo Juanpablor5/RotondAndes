@@ -17,7 +17,7 @@ import vos.Representante;
 @Path(URLS.REPRESENTANTE)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RepresentanteServices extends BaseServices implements CRUDR<Representante>,URLS{
+public class RepresentanteServices extends BaseServices implements URLS{
 	@GET
 	@Path("{" + REPRESENTANTEID + ": \\d+}")
 	@Override

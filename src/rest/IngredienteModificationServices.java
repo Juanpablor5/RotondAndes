@@ -15,7 +15,7 @@ import vos.Ingrediente;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class IngredienteModificationServices extends BaseServices implements CRUDEst<Ingrediente>{
+public class IngredienteModificationServices extends BaseServices{
 	
 	public IngredienteModificationServices(ServletContext context) {
 		this.context=context;

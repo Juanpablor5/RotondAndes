@@ -2,8 +2,6 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import em.Columna;
-import em.Id;
 import em.Id.SISTRANS_Id;
 import em.Tabla;
 import em.Columna.SISTRANS_Columna;

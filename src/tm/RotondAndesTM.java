@@ -22,114 +22,17 @@ public class RotondAndesTM extends baseTM {
 	}
 
 	// ------------------------------------------------------------------------------
-		// USUARIO
-		// ------------------------------------------------------------------------------
-
-		public Usuario login(String con, String usu) throws SQLException, RotondAndesException {
-			Usuario usuario = null;
-			updateConnection();
-			try (DAOUsuario dao = new DAOUsuario(conn)) {
-				// ------------------------
-				// START
-				// ------------------------
-				usuario = dao.get(usu, con);
-				if (usuario == null)
-					throw new RotondAndesException("usuario o contraseña incorectos");
-				conn.commit();
-				// ------------------------
-				// END
-				// ------------------------
-			} catch (SQLException e) {
-				sqlException(e);
-			} finally {
-				closeConection();
-			}
-			return usuario;
-		}
-
-		public Usuario creaUsuario(Usuario data) throws SQLException, RotondAndesException {
-			updateConnection();
-			try (DAOUsuario dao = new DAOUsuario(conn)) {
-				// ------------------------
-				// START
-				// ------------------------
-				if(data.getPermisos()==3 && dao.existAdmin())
-					throw new RotondAndesException("ya existe un administrador");
-				dao.create(data);
-				data = dao.get(data.getNickName(), data.getContrasenia());
-				conn.commit();
-				// ------------------------
-				// END
-				// ------------------------
-			} catch (SQLException e) {
-				sqlException(e);
-			} finally {
-				closeConection();
-			}
-			return data;
-		}
-
-		public Usuario updateUsuario(Usuario data) throws SQLException, RotondAndesException {
-			Usuario usuario = null;
-			updateConnection();
-			try (DAOUsuario dao = new DAOUsuario(conn)) {
-				// ------------------------
-				// START
-				// ------------------------
-				if(data.getPermisos()==3  && dao.existAdmin())
-					throw new RotondAndesException("ya existe un administrador");
-				usuario = dao.get(data);
-				if (usuario == null)
-					throw new RotondAndesException("no existe el usuario buscado");
-				dao.update(data);
-				conn.commit();
-				// ------------------------
-				// END
-				// ------------------------
-			} catch (SQLException e) {
-				sqlException(e);
-			} finally {
-				closeConection();
-			}
-			return usuario;
-		}
-
-		public Usuario deleteUsuario(Long codigo) throws SQLException, RotondAndesException {
-			Usuario usuario=null;
-			updateConnection();
-			try (DAOUsuario dao = new DAOUsuario(conn)) {
-				// ------------------------
-				// START
-				// ------------------------
-				usuario = dao.get(codigo);
-				if (usuario == null)
-					throw new RotondAndesException("no existe el usuario buscado");
-				dao.remove(usuario);
-				conn.commit();
-				// ------------------------
-				// END
-				// ------------------------
-			} catch (SQLException e) {
-				sqlException(e);
-			} finally {
-				closeConection();
-			}
-			return usuario;
-		}
-
-	// ------------------------------------------------------------------------------
-	// CLIENTE
+	// USUARIO
 	// ------------------------------------------------------------------------------
 
-	public void addCliente(Cliente data) throws RotondAndesException, Exception {
+	public Usuario getUsuario(Long id) throws SQLException, RotondAndesException {
+		Usuario usuario = null;
 		updateConnection();
-		try (DAOCliente daos = new DAOCliente(conn)) {
+		try (DAOUsuario dao = new DAOUsuario(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
-			if (daos.get(data.getCedula()) != null)
-				throw new RotondAndesException("El cliente con la cedula <" + data.getCedula() + "> ya existe");
-			daos.create(data);
+			usuario = dao.get(id);
 			conn.commit();
 			// ------------------------
 			// END
@@ -139,7 +42,106 @@ public class RotondAndesTM extends baseTM {
 		} finally {
 			closeConection();
 		}
+		return usuario;
 	}
+
+	public Usuario login(String con, String usu) throws SQLException, RotondAndesException {
+		Usuario usuario = null;
+		updateConnection();
+		try (DAOUsuario dao = new DAOUsuario(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			usuario = dao.get(usu, con);
+			if (usuario == null)
+				throw new RotondAndesException("usuario o contraseña incorectos");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return usuario;
+	}
+
+	public Usuario creaUsuario(Usuario data) throws SQLException, RotondAndesException {
+		updateConnection();
+		try (DAOUsuario dao = new DAOUsuario(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			if (data.getPermisos() == 3 && dao.existAdmin())
+				throw new RotondAndesException("ya existe un administrador");
+			dao.create(data);
+			data = dao.get(data.getNickName(), data.getContrasenia());
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Usuario updateUsuario(Usuario data) throws SQLException, RotondAndesException {
+		Usuario usuario = null;
+		updateConnection();
+		try (DAOUsuario dao = new DAOUsuario(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			if (data.getPermisos() == 3 && dao.existAdmin())
+				throw new RotondAndesException("ya existe un administrador");
+			usuario = dao.get(data);
+			if (usuario == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			dao.update(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return usuario;
+	}
+
+	public Usuario deleteUsuario(Long codigo) throws SQLException, RotondAndesException {
+		Usuario usuario = null;
+		updateConnection();
+		try (DAOUsuario dao = new DAOUsuario(conn); DAOCliente daoCliente = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			usuario = dao.get(codigo);
+			if (usuario == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			if (usuario.getPermisos() == 1)
+				daoCliente.removeAllSub(usuario);
+			dao.remove(usuario);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return usuario;
+	}
+
+	// ------------------------------------------------------------------------------
+	// CLIENTE
+	// ------------------------------------------------------------------------------
 
 	public List<Cliente> getAllCliente() throws SQLException {
 		List<Cliente> data = null;
@@ -183,15 +185,17 @@ public class RotondAndesTM extends baseTM {
 		return data;
 	}
 
-	public void updateCliente(Cliente data) throws RotondAndesException, SQLException {
+	public Cliente createCliente(Cliente data, Long codigo) throws SQLException, RotondAndesException {
 		updateConnection();
-		try (DAOCliente clientes = new DAOCliente(conn)) {
+		try (DAOCliente dao = new DAOCliente(conn); DAOUsuario daoUsuario = new DAOUsuario(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
-			if (clientes.get(data.getCedula()) == null)
-				throw new RotondAndesException("Ya existe un cliente con la cedula <" + data.getCedula() + ">");
-			clientes.update(data);
+			Usuario usuario = daoUsuario.get(codigo);
+			if (usuario.getPermisos() != 1)
+				throw new RotondAndesException("el nivel de permiso de la cuenta no corresponde a un cliente");
+			data.setRegistro(usuario);
+			dao.create(data);
 			conn.commit();
 			// ------------------------
 			// END
@@ -201,17 +205,21 @@ public class RotondAndesTM extends baseTM {
 		} finally {
 			closeConection();
 		}
+		return data;
 	}
 
-	public void deleteCliente(Cliente data) throws RotondAndesException, SQLException {
+	public Cliente updateCliente(Cliente data) throws SQLException, RotondAndesException {
+		Cliente old = null;
 		updateConnection();
-		try (DAOCliente daos = new DAOCliente(conn)) {
+		try (DAOCliente dao = new DAOCliente(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
-			if (daos.get(data.getCedula()) == null)
-				throw new RotondAndesException("No existe un cliente con la cedula<" + data.getCedula() + ">");
-			daos.remove(data);
+			old = dao.getDetail(data);
+			if (old == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			data.setRegistro(old.getRegistro());
+			dao.update(data);
 			conn.commit();
 			// ------------------------
 			// END
@@ -221,5 +229,29 @@ public class RotondAndesTM extends baseTM {
 		} finally {
 			closeConection();
 		}
+		return old;
+	}
+
+	public Cliente deleteCliente(Long cedula) throws SQLException, RotondAndesException {
+		Cliente cliente = null;
+		updateConnection();
+		try (DAOCliente dao = new DAOCliente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			cliente = dao.get(cedula);
+			if (cliente == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			dao.remove(cliente);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return cliente;
 	}
 }
