@@ -1,6 +1,7 @@
 package vos;
 
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import em.Check.SISTRANS_Check;
@@ -37,7 +38,7 @@ public class Cliente {
 
 	@Reference(mappedBy = "cliente")
 	@JsonProperty(value = "preferencias")
-	private Preferencias preferencias;
+	private List<Preferencias> preferencias;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -60,7 +61,7 @@ public class Cliente {
 	 */
 	public Cliente(@JsonProperty(value = "cedula") Long cedula, @JsonProperty(value = "nombre") String nombre,
 			@JsonProperty(value = "fechaIngreso") Date fechaIngreso,
-			@JsonProperty(value = "preferencias") Preferencias preferencias) {
+			@JsonProperty(value = "preferencias") List<Preferencias> preferencias) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
@@ -140,11 +141,11 @@ public class Cliente {
 		this.registro = registro;
 	}
 
-	public Preferencias getPreferencias() {
+	public List<Preferencias> getPreferencias() {
 		return preferencias;
 	}
 
-	public void setPreferencias(Preferencias preferencias) {
+	public void setPreferencias(List<Preferencias> preferencias) {
 		this.preferencias = preferencias;
 	}
 

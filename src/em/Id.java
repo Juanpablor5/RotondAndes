@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-
+import java.util.LinkedList;
+import java.util.List;
 import em.Tipos.Tipo;
 
 public interface Id {
@@ -41,5 +42,16 @@ public interface Id {
 			else
 				throw new GenericException("el tipo fecha no esta especificado");
 		throw new GenericException("el tipo no es un atributo atomico");
+	}
+	
+	public static Field[] ids(Class<?> clase) {
+		List<Field> ids = new LinkedList<>();
+		for (Field f : clase.getDeclaredFields())
+			if (f.isAnnotationPresent(SISTRANS_Id.class))
+				ids.add(f);
+		Field[] idsA = new Field[ids.size()];
+		for (int i = 0; i < ids.size(); i++)
+			idsA[i] = ids.get(i);
+		return idsA;
 	}
 }

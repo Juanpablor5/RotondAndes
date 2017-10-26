@@ -1761,7 +1761,7 @@ public class RotondAndesTM {
 			// ------------------------
 			// START
 			// ------------------------
-			data = daos.get(id);
+			data = daos.getDetail(id);
 			if (data == null)
 				throw new RotondAndesException("El cliente con el codigo:<" + id + ">no existe");
 			conn.commit();
