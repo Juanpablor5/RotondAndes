@@ -20,22 +20,6 @@ import vos.Restaurante;
 public class RestauranteServices extends BaseServices implements URLS{
 
 	@GET
-	@Path("{" + RESTAURANTEID + ": \\d+}")
-	@Override
-	public Response get(@PathParam(RESTAURANTEID)long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			Restaurante v = tm.getRestaurante(id);
-			return Response.status(200).entity(v).build();
-		} catch (RotondAndesException ex) {
-			return Response.status(404).entity(doErrorMessage(ex)).build();
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-	}
-
-	@GET
-	@Override
 	public Response getAll() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<Restaurante> data;
@@ -45,5 +29,19 @@ public class RestauranteServices extends BaseServices implements URLS{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(data).build();
+	}
+	
+	@GET
+	@Path("{" + RESTAURANTEID + ": \\d+}")
+	public Response get(@PathParam(RESTAURANTEID) long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			Restaurante v = tm.getRestaurante(id);
+			return Response.status(200).entity(v).build();
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
 	}
 }

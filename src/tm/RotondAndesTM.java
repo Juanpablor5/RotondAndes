@@ -117,7 +117,7 @@ public class RotondAndesTM extends baseTM {
 	public Usuario deleteUsuario(Long codigo) throws SQLException, RotondAndesException {
 		Usuario usuario = null;
 		updateConnection();
-		try (DAOUsuario dao = new DAOUsuario(conn); DAOCliente daoCliente = new DAOCliente(conn)) {
+		try (DAOUsuario dao = new DAOUsuario(conn); DAOCliente daoCliente = new DAOCliente(conn); DAORestaurante daoRestaurante= new DAORestaurante(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
@@ -126,6 +126,8 @@ public class RotondAndesTM extends baseTM {
 				throw new RotondAndesException("no existe el usuario buscado");
 			if (usuario.getPermisos() == 1)
 				daoCliente.removeAllSub(usuario);
+			if (usuario.getPermisos() == 2)
+				daoRestaurante.removeAllSub(usuario);
 			dao.remove(usuario);
 			conn.commit();
 			// ------------------------
@@ -215,10 +217,9 @@ public class RotondAndesTM extends baseTM {
 			// ------------------------
 			// START
 			// ------------------------
-			old = dao.getDetail(data);
+			old = dao.get(data);
 			if (old == null)
 				throw new RotondAndesException("no existe el usuario buscado");
-			data.setRegistro(old.getRegistro());
 			dao.update(data);
 			conn.commit();
 			// ------------------------
@@ -253,5 +254,120 @@ public class RotondAndesTM extends baseTM {
 			closeConection();
 		}
 		return cliente;
+	}
+
+	// ------------------------------------------------------------------------------
+	// RESTAURANTE
+	// ------------------------------------------------------------------------------
+
+	public List<Restaurante> getAllRestaurante() throws SQLException {
+		List<Restaurante> data = null;
+		updateConnection();
+		try (DAORestaurante daos = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getAll();
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Restaurante getRestaurante(long id) throws RotondAndesException, Exception {
+		Restaurante data = null;
+		updateConnection();
+		try (DAORestaurante daos = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getDetail(id);
+			if (data == null)
+				throw new RotondAndesException("El restaurante con el codigo:<" + id + ">no existe");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Restaurante createRestaurante(Restaurante data, Long codigo) throws SQLException, RotondAndesException {
+		updateConnection();
+		try (DAORestaurante dao = new DAORestaurante(conn); DAOUsuario daoUsuario = new DAOUsuario(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			Usuario usuario = daoUsuario.get(codigo);
+			if (usuario.getPermisos() != 2)
+				throw new RotondAndesException("el nivel de permiso de la cuenta no corresponde a un restaurante");
+			data.setRegistro(usuario);
+			dao.create(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Restaurante updateRestaurante(Restaurante data) throws SQLException, RotondAndesException {
+		Restaurante old = null;
+		updateConnection();
+		try (DAORestaurante dao = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			old = dao.get(data);
+			if (old == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			dao.update(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return old;
+	}
+
+	public Restaurante deleteRestaurante(Long cedula) throws SQLException, RotondAndesException {
+		Restaurante restaurante = null;
+		updateConnection();
+		try (DAORestaurante dao = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			restaurante = dao.get(cedula);
+			if (restaurante == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			dao.remove(restaurante);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return restaurante;
 	}
 }

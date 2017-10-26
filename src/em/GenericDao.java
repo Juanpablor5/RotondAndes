@@ -196,7 +196,7 @@ public class GenericDao<T> extends Connector {
 		Class<?> claseP = padre.getClass();
 		String sql = "DELETE FROM " + TABLA;
 		sql += " WHERE" + SearchSentence(fieldOfClass(claseP), padre);
-		
+
 		executeModification(sql);
 	}
 

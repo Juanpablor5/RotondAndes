@@ -5,6 +5,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -15,19 +17,18 @@ import vos.Restaurante;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RestauranteModificationServices extends BaseServices{
+public class RestauranteModificationServices extends BaseServices implements URLS{
 
 	public RestauranteModificationServices(ServletContext context) {
 		this.context=context;
 	}
 	
 	@POST
-	@Override
-	public Response add(Restaurante data) {
+	@Path("{" + USUARIOID + "}")
+	public Response add(@PathParam(USUARIOID)Long codigo,Restaurante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			integridad(data);
-			tm.addRestaurante(data);
+			tm.createRestaurante(data, codigo);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -37,12 +38,12 @@ public class RestauranteModificationServices extends BaseServices{
 	}
 
 	@PUT
-	@Override
-	public Response update(Restaurante data) {
+	@Path("{"+RESTAURANTEID+"}")
+	public Response update(@PathParam(RESTAURANTEID)Long id,Restaurante data) {
+		data.setId(id);
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			integridad(data);
-			tm.updateRestaurante(data);
+			data = tm.updateRestaurante(data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -52,30 +53,17 @@ public class RestauranteModificationServices extends BaseServices{
 	}
 
 	@DELETE
-	@Override
-	public Response delete(Restaurante data) {
+	@Path("{"+RESTAURANTEID+"}")
+	public Response delete(@PathParam(RESTAURANTEID)Long id) {
+		Restaurante restaurante;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.deleteRestaurante(data);
+			restaurante = tm.deleteRestaurante(id);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(data).build();
+		return Response.status(200).entity(restaurante).build();
 	}
-
-	@Override
-	public void integridad(Restaurante data) throws RotondAndesException {
-		if(data.getRegristroId()==null)
-			throw new RotondAndesException("El id del restaurante");
-		if(data.getId()==null)
-			throw new RotondAndesException("El id no puede ser null");
-		if(data.getNombre()==null)
-			throw new RotondAndesException("El nombre no puede ser null");
-		if(data.getId()<=0)
-			throw new RotondAndesException("La cedula no puede ser negativa ni cero");
-		if(data.getNombre().equals(""))
-			throw new RotondAndesException("El nombre no puedo ser vacio");
-	}	
 }
