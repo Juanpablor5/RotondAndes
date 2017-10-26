@@ -8,7 +8,7 @@ import em.Tabla;
 import em.Columna.SISTRANS_Columna;
 import em.Id.SISTRANS_Id;
 @Tabla
-public class Registro {
+public class Usuario {
 	// -------------------------------------------------------------
 	// ATRIBUTOS
 	// -------------------------------------------------------------
@@ -17,13 +17,18 @@ public class Registro {
 
 	@SISTRANS_Columna(unique=true)
 	@SISTRANS_Check(value=Checks.DIFERENT,of="")
-	@JsonProperty(value = "usuario")
-	private String usuario;
+	@JsonProperty(value = "nickName")
+	private String nickName;
 
 	@SISTRANS_Columna
 	@SISTRANS_Check(value=Checks.DIFERENT,of="")
 	@JsonProperty(value = "contrasenia")
 	private String contrasenia;
+	
+	@SISTRANS_Columna
+	@SISTRANS_Check(value=Checks.DIFERENT,of="")
+	@JsonProperty(value = "correo")
+	private String correo;
 
 	@SISTRANS_Columna
 	@SISTRANS_Check(value=Checks.BETWEEN, of="0",to="3")
@@ -34,9 +39,7 @@ public class Registro {
 	// Constructor
 	// -------------------------------------------------------------
 	
-	public Registro() {
-		// TODO Auto-generated constructor stub
-	}
+	public Usuario () {}
 
 	/**
 	 * Método constructor de la clase Registro. <b>post: </b> Crea el cliente a
@@ -51,11 +54,13 @@ public class Registro {
 	 * @param permisos
 	 *            - Traducción de descripción del cliente a registrar.
 	 */
-	public Registro(Long codigo,@JsonProperty(value = "usuario") String usuario,
-			@JsonProperty(value = "contrasena") String contrasenia, @JsonProperty(value = "permisos") Integer permisos) {
+	public Usuario(Long codigo,@JsonProperty(value = "nickName") String nickName,
+			@JsonProperty(value = "contrasena") String contrasenia,@JsonProperty(value = "correo")
+			String correo, @JsonProperty(value = "permisos") Integer permisos) {
 		super();
 		this.codigo=codigo;
-		this.usuario = usuario;
+		this.nickName = nickName;
+		this.correo=correo;
 		this.contrasenia = contrasenia;
 		this.permisos = permisos;
 	}
@@ -89,8 +94,8 @@ public class Registro {
 	 * 
 	 * @return usuario del cliente a registrar.
 	 */
-	public String getUsuario() {
-		return usuario;
+	public String getNickName() {
+		return nickName;
 	}
 
 	/**
@@ -100,8 +105,8 @@ public class Registro {
 	 * @param usuario
 	 *            - Usuario del cliente a registrar.
 	 */
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	/**
@@ -144,5 +149,13 @@ public class Registro {
 	 */
 	public void setPermisos(Integer permisos) {
 		this.permisos = permisos;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 }

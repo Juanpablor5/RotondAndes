@@ -22,9 +22,11 @@ public class GenericDao<T> extends Connector {
 	private final Class<T> clase;
 	private final Field[] ids;
 	protected final String TABLA;
+	protected final Extractor<T> extr;
 
 	public GenericDao(Class<T> clase, Connection conn) {
 		this.clase = clase;
+		extr= new Extractor<>(clase);
 		setConn(conn);
 		TABLA = clase.getSimpleName();
 		List<Field> ids = new LinkedList<>();
@@ -40,7 +42,7 @@ public class GenericDao<T> extends Connector {
 		String sql = "SELECT * FROM " + TABLA;
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractList(rs);
+		return extr.extractList(rs);
 	}
 
 	public final T get(T registro) throws SQLException {
@@ -49,7 +51,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extract(rs);
+		return extr.extract(rs);
 	}
 
 	public final T get(Object... ids) throws SQLException {
@@ -58,7 +60,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extract(rs);
+		return extr.extract(rs);
 	}
 
 	public final T getDetail(T registro) throws SQLException {
@@ -67,7 +69,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractDetail(rs, conn);
+		return extr.extractDetail(rs, conn);
 	}
 
 	public final T getDetail(Object... ids) throws SQLException {
@@ -76,7 +78,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractDetail(rs, conn);
+		return extr.extractDetail(rs, conn);
 	}
 
 	public final List<T> getAllSub(Object padre) throws SQLException {
@@ -85,7 +87,7 @@ public class GenericDao<T> extends Connector {
 		sql += " WHERE" + SearchSentence(fieldOfClass(claseP), padre);
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractList(rs);
+		return extr.extractList(rs);
 	}
 
 	public final T getSub(Object padre, T registro) throws SQLException {
@@ -95,7 +97,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extract(rs);
+		return extr.extract(rs);
 	}
 
 	public final T getSub(Object padre, Object... ids) throws SQLException {
@@ -105,7 +107,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extract(rs);
+		return extr.extract(rs);
 	}
 
 	public final T getDetailSub(Object padre, T registro) throws SQLException {
@@ -115,7 +117,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractDetail(rs, conn);
+		return extr.extractDetail(rs, conn);
 	}
 
 	public final T getDetailSub(Object padre, Object... ids) throws SQLException {
@@ -125,7 +127,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractDetail(rs, conn);
+		return extr.extractDetail(rs, conn);
 	}
 
 	public final List<T> getWithForeing(Field field, Object object) throws SQLException {
@@ -134,7 +136,7 @@ public class GenericDao<T> extends Connector {
 
 		ResultSet rs = executeModification(sql);
 
-		return new Extractor<T>(clase).extractList(rs);
+		return extr.extractList(rs);
 	}
 
 	public void create(T objeto) throws SQLException {

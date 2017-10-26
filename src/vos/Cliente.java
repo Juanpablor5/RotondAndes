@@ -34,7 +34,7 @@ public class Cliente {
 
 	@Reference
 	@ForeignKey(unique = true)
-	private Registro registro;
+	private Usuario registro;
 
 	@Reference(mappedBy = "cliente")
 	@JsonProperty(value = "preferencias")
@@ -133,11 +133,11 @@ public class Cliente {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	public Registro getRegistro() {
+	public Usuario getRegistro() {
 		return registro;
 	}
 
-	public void setRegistro(Registro registro) {
+	public void setRegistro(Usuario registro) {
 		this.registro = registro;
 	}
 

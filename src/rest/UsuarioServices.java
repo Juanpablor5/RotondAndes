@@ -10,26 +10,22 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import sun.util.logging.resources.logging;
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Registro;
-import vos.login;
+import vos.Usuario;
 
-@Path(URLS.REGISTRO)
+@Path(URLS.USUARIO)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RegistroServices extends BaseServices implements URLS {
+public class UsuarioServices extends BaseServices implements URLS {
 
 	@GET
 	@Path("{usu}-{con}")
 	public Response get(@PathParam("usu")String usu,@PathParam("con")String con ) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		Registro videos;
+		Usuario videos;
 		try {
 			videos = tm.login(con,usu);
 		} catch (RotondAndesException e) {
@@ -41,10 +37,12 @@ public class RegistroServices extends BaseServices implements URLS {
 	}
 
 	@POST
-	public Response add(Registro data) {
+	public Response add(Usuario data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.creaRegistro(data);
+			data = tm.creaUsuario(data);
+		} catch (RotondAndesException e) {
+			return Response.status(412).entity(doErrorMessage(e)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -52,12 +50,12 @@ public class RegistroServices extends BaseServices implements URLS {
 	}
 
 	@PUT
-	@Path("{"+REGISTROID+": \\d+}")
-	public Response update(Registro data,@PathParam(REGISTROID) long codigo) {
+	@Path("{"+USUARIOID+": \\d+}")
+	public Response update(Usuario data,@PathParam(USUARIOID) long codigo) {
 		data.setCodigo(codigo);
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data=tm.updateRegistro(data);
+			data=tm.updateUsuario(data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -67,12 +65,12 @@ public class RegistroServices extends BaseServices implements URLS {
 	}
 
 	@DELETE
-	@Path("{"+REGISTROID+": \\d+}")
-	public Response delete(@PathParam(REGISTROID) long codigo) {
-		Registro data;
+	@Path("{"+USUARIOID+": \\d+}")
+	public Response delete(@PathParam(USUARIOID) long codigo) {
+		Usuario data;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data=tm.deleteRegistro(codigo);
+			data=tm.deleteUsuario(codigo);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {

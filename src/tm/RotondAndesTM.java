@@ -22,96 +22,100 @@ public class RotondAndesTM extends baseTM {
 	}
 
 	// ------------------------------------------------------------------------------
-	// REGISTRO
-	// ------------------------------------------------------------------------------
+		// USUARIO
+		// ------------------------------------------------------------------------------
 
-	public Registro login(String con, String usu) throws SQLException, RotondAndesException {
-		Registro registro = null;
-		updateConnection();
-		try (DAORegistro dao = new DAORegistro(conn)) {
-			// ------------------------
-			// START
-			// ------------------------
-			registro = dao.get(usu, con);
-			if (registro == null)
-				throw new RotondAndesException("usuario o contraseña incorectos");
-			conn.commit();
-			// ------------------------
-			// END
-			// ------------------------
-		} catch (SQLException e) {
-			sqlException(e);
-		} finally {
-			closeConection();
+		public Usuario login(String con, String usu) throws SQLException, RotondAndesException {
+			Usuario usuario = null;
+			updateConnection();
+			try (DAOUsuario dao = new DAOUsuario(conn)) {
+				// ------------------------
+				// START
+				// ------------------------
+				usuario = dao.get(usu, con);
+				if (usuario == null)
+					throw new RotondAndesException("usuario o contraseña incorectos");
+				conn.commit();
+				// ------------------------
+				// END
+				// ------------------------
+			} catch (SQLException e) {
+				sqlException(e);
+			} finally {
+				closeConection();
+			}
+			return usuario;
 		}
-		return registro;
-	}
 
-	public Registro creaRegistro(Registro data) throws SQLException {
-		updateConnection();
-		try (DAORegistro dao = new DAORegistro(conn)) {
-			// ------------------------
-			// START
-			// ------------------------
-			dao.create(data);
-			data = dao.get(data.getUsuario(), data.getContrasenia());
-			conn.commit();
-			// ------------------------
-			// END
-			// ------------------------
-		} catch (SQLException e) {
-			sqlException(e);
-		} finally {
-			closeConection();
+		public Usuario creaUsuario(Usuario data) throws SQLException, RotondAndesException {
+			updateConnection();
+			try (DAOUsuario dao = new DAOUsuario(conn)) {
+				// ------------------------
+				// START
+				// ------------------------
+				if(data.getPermisos()==3 && dao.existAdmin())
+					throw new RotondAndesException("ya existe un administrador");
+				dao.create(data);
+				data = dao.get(data.getNickName(), data.getContrasenia());
+				conn.commit();
+				// ------------------------
+				// END
+				// ------------------------
+			} catch (SQLException e) {
+				sqlException(e);
+			} finally {
+				closeConection();
+			}
+			return data;
 		}
-		return data;
-	}
 
-	public Registro updateRegistro(Registro data) throws SQLException, RotondAndesException {
-		Registro registro = null;
-		updateConnection();
-		try (DAORegistro dao = new DAORegistro(conn)) {
-			// ------------------------
-			// START
-			// ------------------------
-			registro = dao.get(data);
-			if (registro == null)
-				throw new RotondAndesException("no existe el registro buscado");
-			dao.update(data);
-			conn.commit();
-			// ------------------------
-			// END
-			// ------------------------
-		} catch (SQLException e) {
-			sqlException(e);
-		} finally {
-			closeConection();
+		public Usuario updateUsuario(Usuario data) throws SQLException, RotondAndesException {
+			Usuario usuario = null;
+			updateConnection();
+			try (DAOUsuario dao = new DAOUsuario(conn)) {
+				// ------------------------
+				// START
+				// ------------------------
+				if(data.getPermisos()==3  && dao.existAdmin())
+					throw new RotondAndesException("ya existe un administrador");
+				usuario = dao.get(data);
+				if (usuario == null)
+					throw new RotondAndesException("no existe el usuario buscado");
+				dao.update(data);
+				conn.commit();
+				// ------------------------
+				// END
+				// ------------------------
+			} catch (SQLException e) {
+				sqlException(e);
+			} finally {
+				closeConection();
+			}
+			return usuario;
 		}
-		return registro;
-	}
 
-	public Registro deleteRegistro(Long codigo) throws SQLException, RotondAndesException {
-		Registro registro=null;
-		updateConnection();
-		try (DAORegistro dao = new DAORegistro(conn)) {
-			// ------------------------
-			// START
-			// ------------------------
-			registro = dao.get(codigo);
-			if (registro == null)
-				throw new RotondAndesException("no existe el registro buscado");
-			dao.remove(registro);
-			conn.commit();
-			// ------------------------
-			// END
-			// ------------------------
-		} catch (SQLException e) {
-			sqlException(e);
-		} finally {
-			closeConection();
+		public Usuario deleteUsuario(Long codigo) throws SQLException, RotondAndesException {
+			Usuario usuario=null;
+			updateConnection();
+			try (DAOUsuario dao = new DAOUsuario(conn)) {
+				// ------------------------
+				// START
+				// ------------------------
+				usuario = dao.get(codigo);
+				if (usuario == null)
+					throw new RotondAndesException("no existe el usuario buscado");
+				dao.remove(usuario);
+				conn.commit();
+				// ------------------------
+				// END
+				// ------------------------
+			} catch (SQLException e) {
+				sqlException(e);
+			} finally {
+				closeConection();
+			}
+			return usuario;
 		}
-		return registro;
-	}
 
 	// ------------------------------------------------------------------------------
 	// CLIENTE
