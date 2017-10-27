@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Tabla;
 import em.Id.SISTRANS_Id;
 import em.Many.ManytoMany;
 import jdk.nashorn.internal.ir.annotations.Reference;
@@ -11,6 +12,7 @@ import jdk.nashorn.internal.ir.annotations.Reference;
 /**
  * Clase que representa un Ingrediente.
  */
+@Tabla
 public class Ingrediente {
 
 	// -------------------------------------------------------------

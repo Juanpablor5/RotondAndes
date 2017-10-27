@@ -1,6 +1,7 @@
 package em;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,10 +17,11 @@ import vos.*;
 
 public class Develop {
 	public static void main(String[] args) throws GenericException {
-		new Develop(Usuario.class, Cliente.class, Restaurante.class);
+		new Develop(Categoria.class,Cliente.class,Espacio.class,Ingrediente.class,Menu.class,Pedido.class,Preferencias.class,Producto.class,Representante.class,Reserva.class,Restaurante.class,TipoComida.class,Usuario.class,Zona.class);
 	}
 	
 	private final Hashtable<String, Arista> aristas = new Hashtable<>();
+	private final Hashtable<String, Arista> aristasAux = new Hashtable<>();
 	private final Hashtable<Arista, String> sentencias = new Hashtable<>();
 	private final Hashtable<Arista, Class<?>> clasesTabla = new Hashtable<>();
 
@@ -29,6 +31,7 @@ public class Develop {
 
 		inicializar(clases);
 		foreings();
+		aristas.putAll(aristasAux);
 		String senencia = generateSentencia(new DFSImpl(aristas.values().iterator()).getOrden());
 
 		System.out.println(senencia);
@@ -88,7 +91,8 @@ public class Develop {
 					actual.getForeings().add(ref);
 					actual.getForeingsField().add(field);
 				} else if (field.isAnnotationPresent(ManytoMany.class)) {
-					Arista ref = aristas.get(field.getType().getSimpleName());
+					Class<?> clase= (Class<?>) ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
+					Arista ref = aristas.get(clase.getSimpleName());
 					if (ref == null)
 						throw new GenericException("la referencia no es a otra tabla");
 					crearManyToMany(actual, ref, !field.getAnnotation(ManytoMany.class).mapped().equals(""),field.getName());
@@ -111,14 +115,14 @@ public class Develop {
 		boolean esta = false;
 		String refF=null;
 		for (Field field : clasesTabla.get(ref).getDeclaredFields())
-			if (field.isAnnotationPresent(ManytoMany.class) && field.getType().equals(clasesTabla.get(actual))) {
+			if (field.isAnnotationPresent(ManytoMany.class) &&  field.getType().equals(List.class) && ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0].equals(clasesTabla.get(actual))) {
 				esta = true;
 				refF = field.getName();
 				if (!(!field.getAnnotation(ManytoMany.class).mapped().equals("") ^ padre))
-					throw new GenericException("el padre de la relacion es ambiguo");
+					throw new GenericException("el padre de la relacion es ambiguo:" +actual.getTableName()+"_"+ref.getTableName());
 			}
 		if (!esta)
-			throw new GenericException("la relacion many to many no esta  declarada a ambo lados");
+			throw new GenericException("la relacion many to many no esta  declarada a ambo lados:");
 
 		List<Arista> listaForeings = new LinkedList<>();
 		List<Field> ids = new LinkedList<>();
@@ -133,7 +137,7 @@ public class Develop {
 				: ref.getTableName() + "_" + actual.getTableName();
 
 		Arista arista = new Arista(name, ids, listaForeings, null);
-		aristas.put(name, arista);
+		aristasAux.put(name, arista);
 		sentencias.put(arista, Many.CREATE(name,actual,actualF, ref,refF));
 	}
 }

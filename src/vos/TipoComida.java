@@ -3,6 +3,7 @@ package vos;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import em.Checks;
+import em.Tabla;
 import em.Check.SISTRANS_Check;
 import em.Columna.SISTRANS_Columna;
 import em.Id.SISTRANS_Id;
@@ -10,6 +11,7 @@ import em.Id.SISTRANS_Id;
 /**
  * Clase que representa un tipo de comida.
  */
+@Tabla
 public class TipoComida {
 
 	// -------------------------------------------------------------

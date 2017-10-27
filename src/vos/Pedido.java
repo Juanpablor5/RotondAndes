@@ -6,6 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import em.DateAnotation;
 import em.Reference;
+import em.Tabla;
 import em.Columna.SISTRANS_Columna;
 import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
@@ -14,6 +15,7 @@ import em.Many.ManytoMany;
 /**
  * Clase que representa un pedido.
  */
+@Tabla
 public class Pedido {
 
 	// -------------------------------------------------------------
@@ -35,7 +37,7 @@ public class Pedido {
 	
 	@Reference
 	@ManytoMany(mapped="Menus")
-	private List<Pedido> pedidos;
+	private List<Menu> pedidos;
 
 	// -------------------------------------------------------------
 	// Constructor

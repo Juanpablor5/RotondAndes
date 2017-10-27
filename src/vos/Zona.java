@@ -3,12 +3,14 @@ package vos;
 import org.codehaus.jackson.annotate.JsonProperty;
 import em.Id.SISTRANS_Id;
 import em.Checks;
+import em.Tabla;
 import em.Check.SISTRANS_Check;
 import em.Columna.SISTRANS_Columna;
 
 /**
  * Clase que representa una Zona.
  */
+@Tabla
 public class Zona {
 
 	// -------------------------------------------------------------

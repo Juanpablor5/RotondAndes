@@ -6,6 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import em.Checks;
 import em.Reference;
+import em.Tabla;
 import em.Check.SISTRANS_Check;
 import em.Columna.SISTRANS_Columna;
 import em.Foreing.ForeignKey;
@@ -15,6 +16,7 @@ import em.Many.ManytoMany;
 /**
  * Clase que representa un Menu.
  */
+@Tabla
 public class Menu {
 	// -------------------------------------------------------------
 	// Atributos
@@ -65,7 +67,7 @@ public class Menu {
 	
 	@Reference
 	@ManytoMany
-	private List<Menu> Menus;
+	private List<Pedido> Menus;
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
@@ -186,11 +188,11 @@ public class Menu {
 		this.restaurante = restaurante;
 	}
 
-	public List<Menu> getMenus() {
+	public List<Pedido> getMenus() {
 		return Menus;
 	}
 
-	public void setMenus(List<Menu> menus) {
+	public void setMenus(List<Pedido> menus) {
 		Menus = menus;
 	}
 }

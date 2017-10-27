@@ -8,10 +8,12 @@ import em.Columna.SISTRANS_Columna;
 import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
 import em.Reference;
+import em.Tabla;
 
 /**
  * Clase que representa un Representante.
  */
+@Tabla
 public class Representante {
 
 	// -------------------------------------------------------------
