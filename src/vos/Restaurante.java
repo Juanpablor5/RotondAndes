@@ -1,10 +1,9 @@
 package vos;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import em.Checks;
 import em.Reference;
 import em.Tabla;
+import org.codehaus.jackson.annotate.JsonProperty;
 import em.Check.SISTRANS_Check;
 import em.Columna.SISTRANS_Columna;
 import em.Foreing.ForeignKey;
@@ -36,6 +35,9 @@ public class Restaurante {
 	@Reference
 	@ForeignKey(unique = true)
 	private Usuario registro;
+	
+	@Reference(mappedBy="restaurante")
+	private Representante representante;
 
 	// /**
 	// * Id de la zona del restaurante.
@@ -49,35 +51,7 @@ public class Restaurante {
 	// @JsonProperty(value = "tipoComidaId")
 	// private Integer tipoComidaId;
 
-	public Restaurante() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * Método constructor de la clase restaurante. <b>post: </b> Crea el restaurante
-	 * con los valores que entran como parámetro.
-	 * 
-	 * @param id
-	 *            - Id del restaurante.
-	 * @param nombre
-	 *            - Nombre del restaurante. nombre != null
-	 * @param paginaWeb
-	 *            - URL de la página web del restaurante.
-	 */
-	public Restaurante(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "paginaWeb") String paginaWeb
-			// ,@JsonProperty(value = "tipoComidaId") Integer tipoComidaId
-			, @JsonProperty(value = "regristroId") Integer regristroId
-	// ,@JsonProperty(value = "zonaId") Integer zonaId
-	) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.paginaWeb = paginaWeb;
-		// this.tipoComidaId = tipoComidaId;
-		// this.regristroId = regristroId;
-		// this.zonaId = zonaId;
-	}
+	public Restaurante() {}
 
 	// -------------------------------------------------------------
 	// Getters & Setters
@@ -151,57 +125,11 @@ public class Restaurante {
 		this.registro = registro;
 	}
 
-	// /**
-	// * dar el id del reistro asociado
-	// *
-	// * @return
-	// */
-	// public Integer getRegristroId() {
-	// return regristroId;
-	// }
-	//
-	// /**
-	// * cambiar el id del registro asociado
-	// *
-	// * @param regristroId
-	// */
-	// public void setRegristroId(Integer regristroId) {
-	// this.regristroId = regristroId;
-	// }
-	//
-	// /**
-	// * Dar el tipo de comida del restaurante
-	// *
-	// * @return tipoComidaId
-	// */
-	// public Integer getTipoComidaId() {
-	// return tipoComidaId;
-	// }
-	//
-	// /**
-	// * Cambiar el tipo de comida
-	// *
-	// * @param regristroId
-	// */
-	// public void setTipoComidaId(Integer tipoComidaId) {
-	// this.tipoComidaId = tipoComidaId;
-	// }
-	//
-	// /**
-	// * Dar la zona del restaurante.
-	// *
-	// * @return zonaId
-	// */
-	// public Integer getZonaId() {
-	// return zonaId;
-	// }
-	//
-	// /**
-	// * Cambiar la zona del restaurante
-	// *
-	// * @param regristroId
-	// */
-	// public void setZonaId(Integer zonaId) {
-	// this.zonaId = zonaId;
-	// }
+	public Representante getRepresentante() {
+		return representante;
+	}
+
+	public void setRepresentante(Representante representante) {
+		this.representante = representante;
+	}
 }

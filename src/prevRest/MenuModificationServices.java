@@ -1,9 +1,8 @@
-package rest;
+package prevRest;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
@@ -11,36 +10,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import rest.BaseServices;
+import rest.URLS;
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
-import vos.Representante;
+import vos.Menu;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RepresentanteServices extends BaseServices implements URLS{
+public class MenuModificationServices extends BaseServices implements URLS{
 	
-	public RepresentanteServices(ServletContext context) {
+	public MenuModificationServices(ServletContext context) {
 		this.context=context;
-	}
-	
-	@GET
-	public Response get(@PathParam(RESTAURANTEID)Long idRestaurante) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			Representante v = tm.getRepresentante(idRestaurante);
-			return Response.status(200).entity(v).build();
-		} catch (RotondAndesException ex) {
-			return Response.status(404).entity(doErrorMessage(ex)).build();
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
 	}
 
 	@POST
-	public Response add(@PathParam(RESTAURANTEID)Long idRestaurante,Representante data) {
+	public Response add(@PathParam(REGISTROID)long codigo,Menu data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.addRepresentante(idRestaurante,data);
+			integridad(data);
+			tm.addMenu(codigo, data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -50,10 +39,11 @@ public class RepresentanteServices extends BaseServices implements URLS{
 	}
 
 	@PUT
-	public Response update(@PathParam(RESTAURANTEID)Long idRestaurante, Representante data) {
+	public Response update(@PathParam(REGISTROID)long codigo,Menu data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.updateRepresentante(idRestaurante,data);
+			integridad(data);
+			tm.updateMenu(codigo, data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -63,16 +53,32 @@ public class RepresentanteServices extends BaseServices implements URLS{
 	}
 
 	@DELETE
-	public Response delete(@PathParam(RESTAURANTEID)Long idRestaurante) {
-		Representante data;
+	public Response delete(@PathParam(REGISTROID)long codigo,Menu data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.deleteRepresentante(idRestaurante);
+			tm.deleteMenu(codigo, data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(data).build();
+	}
+
+	public void integridad(Menu data) throws RotondAndesException {
+		if(data.getCantidad()==null)
+			throw new RotondAndesException("la cantidad de productos n puede ser nula");
+		if(data.getCostoProduccion()==null)
+			throw new RotondAndesException("el costo de procucion no puede ser nulo");
+		if(data.getCantidad()<0) 
+			throw new RotondAndesException("la cantidad no puede ser menor a 0");
+		if(data.getValorAlPublico()==null)
+			throw new RotondAndesException("el valor de producion no puede ser nulo");
+		if(data.getId()==null)
+			throw new RotondAndesException("el id no puede ser nulo");
+		if(data.getValorAlPublico()<=0)
+			throw  new RotondAndesException("el valor al publico debe ser positivo");
+		if(data.getCostoProduccion()<=0)
+			throw new RotondAndesException("el costo de producion debe ser mayor a cero");
 	}
 }

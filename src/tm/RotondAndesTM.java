@@ -372,4 +372,110 @@ public class RotondAndesTM extends baseTM {
 		}
 		return restaurante;
 	}
+
+	// ------------------------------------------------------------------------------
+	// REPRESENTANTE
+	// ------------------------------------------------------------------------------
+
+	public Representante getRepresentante(Long idRestaurante) throws RotondAndesException, SQLException {
+		Representante data = null;
+		updateConnection();
+		try (DAORepresentante daoRepresentante = new DAORepresentante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			Restaurante restaurante=new Restaurante();
+			restaurante.setId(idRestaurante);
+			List<Representante> list = daoRepresentante.getAllSub(restaurante);
+			if (list.isEmpty())
+				throw new RotondAndesException("no existe un representante asociado al restaurante");
+			data=list.get(0);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Representante addRepresentante(Long idRestaurante, Representante data) throws SQLException, RotondAndesException {
+		updateConnection();
+		try (DAORestaurante daoRestaurante=new DAORestaurante(conn); DAORepresentante dao = new DAORepresentante(conn);) {
+			// ------------------------
+			// START
+			// ------------------------
+			Restaurante restaurante=daoRestaurante.get(idRestaurante);
+			if (restaurante == null)
+				throw new RotondAndesException("no existe el restaurante");
+			data.setRestaurante(restaurante);
+			dao.create(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Representante updateRepresentante(Long idRestaurante, Representante data) throws SQLException, RotondAndesException {
+		Representante old = null;
+		updateConnection();
+		try (DAORestaurante daoRestaurante=new DAORestaurante(conn); DAORepresentante dao = new DAORepresentante(conn);) {
+			// ------------------------
+			// START
+			// ------------------------
+			Restaurante restaurante=new Restaurante();
+			restaurante.setId(idRestaurante);
+			List<Representante> list = dao.getAllSub(restaurante);
+			if (list.isEmpty())
+				throw new RotondAndesException("no existe un representante asociado al restaurante");
+			old=list.get(0);
+			data.setId(old.getId());
+			data.setRestaurante(null);
+			dao.update(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return old;
+	}
+
+	public Representante deleteRepresentante(Long idRestaurante) throws RotondAndesException, SQLException {
+		Representante old = null;
+		updateConnection();
+		try (DAORestaurante daoRestaurante=new DAORestaurante(conn); DAORepresentante dao = new DAORepresentante(conn);) {
+			// ------------------------
+			// START
+			// ------------------------
+			Restaurante restaurante=new Restaurante();
+			restaurante.setId(idRestaurante);
+			List<Representante> list = dao.getAllSub(restaurante);
+			if (list.isEmpty())
+				throw new RotondAndesException("no existe un representante asociado al restaurante");
+			old=list.get(0);
+			dao.remove(old);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return old;
+	}
 }

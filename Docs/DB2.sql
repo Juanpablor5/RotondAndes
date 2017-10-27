@@ -149,7 +149,6 @@ correo VARCHAR2(100) NOT NULL,
 CHECK (correo <> ''),
 restaurante_id INTEGER NOT NULL,
 CONSTRAINT FK_Representante1 FOREIGN KEY ( restaurante_id ) REFERENCES Restaurante( id ),
-CONSTRAINT FK_Representante1_U UNIQUE ( restaurante_id ),
 CONSTRAINT PK_Representante PRIMARY KEY ( id )
 );
 
@@ -216,5 +215,7 @@ INSERT INTO CLIENTE ( CEDULA,NOMBRE,FECHAINGRESO,REGISTRO_CODIGO ) VALUES (4,'ma
 
 INSERT INTO RESTAURANTE (NOMBRE,PAGINAWEB,REGISTRO_CODIGO) VALUES ('pizzeria los alpes','https://pizzeriadelosalpes.wixsite.com/pizzeriadelosalpes',3);
 INSERT INTO RESTAURANTE (NOMBRE,PAGINAWEB,REGISTRO_CODIGO) VALUES ('la tiendita de rocha','https://que_es_esa_mierda',2);
+
+INSERT INTO REPRESENTANTE (NOMBRE,TELEFONO,CORREO,RESTAURANTE_ID) VALUES ('rocha',123456,'nomeacuedo@uniandes.edu.co',1);
 
 COMMIT;

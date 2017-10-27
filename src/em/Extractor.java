@@ -142,7 +142,9 @@ public class Extractor<T> {
 				Field f = field.getType().getDeclaredField(field.getAnnotation(Reference.class).mappedBy());
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				GenericDao<Object> tm = new GenericDao(field.getType(), conn);
-				set(field, t, tm.getWithForeing(f, t).get(0));
+				List<Object> ans=tm.getWithForeing(f, t);
+				if(!ans.isEmpty())
+					set(field, t, ans.get(0));
 				tm.close();
 			}
 			for(Field field: referencesList) {

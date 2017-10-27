@@ -39,6 +39,8 @@ public class Usuario {
 
 	@Reference(mappedBy = "registro")
 	private Cliente cliente;
+	@Reference(mappedBy="registro")
+	private Restaurante restaurante;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -46,31 +48,6 @@ public class Usuario {
 
 	public Usuario() {
 	}
-
-	/**
-	 * Método constructor de la clase Registro. <b>post: </b> Crea el cliente a
-	 * registrar con los valores que entran como parámetro.
-	 * 
-	 * @param codigo
-	 *            - Id del cliente a registrar.
-	 * @param usuario
-	 *            - Nombre del cliente a registrar. usuario != null
-	 * @param contraseña
-	 *            - Descripción del cliente a registrar. contraseña != null
-	 * @param permisos
-	 *            - Traducción de descripción del cliente a registrar.
-	 */
-	public Usuario(Long codigo, @JsonProperty(value = "nickName") String nickName,
-			@JsonProperty(value = "contrasena") String contrasenia, @JsonProperty(value = "correo") String correo,
-			@JsonProperty(value = "permisos") Integer permisos) {
-		super();
-		this.codigo = codigo;
-		this.nickName = nickName;
-		this.correo = correo;
-		this.contrasenia = contrasenia;
-		this.permisos = permisos;
-	}
-
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------
@@ -171,4 +148,11 @@ public class Usuario {
 		this.cliente = cliente;
 	}
 
+	public Restaurante getRestaurante() {
+		return restaurante;
+	}
+
+	public void setRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
+	}
 }
