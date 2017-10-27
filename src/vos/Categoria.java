@@ -26,7 +26,7 @@ public class Categoria {
 	/**
 	 * Nombre de la categoría.
 	 */
-	@SISTRANS_Columna
+	@SISTRANS_Columna(unique=true)
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
@@ -34,6 +34,10 @@ public class Categoria {
 	// Constructor
 	// -------------------------------------------------------------
 
+	public Categoria() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	/**
 	 * Método constructor de la clase categoría. <b>post: </b> Crea la categoría
 	 * con los valores que entran como parámetro.

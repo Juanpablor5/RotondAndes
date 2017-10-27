@@ -1,6 +1,12 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import em.Id.SISTRANS_Id;
+import em.Many.ManytoMany;
+import jdk.nashorn.internal.ir.annotations.Reference;
 
 /**
  * Clase que representa un Ingrediente.
@@ -11,9 +17,7 @@ public class Ingrediente {
 	// Atributos
 	// -------------------------------------------------------------
 
-	/**
-	 * Id del ingrediente.
-	 */
+	@SISTRANS_Id(AutoIncrement=true)
 	@JsonProperty(value = "id")
 	private Long id;
 
@@ -34,11 +38,19 @@ public class Ingrediente {
 	 */
 	@JsonProperty(value = "traduccion")
 	private String traduccion;
+	
+	@Reference
+	@ManytoMany
+	private List<Producto> productos;
 
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
 
+	public Ingrediente() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	/**
 	 * Método constructor de la clase ingrediente. <b>post: </b> Crea el
 	 * ingrediente con los valores que entran como parámetro.
@@ -145,5 +157,13 @@ public class Ingrediente {
 	 */
 	public void setTraduccion(String traduccion) {
 		this.traduccion = traduccion;
+	}
+
+	public List<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
 	}
 }

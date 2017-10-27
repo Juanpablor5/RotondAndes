@@ -19,7 +19,7 @@ public class Restaurante {
 	// -------------------------------------------------------------
 	// Atributos
 	// -------------------------------------------------------------
-	@SISTRANS_Id(AutoIncrement=true)
+	@SISTRANS_Id(AutoIncrement = true)
 	@JsonProperty(value = "id")
 	private Long id;
 
@@ -52,7 +52,7 @@ public class Restaurante {
 	public Restaurante() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * Método constructor de la clase restaurante. <b>post: </b> Crea el restaurante
 	 * con los valores que entran como parámetro.

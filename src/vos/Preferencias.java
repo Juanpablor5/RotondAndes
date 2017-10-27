@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import em.Check.SISTRANS_Check;
 import em.Checks;
+import em.Reference;
 import em.Id.SISTRANS_Id;
 import em.Tabla;
 import em.Columna.SISTRANS_Columna;
@@ -32,6 +33,7 @@ public class Preferencias {
 	@JsonProperty(value = "precioMayor")
 	private Double precioMayor;
 
+	@Reference
 	@ForeignKey(unique=true)
 	private Cliente cliente;
 	// -------------------------------------------------------------

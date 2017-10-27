@@ -1,8 +1,16 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Checks;
+import em.Reference;
+import em.Check.SISTRANS_Check;
+import em.Columna.SISTRANS_Columna;
+import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
+import em.Many.ManytoMany;
 
 /**
  * Clase que representa un Producto.
@@ -12,50 +20,44 @@ public class Producto {
 	// -------------------------------------------------------------
 	// Atributos
 	// -------------------------------------------------------------
-
-	/**
-	 * Id del producto.
-	 */
-	@SISTRANS_Id
+	@SISTRANS_Id(AutoIncrement = true)
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Nombre del producto.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	/**
-	 * Descripción del producto.
-	 */
+	@SISTRANS_Columna(maxSize = 1000)
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "descripcion")
 	private String descripcion;
 
-	/**
-	 * Traducción de descripción del producto.
-	 */
+	@SISTRANS_Columna(maxSize = 1200)
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "traduccion")
 	private String traduccion;
 
-	/**
-	 * El tiempo en minutos de la preparación.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.HIGHER, of = "0")
 	@JsonProperty(value = "tiempoPreparacion")
 	private Integer tiempoPreparacion;
 
-	/**
-	 * categoria a la que pertenece un producto
-	 */
-	@JsonProperty(value = "idCategoria")
-	private Long idCategoria;
+	@Reference
+	@ForeignKey
+	private Categoria categoria;
+	
+	@Reference
+	@ManytoMany(mapped="productos")
+	private List<Ingrediente> ingredientes;
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
 
 	/**
-	 * Método constructor de la clase producto. <b>post: </b> Crea el producto
-	 * con los valores que entran como parámetro.
+	 * Método constructor de la clase producto. <b>post: </b> Crea el producto con
+	 * los valores que entran como parámetro.
 	 * 
 	 * @param id
 	 *            - Id del producto.
@@ -67,20 +69,19 @@ public class Producto {
 	 *            - Traducción de descripción del producto.
 	 * @param tiempoPreparacion
 	 *            - El tiempo en minutos de la preparación.
-	 * @param categoriaID 
+	 * @param categoriaID
 	 */
-	public Producto(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "descripcion") String descripcion,
+	public Producto(Categoria categoria, @JsonProperty(value = "id") Long id,
+			@JsonProperty(value = "nombre") String nombre, @JsonProperty(value = "descripcion") String descripcion,
 			@JsonProperty(value = "traduccion") String traduccion,
-			@JsonProperty(value = "tiempoPreparacion") Integer tiempoPreparacion,
-			@JsonProperty(value = "idCategoria") Long idCategoria) {
+			@JsonProperty(value = "tiempoPreparacion") Integer tiempoPreparacion) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.traduccion = traduccion;
 		this.tiempoPreparacion = tiempoPreparacion;
-		this.idCategoria=idCategoria;
+		this.categoria = categoria;
 	}
 
 	// -------------------------------------------------------------
@@ -179,8 +180,8 @@ public class Producto {
 
 	/**
 	 * Método setter del atributo tiempoPreparacion <b>post: </b> El
-	 * tiempoPreparacion del producto ha sido cambiado con el valor que entra
-	 * como parámetro.
+	 * tiempoPreparacion del producto ha sido cambiado con el valor que entra como
+	 * parámetro.
 	 * 
 	 * @param tiempoPreparacion
 	 *            - Tiempo de preparación del producto.
@@ -189,20 +190,19 @@ public class Producto {
 		this.tiempoPreparacion = tiempoPreparacion;
 	}
 
-	/**
-	 * dar el id de la categoria a la que pertenece
-	 * @return
-	 */
-	public Long getIdCategoria() {
-		return idCategoria;
+	public Categoria getCategoria() {
+		return categoria;
 	}
-	
-	/**
-	 * cambiar la categoria a la que pertenece un producto
-	 * @param categoriaID
-	 */
-	public void setIdCategoria(Long idCategoria) {
-		this.idCategoria = idCategoria;
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
-	
+
+	public List<Ingrediente> getIngredientes() {
+		return ingredientes;
+	}
+
+	public void setIngredientes(List<Ingrediente> ingredientes) {
+		this.ingredientes = ingredientes;
+	}
 }

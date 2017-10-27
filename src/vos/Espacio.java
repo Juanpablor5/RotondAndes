@@ -2,6 +2,13 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Checks;
+import em.Check.SISTRANS_Check;
+import em.Columna.SISTRANS_Columna;
+import em.Foreing.ForeignKey;
+import em.Id.SISTRANS_Id;
+import em.Reference;
+
 /**
  * Clase que representa un Espacio.
  */
@@ -10,49 +17,36 @@ public class Espacio {
 	// -------------------------------------------------------------
 	// Atributos
 	// -------------------------------------------------------------
-
-	/**
-	 * Id del espacio.
-	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Indica el acondicionamiento del espacio.
-	 */
+	@SISTRANS_Columna(maxSize=500)
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "acondicionamiento")
 	private String acondicionamiento;
 
-	/**
-	 * Determina si el espacio está abierto o cerrado.
-	 */
+	@SISTRANS_Columna
 	@JsonProperty(value = "abierto")
-	private Integer abierto;
+	private Boolean abierto;
 
-	/**
-	 * Indica la capacidad del espacio.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value=Checks.HIGHER, of="0")
 	@JsonProperty(value = "capacidad")
 	private Integer capacidad;
 
-	/**
-	 * Indica si el espacio es apto para el ingreso de personas con necesidades
-	 * especiales.
-	 */
+	@SISTRANS_Columna
 	@JsonProperty(value = "necesidadesEspeciales")
-	private Integer necesidadesEspeciales;
+	private Boolean necesidadesEspeciales;
 
-	/**
-	 * Indica las condiciones técnicas que tiene el espacio.
-	 */
+	@SISTRANS_Columna(maxSize=500)
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "condicionesTecnicas")
 	private String condicionesTecnicas;
 	
-	/**
-	 * Indica la zona del espacio
-	 */
-	@JsonProperty(value = "zonaId")
-	private Integer zonaId;
+	@Reference
+	@ForeignKey
+	private Zona zona;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -78,10 +72,10 @@ public class Espacio {
 	 */
 	public Espacio(@JsonProperty(value = "id") Long id,
 			@JsonProperty(value = "acondicionamiento") String acondicionamiento,
-			@JsonProperty(value = "abierto") Integer abierto, @JsonProperty(value = "capacidad") Integer capacidad,
-			@JsonProperty(value = "necesidadesEspeciales") Integer necesidadesEspeciales,
+			@JsonProperty(value = "abierto") Boolean abierto, @JsonProperty(value = "capacidad") Integer capacidad,
+			@JsonProperty(value = "necesidadesEspeciales") Boolean necesidadesEspeciales,
 			@JsonProperty(value = "condicionesTecnicas") String condicionesTecnicas,
-			@JsonProperty(value = "zonaId") Integer zonaId) {
+			Zona zonaId) {
 		super();
 		this.id = id;
 		this.acondicionamiento = acondicionamiento;
@@ -89,7 +83,7 @@ public class Espacio {
 		this.capacidad = capacidad;
 		this.necesidadesEspeciales = necesidadesEspeciales;
 		this.condicionesTecnicas = condicionesTecnicas;
-		this.zonaId = zonaId;
+		this.zona = zonaId;
 	}
 
 	// -------------------------------------------------------------
@@ -141,7 +135,7 @@ public class Espacio {
 	 * 
 	 * @return True si el espacio está abierto, false de lo contrario.
 	 */
-	public Integer getAbierto() {
+	public Boolean getAbierto() {
 		return abierto;
 	}
 
@@ -152,7 +146,7 @@ public class Espacio {
 	 * @param abierto
 	 *            - True si el espacio está abierto, false de lo contrario.
 	 */
-	public void setAbierto(Integer abierto) {
+	public void setAbierto(Boolean abierto) {
 		this.abierto = abierto;
 	}
 
@@ -181,7 +175,7 @@ public class Espacio {
 	 * 
 	 * @return necesidadesEspeciales del espacio.
 	 */
-	public Integer getNecesidadesEspeciales() {
+	public Boolean getNecesidadesEspeciales() {
 		return necesidadesEspeciales;
 	}
 
@@ -193,7 +187,7 @@ public class Espacio {
 	 * @param necesidadesEspeciales
 	 *            - Necesidades especiales del espacio.
 	 */
-	public void setNecesidadesEspeciales(Integer necesidadesEspeciales) {
+	public void setNecesidadesEspeciales(Boolean necesidadesEspeciales) {
 		this.necesidadesEspeciales = necesidadesEspeciales;
 	}
 
@@ -223,8 +217,8 @@ public class Espacio {
 	 * 
 	 * @return zona del espacio.
 	 */
-	public Integer getZonaId() {
-		return zonaId;
+	public Zona getZona() {
+		return zona;
 	}
 
 	/**
@@ -235,7 +229,7 @@ public class Espacio {
 	 * @param zonaId
 	 *            - zona del espacio.
 	 */
-	public void setZonaId(Integer zonaId) {
-		this.zonaId = zonaId;
+	public void setZona(Zona zonaId) {
+		this.zona = zonaId;
 	}
 }

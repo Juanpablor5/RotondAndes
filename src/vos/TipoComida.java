@@ -2,6 +2,11 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Checks;
+import em.Check.SISTRANS_Check;
+import em.Columna.SISTRANS_Columna;
+import em.Id.SISTRANS_Id;
+
 /**
  * Clase que representa un tipo de comida.
  */
@@ -11,15 +16,12 @@ public class TipoComida {
 	// Atributos
 	// -------------------------------------------------------------
 
-	/**
-	 * Id del tipo de comida.
-	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Nombre del tipo de comida.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
@@ -27,6 +29,9 @@ public class TipoComida {
 	// Constructor
 	// -------------------------------------------------------------
 
+	public TipoComida() {
+		// TODO Auto-generated constructor stub
+	}
 	/**
 	 * Método constructor de la clase tipo de comida. <b>post: </b> Crea el tipo
 	 * de comida con los valores que entran como parámetro.

@@ -1,57 +1,71 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import em.Checks;
+import em.Reference;
+import em.Check.SISTRANS_Check;
+import em.Columna.SISTRANS_Columna;
+import em.Foreing.ForeignKey;
+import em.Id.SISTRANS_Id;
+import em.Many.ManytoMany;
 
 /**
  * Clase que representa un Menu.
  */
 public class Menu {
-
 	// -------------------------------------------------------------
 	// Atributos
 	// -------------------------------------------------------------
 
-	/**
-	 * Id del menú.
-	 */
+	@SISTRANS_Id
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * La cantidad de menús que se ofrece.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.HIGHER, of = "0")
 	@JsonProperty(value = "cantidad")
 	private Integer cantidad;
 
-	/**
-	 * El costo de producción del menú.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.HIGHER, of = "0")
 	@JsonProperty(value = "costoProduccion")
 	private Double costoProduccion;
 
-	/**
-	 * El valor al público del menú.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.HIGHER, of = "0")
 	@JsonProperty(value = "valorAlPublico")
 	private Double valorAlPublico;
 	
-	@JsonProperty(value = "productoEntrada")
-	private Long productoEntrada;
+	@Reference
+	@ForeignKey
+	private Producto productoEntrada;
 	
-	@JsonProperty(value = "productoFuerte")
-	private Long productoFuerte;
+	@Reference
+	@ForeignKey
+	private Producto productoFuerte;
 
-	@JsonProperty(value = "productoBebida")
-	private Long productoBebida;
+	@Reference
+	@ForeignKey
+	private Producto productoBebida;
 	
-	@JsonProperty(value = "productoPostre")
-	private Long productoPostre;
+	@Reference
+	@ForeignKey
+	private Producto productoPostre;
 	
-	@JsonProperty(value = "productoAcompanamiento")
-	private Long productoAcompanamiento;
+	@Reference
+	@ForeignKey
+	private Producto productoAcompanamiento;
 	
-	@JsonProperty(value = "restauranteID")
-	private Long restauranteID;
+	@Reference
+	@ForeignKey
+	private Restaurante restaurante;
+	
+	@Reference
+	@ManytoMany
+	private List<Menu> Menus;
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
@@ -78,24 +92,12 @@ public class Menu {
 	public Menu(@JsonProperty(value = "id") Long id,
 			@JsonProperty(value = "cantidad") Integer cantidad,
 			@JsonProperty(value = "costoProduccion") Double costoProduccion,
-			@JsonProperty(value = "valorAlPublico") Double valorAlPublico,
-			@JsonProperty(value = "productoEntrada") Long productoEntrada,
-			@JsonProperty(value = "productoFuerte") Long productoFuerte,
-			@JsonProperty(value = "productoBebida") Long productoBebida,
-			@JsonProperty(value = "productoPostre") Long productoPostre,
-			@JsonProperty(value = "productoAcompanamiento") Long productoAcompanamiento,
-			@JsonProperty(value = "restauranteID") Long restauranteID) {
+			@JsonProperty(value = "valorAlPublico") Double valorAlPublico) {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
 		this.costoProduccion = costoProduccion;
 		this.valorAlPublico = valorAlPublico;
-		this.productoEntrada=productoEntrada;
-		this.productoFuerte=productoFuerte;
-		this.productoBebida=productoBebida;
-		this.productoPostre=productoPostre;
-		this.productoAcompanamiento=productoAcompanamiento;
-		this.restauranteID=restauranteID;
 	}
 
 	// -------------------------------------------------------------
@@ -136,53 +138,59 @@ public class Menu {
 		this.valorAlPublico = valorAlPublico;
 	}
 
-	public Long getProductoEntrada() {
+	public Producto getProductoEntrada() {
 		return productoEntrada;
 	}
 
-	public void setProductoEntrada(Long productoEntrada) {
+	public void setProductoEntrada(Producto productoEntrada) {
 		this.productoEntrada = productoEntrada;
 	}
 
-	public Long getProductoFuerte() {
+	public Producto getProductoFuerte() {
 		return productoFuerte;
 	}
 
-	public void setProductoFuerte(Long productoFuerte) {
+	public void setProductoFuerte(Producto productoFuerte) {
 		this.productoFuerte = productoFuerte;
 	}
 
-	public Long getProductoBebida() {
+	public Producto getProductoBebida() {
 		return productoBebida;
 	}
 
-	public void setProductoBebida(Long productoBebida) {
+	public void setProductoBebida(Producto productoBebida) {
 		this.productoBebida = productoBebida;
 	}
 
-	public Long getProductoPostre() {
+	public Producto getProductoPostre() {
 		return productoPostre;
 	}
 
-	public void setProductoPostre(Long productoPostre) {
+	public void setProductoPostre(Producto productoPostre) {
 		this.productoPostre = productoPostre;
 	}
 
-	public Long getProductoAcompanamiento() {
+	public Producto getProductoAcompanamiento() {
 		return productoAcompanamiento;
 	}
 
-	public void setProductoAcompanamiento(Long productoAcompanamiento) {
+	public void setProductoAcompanamiento(Producto productoAcompanamiento) {
 		this.productoAcompanamiento = productoAcompanamiento;
 	}
 
-	public Long getRestauranteID() {
-		return restauranteID;
+	public Restaurante getRestaurante() {
+		return restaurante;
 	}
 
-	public void setRestauranteID(Long restauranteID) {
-		this.restauranteID = restauranteID;
+	public void setRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
 	}
 
-	
+	public List<Menu> getMenus() {
+		return Menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		Menus = menus;
+	}
 }

@@ -1,6 +1,15 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import em.DateAnotation;
+import em.Reference;
+import em.Columna.SISTRANS_Columna;
+import em.Foreing.ForeignKey;
+import em.Id.SISTRANS_Id;
+import em.Many.ManytoMany;
 
 /**
  * Clase que representa un pedido.
@@ -11,23 +20,22 @@ public class Pedido {
 	// Atributos
 	// -------------------------------------------------------------
 
-	/**
-	 * Id del pedido.
-	 */
+	@SISTRANS_Id(AutoIncrement=true)
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Fecha de ingreso del pedido.
-	 */
+	@SISTRANS_Columna(valorPorDefecto = "SYSDATE")
+	@DateAnotation(completa=true)
 	@JsonProperty(value = "fechahora")
 	private String fechahora;
 	
-	/**
-	 * Cédula del cliente que hizo el pedido.
-	 */
-	@JsonProperty(value = "clienteCedula")
-	private Integer clienteCedula;
+	@Reference
+	@ForeignKey
+	private Cliente cliente;
+	
+	@Reference
+	@ManytoMany(mapped="Menus")
+	private List<Pedido> pedidos;
 
 	// -------------------------------------------------------------
 	// Constructor
@@ -45,11 +53,10 @@ public class Pedido {
 	 *            - Cédula del cliente que hizo el pedido.
 	 */
 	public Pedido(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fechahora") String fechahora,
-			@JsonProperty(value = "clienteCedula") Integer clienteCedula) {
+			Cliente cliente) {
 		super();
 		this.id = id;
 		this.fechahora = fechahora;
-		this.clienteCedula = clienteCedula;
 	}
 
 	// -------------------------------------------------------------
@@ -96,23 +103,11 @@ public class Pedido {
 		this.fechahora = fechahora;
 	}
 
-	/**
-	 * Método getter del atributo clienteCedula
-	 * 
-	 * @return Cédula del cliente que hizo el pedido.
-	 */
-	public Integer getClienteCedula() {
-		return clienteCedula;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	/**
-	 * Método setter del atributo clienteCedula <b>post: </b> La cédula del cliente que hizo el pedido ha
-	 * sido cambiado con el valor que entra como parámetro.
-	 * 
-	 * @param clienteCedula
-	 *            - Cédula del cliente del pedido
-	 */
-	public void setClienteCedula(Integer clienteCedula) {
-		this.clienteCedula = clienteCedula;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

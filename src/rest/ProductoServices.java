@@ -22,11 +22,9 @@ public class ProductoServices extends BaseServices implements URLS{
 	
 	@GET
 	@Path("{" + PRODUCTOID + ": \\d+}")
-	@Override
 	public Response get(@PathParam(PRODUCTOID)long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Producto v = tm.getProducto(id);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();

@@ -17,7 +17,7 @@ public interface Many {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface ManytoMany {
-		boolean mapped() default false;
+		String mapped() default "";
 	}
 
 	public static String CREATE(String name, Arista a1, String na1, Arista a2, String na2) throws GenericException {

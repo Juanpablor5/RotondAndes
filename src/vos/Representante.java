@@ -2,6 +2,13 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import em.Checks;
+import em.Check.SISTRANS_Check;
+import em.Columna.SISTRANS_Columna;
+import em.Foreing.ForeignKey;
+import em.Id.SISTRANS_Id;
+import em.Reference;
+
 /**
  * Clase que representa un Representante.
  */
@@ -11,32 +18,28 @@ public class Representante {
 	// Atributos
 	// -------------------------------------------------------------
 
-	/**
-	 * Id del representante.
-	 */
+	@SISTRANS_Id(AutoIncrement=true)
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Nombre del representante.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	/**
-	 * Teléfono del representante.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.HIGHER, of = "0")
 	@JsonProperty(value = "telefono")
 	private Integer telefono;
 
-	/**
-	 * Correo electrónico del representante.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "correo")
 	private String correo;
 	
-	@JsonProperty(value = "restauranteId")
-	private Long restauranteId;
+	@Reference
+	@ForeignKey(unique=true)
+	private Restaurante restaurante;
 
 	/**
 	 * Método constructor de la clase representante. <b>post: </b> Crea el
@@ -54,13 +57,13 @@ public class Representante {
 	 */
 	public Representante(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
 			@JsonProperty(value = "telefono") Integer telefono, @JsonProperty(value = "correo") String correo,
-			@JsonProperty(value = "restauranteId") Long restauranteId) {
+			Restaurante restaurante) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.correo = correo;
-		this.restauranteId=restauranteId;
+		this.restaurante=restaurante;
 	}
 
 	// -------------------------------------------------------------
@@ -146,19 +149,12 @@ public class Representante {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	/**
-	 * dar el restaurante al que pertenec el representante
-	 * @return el restaurante al que pertenece el representante
-	 */
-	public Long getRestauranteId() {
-		return restauranteId;
+
+	public Restaurante getRestaurante() {
+		return restaurante;
 	}
-	/**
-	 * cambiar el restaurante e que pertenece el representante
-	 * @param restauranteId el nuevo restaurante al que va a pertenecer el representante
-	 */
-	public void setRestauranteId(Long restauranteId) {
-		this.restauranteId = restauranteId;
+
+	public void setRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
 	}
-	
 }

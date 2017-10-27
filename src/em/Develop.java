@@ -91,7 +91,7 @@ public class Develop {
 					Arista ref = aristas.get(field.getType().getSimpleName());
 					if (ref == null)
 						throw new GenericException("la referencia no es a otra tabla");
-					crearManyToMany(actual, ref, field.getAnnotation(ManytoMany.class).mapped(),field.getName());
+					crearManyToMany(actual, ref, !field.getAnnotation(ManytoMany.class).mapped().equals(""),field.getName());
 				}
 			}
 			completarSentencia(actual);
@@ -114,7 +114,7 @@ public class Develop {
 			if (field.isAnnotationPresent(ManytoMany.class) && field.getType().equals(clasesTabla.get(actual))) {
 				esta = true;
 				refF = field.getName();
-				if (!(field.getAnnotation(ManytoMany.class).mapped() ^ padre))
+				if (!(!field.getAnnotation(ManytoMany.class).mapped().equals("") ^ padre))
 					throw new GenericException("el padre de la relacion es ambiguo");
 			}
 		if (!esta)

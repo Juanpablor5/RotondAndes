@@ -1,6 +1,10 @@
 package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import em.Id.SISTRANS_Id;
+import em.Checks;
+import em.Check.SISTRANS_Check;
+import em.Columna.SISTRANS_Columna;
 
 /**
  * Clase que representa una Zona.
@@ -11,15 +15,12 @@ public class Zona {
 	// Atributos
 	// -------------------------------------------------------------
 
-	/**
-	 * Id de la zona.
-	 */
+	@SISTRANS_Id(AutoIncrement = true)
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Nombre de la zona.
-	 */
+	@SISTRANS_Columna
+	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
@@ -27,9 +28,13 @@ public class Zona {
 	// Constructor
 	// -------------------------------------------------------------
 
+	public Zona() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
-	 * Método constructor de la clase producto. <b>post: </b> Crea el producto
-	 * con los valores que entran como parámetro.
+	 * Método constructor de la clase producto. <b>post: </b> Crea el producto con
+	 * los valores que entran como parámetro.
 	 * 
 	 * @param id
 	 *            - Id de la zona.
@@ -56,8 +61,8 @@ public class Zona {
 	}
 
 	/**
-	 * Método setter del atributo id <b>post: </b> El id de la zona ha sido
-	 * cambiado con el valor que entra como parámetro.
+	 * Método setter del atributo id <b>post: </b> El id de la zona ha sido cambiado
+	 * con el valor que entra como parámetro.
 	 * 
 	 * @param id
 	 *            - Id de la zona.
@@ -76,8 +81,8 @@ public class Zona {
 	}
 
 	/**
-	 * Método setter del atributo nombre <b>post: </b> El nombre de la zona ha
-	 * sido cambiado con el valor que entra como parámetro.
+	 * Método setter del atributo nombre <b>post: </b> El nombre de la zona ha sido
+	 * cambiado con el valor que entra como parámetro.
 	 * 
 	 * @param nombre
 	 *            - Nombre de la zona.

@@ -117,7 +117,9 @@ public class RotondAndesTM extends baseTM {
 	public Usuario deleteUsuario(Long codigo) throws SQLException, RotondAndesException {
 		Usuario usuario = null;
 		updateConnection();
-		try (DAOUsuario dao = new DAOUsuario(conn); DAOCliente daoCliente = new DAOCliente(conn); DAORestaurante daoRestaurante= new DAORestaurante(conn)) {
+		try (DAOUsuario dao = new DAOUsuario(conn);
+				DAOCliente daoCliente = new DAOCliente(conn);
+				DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
