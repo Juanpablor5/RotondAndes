@@ -82,14 +82,8 @@ public class UsuarioServices extends BaseServices implements URLS {
 
 	@Path("/{" + USUARIOID + ": \\d+}/" + CLIENTE)
 	public ClienteServices clienteServices(@PathParam(USUARIOID) Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			if (tm.getUsuario(id).getPermisos() != 3)
-				throw new RotondAndesException("no tiene los permisos necesarios");
-
 			return new ClienteServices(context);
-		} catch (RotondAndesException ex) {
-			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}
@@ -104,6 +98,15 @@ public class UsuarioServices extends BaseServices implements URLS {
 			return new RestauranteAdminServices(context);
 		} catch (RotondAndesException ex) {
 			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+	
+	@Path("{" + USUARIOID + ": \\d+}/" + TIPOCOMIDA)
+	public TipoComidaServices TipoComidaServices() {
+		try {
+			return new TipoComidaServices(context);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}

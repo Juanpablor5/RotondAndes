@@ -27,11 +27,13 @@ public class ClienteServices extends BaseServices implements URLS {
 	}
 
 	@GET
-	public Response getAll() {
+	public Response getAll(@PathParam(USUARIOID) Long idUser) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<Cliente> data;
 		try {
-			data = tm.getAllCliente();
+			data = tm.getAllCliente(idUser);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -40,10 +42,10 @@ public class ClienteServices extends BaseServices implements URLS {
 
 	@GET
 	@Path("{" + CLIENTEID + ": \\d+}")
-	public Response get(@PathParam(CLIENTEID) long cedula) {
+	public Response get(@PathParam(USUARIOID) Long idUser,@PathParam(CLIENTEID) long cedula) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Cliente v = tm.getCliente(cedula);
+			Cliente v = tm.getCliente(idUser,cedula);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -54,10 +56,10 @@ public class ClienteServices extends BaseServices implements URLS {
 
 	@POST
 	@Path("{" + USUARIOID + "}")
-	public Response add(@PathParam(USUARIOID)Long codigo, Cliente data) {
+	public Response add(@PathParam(USUARIOID) Long idUser,@PathParam(USUARIOID)Long codigo, Cliente data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.createCliente(data,codigo);
+			data = tm.createCliente(idUser,data,codigo);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -66,11 +68,11 @@ public class ClienteServices extends BaseServices implements URLS {
 
 	@PUT
 	@Path("{" + CLIENTEID + "}")
-	public Response update(@PathParam(CLIENTEID) Long cedula, Cliente data) {
+	public Response update(@PathParam(USUARIOID) Long idUser,@PathParam(CLIENTEID) Long cedula, Cliente data) {
 		data.setCedula(cedula);
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.updateCliente(data);
+			data = tm.updateCliente(idUser,data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -81,11 +83,11 @@ public class ClienteServices extends BaseServices implements URLS {
 
 	@DELETE
 	@Path("{" + CLIENTEID + "}")
-	public Response delete(@PathParam(CLIENTEID) Long cedula) {
+	public Response delete(@PathParam(USUARIOID) Long idUser,@PathParam(CLIENTEID) Long cedula) {
 		Cliente data;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.deleteCliente(cedula);
+			data = tm.deleteCliente(idUser,cedula);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
