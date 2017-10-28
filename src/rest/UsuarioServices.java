@@ -106,6 +106,15 @@ public class UsuarioServices extends BaseServices implements URLS {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}
 	}
+	
+	@Path("{" + USUARIOID + ": \\d+}/" + INGREDIENTE)
+	public IngredienteServices ingredinteServices() {
+		try {
+			return new IngredienteServices(context);
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
 
 	// @Path(CHANGE+"/{" + REGISTROID + ": \\d+}/" + ZONA)
 	// public ZonaModificationServices getZona(@PathParam(REGISTROID) Long id) {

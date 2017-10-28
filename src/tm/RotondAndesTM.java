@@ -642,4 +642,115 @@ public class RotondAndesTM extends baseTM {
 		}
 		return tipoComida;
 	}
+
+	public List<Ingrediente> getAllIngrediente(Long idUser) throws SQLException, RotondAndesException {
+		List<Ingrediente> data = null;
+		updateConnection();
+		try (DAOIngrediente daos = new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3 ,2);
+			data = daos.getAll();
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Ingrediente getIngrediente(Long idUser, Long id) throws RotondAndesException, SQLException {
+		Ingrediente data = null;
+		updateConnection();
+		try (DAOIngrediente daos = new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3 ,2);
+			data = daos.getDetail(id);
+			if (data == null)
+				throw new RotondAndesException("El ingrediente con id:<" + id + ">no existe");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public void addIngrediente(Long idUser, Ingrediente data) throws SQLException, RotondAndesException {
+		updateConnection();
+		try (DAOIngrediente dao = new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3, 2);
+			dao.create(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+	}
+
+	public Ingrediente updateIngrediente(Long idUser, Ingrediente data) throws SQLException, RotondAndesException {
+		Ingrediente old = null;
+		updateConnection();
+		try (DAOIngrediente dao = new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3);
+			old = dao.get(data);
+			if (old == null)
+				throw new RotondAndesException("no existe el Ingrediente buscado");
+			dao.update(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return old;
+	}
+
+	public Ingrediente deleteIngrediente(Long idUser, Ingrediente data) throws SQLException, RotondAndesException {
+		Ingrediente old = null;
+		updateConnection();
+		try (DAOIngrediente dao = new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3);
+			old = dao.get(data);
+			if (old == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			dao.remove(old);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return old;
+	}
 }

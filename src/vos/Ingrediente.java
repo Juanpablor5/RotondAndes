@@ -5,6 +5,7 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import em.Tabla;
+import em.Columna.SISTRANS_Columna;
 import em.Id.SISTRANS_Id;
 import em.Many.ManytoMany;
 import jdk.nashorn.internal.ir.annotations.Reference;
@@ -23,21 +24,15 @@ public class Ingrediente {
 	@JsonProperty(value = "id")
 	private Long id;
 
-	/**
-	 * Nombre del ingrediente.
-	 */
+	@SISTRANS_Columna
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	/**
-	 * Descripción del ingrediente.
-	 */
+	@SISTRANS_Columna(maxSize=1000)
 	@JsonProperty(value = "descripcion")
 	private String descripcion;
 
-	/**
-	 * Traducción de descripción del ingrediente.
-	 */
+	@SISTRANS_Columna(maxSize=1200)
 	@JsonProperty(value = "traduccion")
 	private String traduccion;
 	

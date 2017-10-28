@@ -9,7 +9,6 @@ import em.Reference;
 import em.Tabla;
 import em.Check.SISTRANS_Check;
 import em.Columna.SISTRANS_Columna;
-import em.Foreing.ForeignKey;
 import em.Id.SISTRANS_Id;
 import em.Many.ManytoMany;
 
