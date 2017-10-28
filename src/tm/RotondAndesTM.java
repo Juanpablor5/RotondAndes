@@ -751,4 +751,69 @@ public class RotondAndesTM extends baseTM {
 		}
 		return old;
 	}
+	
+	// ------------------------------------------------------------------------------
+	// ZONA
+	// ------------------------------------------------------------------------------
+	
+	public List<Zona> getAllZonas() throws SQLException, RotondAndesException {
+		List<Zona> data = null;
+		updateConnection();
+		try (DAOZona daos = new DAOZona(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getAll();
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+	
+	public Zona getZona(long idZona) throws RotondAndesException, Exception {
+		Zona data = null;
+		updateConnection();
+		try (DAOZona daos = new DAOZona(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getDetail(idZona);
+			if (data == null)
+				throw new RotondAndesException("La zona con el id:<" + idZona + "> no existe");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+	
+	public void addZona(Long idUser, Zona data) throws SQLException, RotondAndesException {
+		updateConnection();
+		try (DAOZona dao = new DAOZona(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3);
+			dao.create(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+	}
 }
