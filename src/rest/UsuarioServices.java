@@ -91,13 +91,8 @@ public class UsuarioServices extends BaseServices implements URLS {
 	
 	@Path("{" + USUARIOID + ": \\d+}/" + RESTAURANTE)
 	public RestauranteAdminServices restauranteServices(@PathParam(USUARIOID) Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			if (tm.getUsuario(id).getPermisos() != 3)
-				throw new RotondAndesException("No tiene los permisos necesarios");
 			return new RestauranteAdminServices(context);
-		} catch (RotondAndesException ex) {
-			throw new WebApplicationException(Response.status(404).entity(doErrorMessage(ex)).build());
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}

@@ -19,18 +19,20 @@ import vos.TipoComida;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TipoComidaServices extends BaseServices implements URLS{
-	
+public class TipoComidaServices extends BaseServices implements URLS {
+
 	public TipoComidaServices(ServletContext context) {
 		this.context = context;
 	}
-	
+
 	@GET
 	public Response getAll(@PathParam(USUARIOID) Long idUser) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<TipoComida> videos;
 		try {
 			videos = tm.getAllTipoComida(idUser);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -42,7 +44,7 @@ public class TipoComidaServices extends BaseServices implements URLS{
 	public Response get(@PathParam(USUARIOID) Long idUser, @PathParam(TIPOCOMIDAID) String id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			TipoComida v = tm.getTipoComida(idUser,id);
+			TipoComida v = tm.getTipoComida(idUser, id);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -52,10 +54,12 @@ public class TipoComidaServices extends BaseServices implements URLS{
 	}
 
 	@POST
-	public Response add(@PathParam(USUARIOID) Long idUser,TipoComida data) {
+	public Response add(@PathParam(USUARIOID) Long idUser, TipoComida data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addTipoComida(idUser,data);
+			tm.addTipoComida(idUser, data);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -64,11 +68,11 @@ public class TipoComidaServices extends BaseServices implements URLS{
 
 	@DELETE
 	@Path("{" + TIPOCOMIDAID + "}")
-	public Response delete(@PathParam(USUARIOID) Long idUser,@PathParam(TIPOCOMIDAID) String id) {
+	public Response delete(@PathParam(USUARIOID) Long idUser, @PathParam(TIPOCOMIDAID) String id) {
 		TipoComida tipoComida;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tipoComida=tm.deleteTipoComida(idUser,id);
+			tipoComida = tm.deleteTipoComida(idUser, id);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {

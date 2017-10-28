@@ -24,10 +24,10 @@ public class RepresentanteServices extends BaseServices implements URLS{
 	}
 	
 	@GET
-	public Response get(@PathParam(RESTAURANTEID)Long idRestaurante) {
+	public Response get(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID)Long idRestaurante) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Representante v = tm.getRepresentante(idRestaurante);
+			Representante v = tm.getRepresentante(idUser,idRestaurante);
 			return Response.status(200).entity(v).build();
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
@@ -37,10 +37,10 @@ public class RepresentanteServices extends BaseServices implements URLS{
 	}
 
 	@POST
-	public Response add(@PathParam(RESTAURANTEID)Long idRestaurante,Representante data) {
+	public Response add(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID)Long idRestaurante,Representante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.addRepresentante(idRestaurante,data);
+			data = tm.addRepresentante(idUser,idRestaurante,data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -50,10 +50,10 @@ public class RepresentanteServices extends BaseServices implements URLS{
 	}
 
 	@PUT
-	public Response update(@PathParam(RESTAURANTEID)Long idRestaurante, Representante data) {
+	public Response update(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID)Long idRestaurante, Representante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.updateRepresentante(idRestaurante,data);
+			data = tm.updateRepresentante(idUser,idRestaurante,data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -63,11 +63,11 @@ public class RepresentanteServices extends BaseServices implements URLS{
 	}
 
 	@DELETE
-	public Response delete(@PathParam(RESTAURANTEID)Long idRestaurante) {
+	public Response delete(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID)Long idRestaurante) {
 		Representante data;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.deleteRepresentante(idRestaurante);
+			data = tm.deleteRepresentante(idUser,idRestaurante);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {

@@ -55,10 +55,10 @@ public class RestauranteAdminServices extends BaseServices implements URLS {
 
 	@POST
 	@Path("{" + USUARIOID + "}")
-	public Response add(@PathParam(USUARIOID) Long codigo, Restaurante data) {
+	public Response add(@PathParam(USUARIOID) Long idUser,@PathParam(USUARIOID) Long codigo, Restaurante data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.createRestaurante(data, codigo);
+			tm.createRestaurante(idUser, data, codigo);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -69,11 +69,11 @@ public class RestauranteAdminServices extends BaseServices implements URLS {
 
 	@PUT
 	@Path("{" + RESTAURANTEID + "}")
-	public Response update(@PathParam(RESTAURANTEID) Long id, Restaurante data) {
+	public Response update(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID) Long id, Restaurante data) {
 		data.setId(id);
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			data = tm.updateRestaurante(data);
+			data = tm.updateRestaurante(idUser,data);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -84,11 +84,11 @@ public class RestauranteAdminServices extends BaseServices implements URLS {
 
 	@DELETE
 	@Path("{" + RESTAURANTEID + "}")
-	public Response delete(@PathParam(RESTAURANTEID) Long id) {
+	public Response delete(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID) Long id) {
 		Restaurante restaurante;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			restaurante = tm.deleteRestaurante(id);
+			restaurante = tm.deleteRestaurante(idUser,id);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -104,10 +104,10 @@ public class RestauranteAdminServices extends BaseServices implements URLS {
 
 	@DELETE
 	@Path("{" + RESTAURANTEID + ": \\d+}/" + TIPOCOMIDA)
-	public Response deleteTipoComida(@PathParam(RESTAURANTEID) Long id) {
+	public Response deleteTipoComida(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.deleteRestauranteTipoComida(id);
+			tm.deleteRestauranteTipoComida(idUser,id);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
@@ -118,11 +118,11 @@ public class RestauranteAdminServices extends BaseServices implements URLS {
 	
 	@PUT
 	@Path("{" + RESTAURANTEID + ": \\d+}/" + TIPOCOMIDA+"/{"+TIPOCOMIDAID+"}")
-	public Response deleteTipoComida(@PathParam(RESTAURANTEID) Long id,@PathParam(TIPOCOMIDAID) String tipoComida) {
+	public Response deleteTipoComida(@PathParam(USUARIOID) Long idUser,@PathParam(RESTAURANTEID) Long id,@PathParam(TIPOCOMIDAID) String tipoComida) {
 		TipoComida ans;
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			ans = tm.setRestauranteTipoComida(id,tipoComida);
+			ans = tm.setRestauranteTipoComida(idUser,id,tipoComida);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {
