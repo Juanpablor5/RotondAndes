@@ -99,9 +99,9 @@ public class UsuarioServices extends BaseServices implements URLS {
 	}
 	
 	@Path("{" + USUARIOID + ": \\d+}/" + TIPOCOMIDA)
-	public TipoComidaServices TipoComidaServices() {
+	public TipoComidaAdminServices TipoComidaServices() {
 		try {
-			return new TipoComidaServices(context);
+			return new TipoComidaAdminServices(context);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
 		}
