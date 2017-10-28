@@ -816,4 +816,29 @@ public class RotondAndesTM extends baseTM {
 			closeConection();
 		}
 	}
+	
+	public Zona deleteZona(Long idUser, Long id) throws SQLException, RotondAndesException {
+		Zona tipo = null;
+		updateConnection();
+		try (DAOZona dao = new DAOZona(conn); DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3);
+			tipo = dao.get(id);
+			if (tipo == null)
+				throw new RotondAndesException("No existe la zona buscada");
+			daoRestaurante.removeAllRefSub(tipo);
+			dao.remove(tipo);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return tipo;
+	}
 }

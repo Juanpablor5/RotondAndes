@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -63,5 +64,20 @@ public class ZonaAdminServices extends BaseServices implements URLS {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(data).build();
+	}
+	
+	@DELETE
+	@Path("{" + ZONAID + "}")
+	public Response delete(@PathParam(USUARIOID) Long idUser, @PathParam(ZONAID) Long id) {
+		Zona zona;
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			zona = tm.deleteZona(idUser, id);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(zona).build();
 	}
 }
