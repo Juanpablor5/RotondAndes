@@ -27,7 +27,7 @@ public class Restaurante {
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	@SISTRANS_Columna
+	@SISTRANS_Columna(nullable = true)
 	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "paginaWeb")
 	private String paginaWeb;
@@ -35,10 +35,13 @@ public class Restaurante {
 	@Reference
 	@ForeignKey(unique = true)
 	private Usuario registro;
-	
-	@Reference(mappedBy="restaurante")
+
+	@Reference(mappedBy = "restaurante")
 	private Representante representante;
 
+	@Reference
+	@ForeignKey
+	private TipoComida tipoComida;
 	// /**
 	// * Id de la zona del restaurante.
 	// */
@@ -51,7 +54,8 @@ public class Restaurante {
 	// @JsonProperty(value = "tipoComidaId")
 	// private Integer tipoComidaId;
 
-	public Restaurante() {}
+	public Restaurante() {
+	}
 
 	// -------------------------------------------------------------
 	// Getters & Setters
@@ -132,4 +136,13 @@ public class Restaurante {
 	public void setRepresentante(Representante representante) {
 		this.representante = representante;
 	}
+
+	public TipoComida getTipoComida() {
+		return tipoComida;
+	}
+
+	public void setTipoComida(TipoComida tipoComida) {
+		this.tipoComida = tipoComida;
+	}
+
 }

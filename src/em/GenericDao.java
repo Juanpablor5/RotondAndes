@@ -219,7 +219,7 @@ public class GenericDao<T> extends Connector {
 			Field[] idsForeings = Id.ids(fieldB.getType());
 			for (Field f : idsForeings) {
 				Method method = fieldB.getType().getMethod(getMethod(f.getName()));
-				search.add(fieldB.getName() + "_" + f.getName() + " = " + method.invoke(objectA));
+				search.add(fieldB.getName() + "_" + f.getName() + " = " + format(f,method.invoke(objectA)));
 			}
 			return search;
 		} catch (IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException
