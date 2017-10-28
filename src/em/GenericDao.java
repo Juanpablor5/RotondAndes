@@ -170,7 +170,8 @@ public class GenericDao<T> extends Connector {
 
 			for (Field field : clase.getDeclaredFields()) {
 				if (field.isAnnotationPresent(SISTRANS_Columna.class)) {
-					seters.add(field.getName() + " = " + format(field, get(field, registro)));
+					if (get(field, registro) != null)
+						seters.add(field.getName() + " = " + format(field, get(field, registro)));
 				} else if (field.isAnnotationPresent(ForeignKey.class)) {
 					if (get(field, registro) != null)
 						seters.addAll(foreings(field, get(field, registro)));
@@ -200,6 +201,15 @@ public class GenericDao<T> extends Connector {
 		executeModification(sql);
 	}
 
+	public final void removeAllRefSub(Object padre) throws SQLException {
+		Class<?> claseP = padre.getClass();
+		String sql = "UPDATE " + TABLA + " SET "
+				+ Arista.listFormatString(foreingsNull(fieldOfClass(claseP), padre), ",");
+		sql += " WHERE" + SearchSentence(fieldOfClass(claseP), padre);
+
+		executeModification(sql);
+	}
+
 	private String getMethod(String str) {
 		return "get" + Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
@@ -219,11 +229,24 @@ public class GenericDao<T> extends Connector {
 			Field[] idsForeings = Id.ids(fieldB.getType());
 			for (Field f : idsForeings) {
 				Method method = fieldB.getType().getMethod(getMethod(f.getName()));
-				search.add(fieldB.getName() + "_" + f.getName() + " = " + format(f,method.invoke(objectA)));
+				search.add(fieldB.getName() + "_" + f.getName() + " = " + format(f, method.invoke(objectA)));
 			}
 			return search;
 		} catch (IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException
 				| IllegalAccessException e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}
+	}
+
+	private List<String> foreingsNull(Field fieldB, Object objectA) throws SQLException {
+		try {
+			List<String> search = new LinkedList<>();
+			Field[] idsForeings = Id.ids(fieldB.getType());
+			for (Field f : idsForeings)
+				search.add(fieldB.getName() + "_" + f.getName() + " =  null");
+			return search;
+		} catch (IllegalArgumentException | SecurityException e) {
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
@@ -274,6 +297,8 @@ public class GenericDao<T> extends Connector {
 	}
 
 	private String format(Field field, Object value) throws SQLException {
+		if(value==null)
+			return "null";
 		if (Tipos.is(field.getType(), Tipo.INTEGER) || Tipos.is(field.getType(), Tipo.NUMBER))
 			return value.toString();
 		if (Tipos.is(field.getType(), Tipo.VARCHAR2))

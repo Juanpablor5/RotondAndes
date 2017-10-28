@@ -46,9 +46,8 @@ public class Producto {
 	@JsonProperty(value = "tiempoPreparacion")
 	private Integer tiempoPreparacion;
 
-	@Reference
-	@ForeignKey
-	private Categoria categoria;
+	@SISTRANS_Columna
+	private String categoria;
 	
 	@Reference
 	@ManytoMany(mapped="productos")
@@ -56,36 +55,9 @@ public class Producto {
 	// -------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------
-
-	/**
-	 * Método constructor de la clase producto. <b>post: </b> Crea el producto con
-	 * los valores que entran como parámetro.
-	 * 
-	 * @param id
-	 *            - Id del producto.
-	 * @param nombre
-	 *            - Nombre del producto. nombre != null
-	 * @param descripcion
-	 *            - Descripción del producto.
-	 * @param traduccion
-	 *            - Traducción de descripción del producto.
-	 * @param tiempoPreparacion
-	 *            - El tiempo en minutos de la preparación.
-	 * @param categoriaID
-	 */
-	public Producto(Categoria categoria, @JsonProperty(value = "id") Long id,
-			@JsonProperty(value = "nombre") String nombre, @JsonProperty(value = "descripcion") String descripcion,
-			@JsonProperty(value = "traduccion") String traduccion,
-			@JsonProperty(value = "tiempoPreparacion") Integer tiempoPreparacion) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.traduccion = traduccion;
-		this.tiempoPreparacion = tiempoPreparacion;
-		this.categoria = categoria;
+	public Producto() {
+		// TODO Auto-generated constructor stub
 	}
-
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------
@@ -192,14 +164,6 @@ public class Producto {
 		this.tiempoPreparacion = tiempoPreparacion;
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
 	public List<Ingrediente> getIngredientes() {
 		return ingredientes;
 	}
@@ -207,4 +171,14 @@ public class Producto {
 	public void setIngredientes(List<Ingrediente> ingredientes) {
 		this.ingredientes = ingredientes;
 	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+	
+	
 }

@@ -353,13 +353,14 @@ public class RotondAndesTM extends baseTM {
 	public Restaurante deleteRestaurante(Long cedula) throws SQLException, RotondAndesException {
 		Restaurante restaurante = null;
 		updateConnection();
-		try (DAORestaurante dao = new DAORestaurante(conn)) {
+		try (DAORestaurante dao = new DAORestaurante(conn);DAORepresentante daoRepresentante=new DAORepresentante(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
 			restaurante = dao.get(cedula);
 			if (restaurante == null)
 				throw new RotondAndesException("no existe el usuario buscado");
+			daoRepresentante.removeAllSub(restaurante);
 			dao.remove(restaurante);
 			conn.commit();
 			// ------------------------
@@ -551,13 +552,14 @@ public class RotondAndesTM extends baseTM {
 	public TipoComida deleteTipoComida(String id) throws SQLException, RotondAndesException {
 		TipoComida tipo = null;
 		updateConnection();
-		try (DAOTipoComida dao=new DAOTipoComida(conn)) {
+		try (DAOTipoComida dao = new DAOTipoComida(conn); DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
 			tipo = dao.get(id);
 			if (tipo == null)
 				throw new RotondAndesException("no existe el tipo de comida buscado buscado");
+			daoRestaurante.removeAllRefSub(tipo);
 			dao.remove(tipo);
 			conn.commit();
 			// ------------------------
@@ -569,5 +571,52 @@ public class RotondAndesTM extends baseTM {
 			closeConection();
 		}
 		return tipo;
+	}
+
+	public void deleteRestauranteTipoComida(Long id) throws SQLException, RotondAndesException {
+		Restaurante old = new Restaurante();
+		updateConnection();
+		try (DAORestaurante dao = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			old.setId(id);
+			old.setTipoComida(new TipoComida());
+			dao.update(old);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+	}
+
+	public TipoComida setRestauranteTipoComida(Long id, String str) throws SQLException, RotondAndesException {
+		Restaurante old = new Restaurante();
+		TipoComida tipoComida = null;
+		updateConnection();
+		try (DAORestaurante dao = new DAORestaurante(conn);DAOTipoComida daoTipoComida= new DAOTipoComida(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			tipoComida=daoTipoComida.get(str);
+			if (tipoComida == null)
+				throw new RotondAndesException("no existe el usuario buscado");
+			old.setId(id);
+			old.setTipoComida(tipoComida);
+			dao.update(old);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return tipoComida;
 	}
 }

@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Restaurante;
+import vos.TipoComida;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -101,4 +102,32 @@ public class RestauranteAdminServices extends BaseServices implements URLS {
 		return new RepresentanteServices(context);
 	}
 
+	@DELETE
+	@Path("{" + RESTAURANTEID + ": \\d+}/" + TIPOCOMIDA)
+	public Response deleteTipoComida(@PathParam(RESTAURANTEID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.deleteRestauranteTipoComida(id);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(204).build();
+	}
+	
+	@PUT
+	@Path("{" + RESTAURANTEID + ": \\d+}/" + TIPOCOMIDA+"/{"+TIPOCOMIDAID+"}")
+	public Response deleteTipoComida(@PathParam(RESTAURANTEID) Long id,@PathParam(TIPOCOMIDAID) String tipoComida) {
+		TipoComida ans;
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			ans = tm.setRestauranteTipoComida(id,tipoComida);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(ans).build();
+	}
 }

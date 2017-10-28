@@ -39,7 +39,7 @@ public interface Foreing {
 			for (Field foreingField : filedsForeings) {
 				String n = field.getName() + "_" + foreingField.getName();
 				stringRef.add(n);
-				SQL += n + " " + Id.type(foreingField, foreingField.getAnnotation(SISTRANS_Id.class)) +((field.getAnnotation(ForeignKey.class).nullable())?"\n": " NOT NULL,\n");
+				SQL += n + " " + Id.type(foreingField, foreingField.getAnnotation(SISTRANS_Id.class)) +((field.getAnnotation(ForeignKey.class).nullable())?",\n": " NOT NULL,\n");
 			}
 
 			SQL += "CONSTRAINT FK_" + arista.getTableName() + (i + 1) + " FOREIGN KEY ("

@@ -103,7 +103,7 @@ CHECK (paginaWeb <> ''),
 registro_codigo INTEGER NOT NULL,
 CONSTRAINT FK_Restaurante1 FOREIGN KEY ( registro_codigo ) REFERENCES Usuario( codigo ),
 CONSTRAINT FK_Restaurante1_U UNIQUE ( registro_codigo ),
-tipoComida_nombre VARCHAR2(100) NOT NULL,
+tipoComida_nombre VARCHAR2(100),
 CONSTRAINT FK_Restaurante2 FOREIGN KEY ( tipoComida_nombre ) REFERENCES TipoComida( nombre ),
 CONSTRAINT PK_Restaurante PRIMARY KEY ( id )
 );

@@ -40,7 +40,7 @@ public class Restaurante {
 	private Representante representante;
 
 	@Reference
-	@ForeignKey
+	@ForeignKey(nullable=true)
 	private TipoComida tipoComida;
 	// /**
 	// * Id de la zona del restaurante.
