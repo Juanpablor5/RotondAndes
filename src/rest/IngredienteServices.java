@@ -97,5 +97,47 @@ public class IngredienteServices extends BaseServices implements URLS {
 		}
 		return Response.status(200).entity(data).build();
 	}
-
+	
+	@GET
+	@Path("{" + INGREDIENTEID + ": \\d+}/SIMILITUD")
+	public Response getSimilitud(@PathParam(USUARIOID) Long idUser, @PathParam(INGREDIENTEID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Ingrediente> data;
+		try {
+			data=tm.getSimilitudIngrediente(idUser,id);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(data).build();
+	}
+	
+	@POST
+	@Path("{" + INGREDIENTEID + ": \\d+}/SIMILITUD/{"+INGREDIENTEID+"2: \\d+}")
+	public Response addSimilitud(@PathParam(USUARIOID) Long idUser, @PathParam(INGREDIENTEID) Long id,@PathParam(INGREDIENTEID+"2") Long id2) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addSimilitudIngrediente(idUser,id,id2);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(204).build();
+	}
+	
+	@DELETE
+	@Path("{" + INGREDIENTEID + ": \\d+}/SIMILITUD/{"+INGREDIENTEID+"2: \\d+}")
+	public Response deleteSimilitud(@PathParam(USUARIOID) Long idUser, @PathParam(INGREDIENTEID) Long id,@PathParam(INGREDIENTEID+"2") Long id2) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.deleteSimilitudIngrediente(idUser,id,id2);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(204).build();
+	}
 }

@@ -841,4 +841,95 @@ public class RotondAndesTM extends baseTM {
 		}
 		return tipo;
 	}
+
+	public void addSimilitudIngrediente(Long idUser, Long id, Long id2) throws RotondAndesException, SQLException {
+		updateConnection();
+		try (DAOUsuario daoUsuario=new DAOUsuario(conn);DAORestaurante daoRestaurante=new DAORestaurante(conn); DAOIngredienteSimilitud dao = new DAOIngredienteSimilitud(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			Usuario user=daoUsuario.get(idUser);
+			if(user == null)
+				throw new RotondAndesException("el usuario no exite");
+			if(user.getPermisos() != 2)
+				throw new RotondAndesException("no tiene los permisos necesarios");
+			List<Restaurante> rests=daoRestaurante.getAllSub(user);
+			if(rests.isEmpty())
+				throw new RotondAndesException("no hay un restaurante asociado al usuario");
+			IngredienteSimilitud aux=new IngredienteSimilitud();
+			aux.setRestaurante(rests.get(0));
+			Ingrediente i1=new Ingrediente();
+			i1.setId(id);
+			Ingrediente i2= new Ingrediente();
+			i2.setId(id2);
+			aux.setIngrediente(i1);
+			aux.setIngrediente2(i2);
+			dao.create(aux);
+			aux.setIngrediente(i2);
+			aux.setIngrediente2(i1);
+			dao.create(aux);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+	}
+
+	public List<Ingrediente> getSimilitudIngrediente(Long idUser, Long id) throws RotondAndesException, SQLException {
+		List<Ingrediente> data = null;
+		updateConnection();
+		try (DAOUsuario daoUsuario=new DAOUsuario(conn);DAORestaurante daoRestaurante=new DAORestaurante(conn); DAOIngredienteSimilitud dao = new DAOIngredienteSimilitud(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			Usuario user=daoUsuario.get(idUser);
+			if(user == null)
+				throw new RotondAndesException("el usuario no exite");
+			if(user.getPermisos() != 2)
+				throw new RotondAndesException("no tiene los permisos necesarios");
+			List<Restaurante> rests=daoRestaurante.getAllSub(user);
+			if(rests.isEmpty())
+				throw new RotondAndesException("no hay un restaurante asociado al usuario");
+			data = dao.getAll(rests.get(0).getId(),id);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public void deleteSimilitudIngrediente(Long idUser, Long id, Long id2) throws RotondAndesException, SQLException {
+		updateConnection();
+		try (DAOUsuario daoUsuario=new DAOUsuario(conn);DAORestaurante daoRestaurante=new DAORestaurante(conn); DAOIngredienteSimilitud dao = new DAOIngredienteSimilitud(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			Usuario user=daoUsuario.get(idUser);
+			if(user == null)
+				throw new RotondAndesException("el usuario no exite");
+			if(user.getPermisos() != 2)
+				throw new RotondAndesException("no tiene los permisos necesarios");
+			List<Restaurante> rests=daoRestaurante.getAllSub(user);
+			if(rests.isEmpty())
+				throw new RotondAndesException("no hay un restaurante asociado al usuario");
+			dao.delte(rests.get(0).getId(), id, id2);
+			dao.delte(rests.get(0).getId(), id2, id);
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+	}
 }
