@@ -932,4 +932,94 @@ public class RotondAndesTM extends baseTM {
 			closeConection();
 		}
 	}
+	
+	// ------------------------------------------------------------------------------
+	// ESPACIO
+	// ------------------------------------------------------------------------------
+
+	public List<Espacio> getAllEspacios() throws SQLException, RotondAndesException {
+		List<Espacio> data = null;
+		updateConnection();
+		try (DAOEspacio daos = new DAOEspacio(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getAll();
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Espacio getEspacio(long idEspacio) throws RotondAndesException, Exception {
+		Espacio data = null;
+		updateConnection();
+		try (DAOEspacio daos = new DAOEspacio(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getDetail(idEspacio);
+			if (data == null)
+				throw new RotondAndesException("El espacio con el id:<" + idEspacio + "> no existe");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public void addEspacio(Long idUser, Espacio data) throws SQLException, RotondAndesException {
+		updateConnection();
+		try (DAOEspacio dao = new DAOEspacio(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3);
+			dao.create(data);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+	}
+
+	public Espacio deleteEspacio(Long idUser, Long id) throws SQLException, RotondAndesException {
+		Espacio tipo = null;
+		updateConnection();
+		try (DAOEspacio dao = new DAOEspacio(conn); DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3);
+			tipo = dao.get(id);
+			if (tipo == null)
+				throw new RotondAndesException("No existe la zona buscada");
+			daoRestaurante.removeAllRefSub(tipo);
+			dao.remove(tipo);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return tipo;
+	}
 }
