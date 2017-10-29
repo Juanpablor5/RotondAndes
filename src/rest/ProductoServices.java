@@ -18,6 +18,7 @@ import tm.RotondAndesException;
 import tm.RotondAndesTM;
 import vos.Ingrediente;
 import vos.Producto;
+import vos.ProductoDetail;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -56,7 +57,7 @@ public class ProductoServices extends BaseServices implements URLS {
 	}
 
 	@POST
-	public Response add(@PathParam(USUARIOID) Long idUser,Producto data) {
+	public Response add(@PathParam(USUARIOID) Long idUser,ProductoDetail data) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.addProducto(idUser,data);

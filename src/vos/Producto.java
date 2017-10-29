@@ -24,7 +24,7 @@ public class Producto {
 	@JsonProperty(value = "id")
 	private Long id;
 
-	@SISTRANS_Columna
+	@SISTRANS_Columna(unique = true)
 	@SISTRANS_Check(value = Checks.DIFERENT, of = "")
 	@JsonProperty(value = "nombre")
 	private String nombre;

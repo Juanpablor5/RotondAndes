@@ -978,7 +978,7 @@ public class RotondAndesTM extends baseTM {
 		return data;
 	}
 
-	public void addProducto(Long idUser, Producto data) throws SQLException, RotondAndesException {
+	public void addProducto(Long idUser, ProductoDetail data) throws SQLException, RotondAndesException {
 		updateConnection();
 		try (DAOProducto dao = new DAOProducto(conn)) {
 			// ------------------------
@@ -991,6 +991,9 @@ public class RotondAndesTM extends baseTM {
 				throw new RotondAndesException("la categoria no corresponde a una categoria permitida");
 			}
 			dao.create(data);
+			Long id=dao.getByName(data.getNombre()).getId();
+			for (Long i : data.getIngredientesId())
+				addIngredienteProducto((long)0, id, i, true);
 			conn.commit();
 			// ------------------------
 			// END
@@ -1151,7 +1154,7 @@ public class RotondAndesTM extends baseTM {
 			closeConection();
 		}
 	}
-	
+
 	// ------------------------------------------------------------------------------
 	// ESPACIO
 	// ------------------------------------------------------------------------------
@@ -1242,14 +1245,14 @@ public class RotondAndesTM extends baseTM {
 	}
 
 	public List<Ingrediente> getIngredientesProducto(Long idUser, Long id) throws RotondAndesException, SQLException {
-		List<Ingrediente> data= new LinkedList<>();
+		List<Ingrediente> data = new LinkedList<>();
 		updateConnection();
 		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
-			isPermiso(idUser, 3 ,2);
-			Producto p=new Producto();
+			isPermiso(idUser, 3, 2);
+			Producto p = new Producto();
 			p.setId(id);
 			data = dao.getAllFrom(p);
 			conn.commit();
@@ -1264,18 +1267,27 @@ public class RotondAndesTM extends baseTM {
 		return data;
 	}
 
-	public Ingrediente addIngredienteProducto(Long idUser, Long idProd, Long idIng) throws RotondAndesException, SQLException {
+	public Ingrediente addIngredienteProducto(Long idUser, Long idProd, Long idIng, Boolean... booleans)
+			throws RotondAndesException, SQLException {
 		Ingrediente data = null;
-		updateConnection();
-		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn); DAOIngrediente daoIngrediente= new DAOIngrediente(conn)) {
+		Boolean subTrn = (booleans.length == 0) ? false : booleans[0];
+		if (!subTrn)
+			updateConnection();
+		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn);
+				DAOIngrediente daoIngrediente = new DAOIngrediente(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
-			isPermiso(idUser, 3 );
-			data= daoIngrediente.get(idIng);
-			if(data==null)
-				throw new RotondAndesException("el ingrediente no existe");
-			Producto p=new Producto();
+			if (!subTrn) {
+				isPermiso(idUser, 3);
+				data = daoIngrediente.get(idIng);
+				if (data == null)
+					throw new RotondAndesException("el ingrediente no existe");
+			}else {
+				data= new Ingrediente();
+				data.setId(idIng);
+			}
+			Producto p = new Producto();
 			p.setId(idProd);
 			dao.add(data, p);
 			conn.commit();
@@ -1285,23 +1297,26 @@ public class RotondAndesTM extends baseTM {
 		} catch (SQLException e) {
 			sqlException(e);
 		} finally {
-			closeConection();
+			if (!subTrn)
+				closeConection();
 		}
 		return data;
 	}
-	
-	public Ingrediente removeIngredienteProducto(Long idUser, Long idProd, Long idIng) throws RotondAndesException, SQLException {
+
+	public Ingrediente removeIngredienteProducto(Long idUser, Long idProd, Long idIng)
+			throws RotondAndesException, SQLException {
 		Ingrediente data = null;
 		updateConnection();
-		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn); DAOIngrediente daoIngrediente= new DAOIngrediente(conn)) {
+		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn);
+				DAOIngrediente daoIngrediente = new DAOIngrediente(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
-			isPermiso(idUser, 3 );
-			data= daoIngrediente.get(idIng);
-			if(data==null)
+			isPermiso(idUser, 3);
+			data = daoIngrediente.get(idIng);
+			if (data == null)
 				throw new RotondAndesException("el ingrediente no existe");
-			Producto p=new Producto();
+			Producto p = new Producto();
 			p.setId(idProd);
 			dao.delete(data, p);
 			conn.commit();
