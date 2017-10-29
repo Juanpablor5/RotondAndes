@@ -1,6 +1,7 @@
 package tm;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import vos.*;
 import dao.*;
@@ -1238,5 +1239,80 @@ public class RotondAndesTM extends baseTM {
 			closeConection();
 		}
 		return tipo;
+	}
+
+	public List<Ingrediente> getIngredientesProducto(Long idUser, Long id) throws RotondAndesException, SQLException {
+		List<Ingrediente> data= new LinkedList<>();
+		updateConnection();
+		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3 ,2);
+			Producto p=new Producto();
+			p.setId(id);
+			data = dao.getAllFrom(p);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Ingrediente addIngredienteProducto(Long idUser, Long idProd, Long idIng) throws RotondAndesException, SQLException {
+		Ingrediente data = null;
+		updateConnection();
+		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn); DAOIngrediente daoIngrediente= new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3 );
+			data= daoIngrediente.get(idIng);
+			if(data==null)
+				throw new RotondAndesException("el ingrediente no existe");
+			Producto p=new Producto();
+			p.setId(idProd);
+			dao.add(data, p);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+	
+	public Ingrediente removeIngredienteProducto(Long idUser, Long idProd, Long idIng) throws RotondAndesException, SQLException {
+		Ingrediente data = null;
+		updateConnection();
+		try (DAOProductoIngrediente dao = new DAOProductoIngrediente(conn); DAOIngrediente daoIngrediente= new DAOIngrediente(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			isPermiso(idUser, 3 );
+			data= daoIngrediente.get(idIng);
+			if(data==null)
+				throw new RotondAndesException("el ingrediente no existe");
+			Producto p=new Producto();
+			p.setId(idProd);
+			dao.delete(data, p);
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
 	}
 }

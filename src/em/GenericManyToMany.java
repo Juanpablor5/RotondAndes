@@ -24,8 +24,7 @@ public class GenericManyToMany<T, S> extends Connector {
 	private final List<String> idt;
 	protected final String TABLA;
 
-
-	public GenericManyToMany(Class<T> claseT, Class<S> claseS,Connection conn) throws SQLException {
+	public GenericManyToMany(Class<T> claseT, Class<S> claseS, Connection conn) throws SQLException {
 		setConn(conn);
 		this.claseS = claseS;
 		this.claseT = claseT;
@@ -55,7 +54,7 @@ public class GenericManyToMany<T, S> extends Connector {
 		sql += " WHERE" + Arista.listFormatString(ids, " AND ") + " AND "
 				+ SearchSentence(fieldOfClass(claseS, claseT), t);
 		ResultSet rs = executeModification(sql);
-		
+
 		return new Extractor<S>(claseS).extractList(rs);
 	}
 
@@ -66,16 +65,16 @@ public class GenericManyToMany<T, S> extends Connector {
 			Field fieldT = fieldOfClass(claseT, claseS);
 			for (Field f : claseS.getDeclaredFields())
 				if (f.isAnnotationPresent(SISTRANS_Id.class)) {
-					Method method = claseT.getMethod(getMethod(f.getName()));
+					Method method = claseS.getMethod(getMethod(f.getName()));
 					values.add(fieldT.getName() + "_" + f.getName());
-					data.add(format(f, method.invoke(t)));
+					data.add(format(f, method.invoke(s)));
 				}
-			Field fieldS = fieldOfClass(claseT, claseS);
+			Field fieldS = fieldOfClass(claseS, claseT);
 			for (Field f : claseT.getDeclaredFields())
 				if (f.isAnnotationPresent(SISTRANS_Id.class)) {
-					Method method = claseS.getMethod(getMethod(f.getName()));
+					Method method = claseT.getMethod(getMethod(f.getName()));
 					values.add(fieldS.getName() + "_" + f.getName());
-					data.add(format(f, method.invoke(s)));
+					data.add(format(f, method.invoke(t)));
 				}
 			String sql = "INSERT INTO " + TABLA + " (" + Arista.listFormatString(values, ",") + ") VALUES ("
 					+ Arista.listFormatString(data, ",") + ")";
@@ -93,20 +92,20 @@ public class GenericManyToMany<T, S> extends Connector {
 			Field fieldT = fieldOfClass(claseT, claseS);
 			for (Field f : claseS.getDeclaredFields())
 				if (f.isAnnotationPresent(SISTRANS_Id.class)) {
-					Method method = claseT.getMethod(getMethod(f.getName()));
-
-					values.add(fieldT.getName() + "_" + f.getName() + " = " + format(f, method.invoke(t)));
+					Method method = claseS.getMethod(getMethod(f.getName()));
+					values.add(fieldT.getName() + "_" + f.getName()+" = "+format(f, method.invoke(s)));
 				}
-			Field fieldS = fieldOfClass(claseT, claseS);
+			Field fieldS = fieldOfClass(claseS, claseT);
 			for (Field f : claseT.getDeclaredFields())
 				if (f.isAnnotationPresent(SISTRANS_Id.class)) {
-					Method method = claseS.getMethod(getMethod(f.getName()));
-					values.add(fieldS.getName() + "_" + f.getName() + " = " + format(f, method.invoke(s)));
+					Method method = claseT.getMethod(getMethod(f.getName()));
+					values.add(fieldS.getName() + "_" + f.getName()+" = "+format(f, method.invoke(t)));
 				}
 			String sql = "DELETE FROM " + TABLA;
-			sql += " WHERE " + Arista.listFormatString(ids, " AND ");
+			sql += " WHERE " + Arista.listFormatString(values, " AND ");
 			executeModification(sql);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SQLException | NoSuchMethodException | SecurityException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SQLException
+				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
@@ -123,7 +122,7 @@ public class GenericManyToMany<T, S> extends Connector {
 	private List<String> foreings(Field fieldB, Object objectA) throws SQLException {
 		try {
 			List<String> search = new LinkedList<>();
-			Class<?> clase=objectA.getClass();
+			Class<?> clase = objectA.getClass();
 			Field[] idsForeings = Id.ids(clase);
 			for (Field f : idsForeings) {
 				Method method = clase.getMethod(getMethod(f.getName()));

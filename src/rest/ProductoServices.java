@@ -100,21 +100,6 @@ public class ProductoServices extends BaseServices implements URLS {
 	}
 	
 	@GET
-	@Path("{" + PRODUCTOID + ": \\d+}/"+INGREDIENTE)
-	public Response getIngredintes(@PathParam(USUARIOID) Long idUser, @PathParam(PRODUCTOID) Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Ingrediente> data;
-		try {
-			data=tm.getIngredientesProducto(idUser,id);
-		} catch (RotondAndesException ex) {
-			return Response.status(404).entity(doErrorMessage(ex)).build();
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(data).build();
-	}
-	
-	@GET
 	@Path("{" + PRODUCTOID + ": \\d+}/SIMILITUD")
 	public Response getSimilitud(@PathParam(USUARIOID) Long idUser, @PathParam(PRODUCTOID) Long id) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
@@ -155,5 +140,50 @@ public class ProductoServices extends BaseServices implements URLS {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(204).build();
+	}
+	
+	@GET
+	@Path("{" + PRODUCTOID + ": \\d+}/"+INGREDIENTE)
+	public Response getIngredintes(@PathParam(USUARIOID) Long idUser, @PathParam(PRODUCTOID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Ingrediente> data;
+		try {
+			data = tm.getIngredientesProducto(idUser,id);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(data).build();
+	}
+	
+	@POST
+	@Path("{" + PRODUCTOID + ": \\d+}/"+INGREDIENTE+"/{"+INGREDIENTEID+": \\d+}")
+	public Response addIngredinte(@PathParam(USUARIOID) Long idUser, @PathParam(PRODUCTOID) Long idProd,@PathParam(INGREDIENTEID)Long idIng) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Ingrediente data;
+		try {
+			data=tm.addIngredienteProducto(idUser,idProd,idIng);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(data).build();
+	}
+	
+	@DELETE
+	@Path("{" + PRODUCTOID + ": \\d+}/"+INGREDIENTE+"/{"+INGREDIENTEID+": \\d+}")
+	public Response removeIngredinte(@PathParam(USUARIOID) Long idUser, @PathParam(PRODUCTOID) Long idProd,@PathParam(INGREDIENTEID)Long idIng) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Ingrediente data;
+		try {
+			data=tm.removeIngredienteProducto(idUser,idProd,idIng);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(data).build();
 	}
 }
