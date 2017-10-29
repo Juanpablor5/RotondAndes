@@ -5,7 +5,6 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import em.Checks;
-import em.Reference;
 import em.Tabla;
 import em.Check.SISTRANS_Check;
 import em.Columna.SISTRANS_Columna;
@@ -48,7 +47,6 @@ public class Producto {
 	@SISTRANS_Columna
 	private String categoria;
 	
-	@Reference
 	@ManytoMany(mapped="productos")
 	private List<Ingrediente> ingredientes;
 	// -------------------------------------------------------------

@@ -17,7 +17,7 @@ import vos.*;
 
 public class Develop {
 	public static void main(String[] args) throws GenericException {
-		new Develop(IngredienteSimilitud.class , Categoria.class,Cliente.class,Espacio.class,Ingrediente.class,Menu.class,Pedido.class,Preferencias.class,Producto.class,Representante.class,Reserva.class,Restaurante.class,TipoComida.class,Usuario.class,Zona.class);
+		new Develop(ProductoSimilitud.class,IngredienteSimilitud.class,Cliente.class,Espacio.class,Ingrediente.class,Menu.class,Pedido.class,Preferencias.class,Producto.class,Representante.class,Reserva.class,Restaurante.class,TipoComida.class,Usuario.class,Zona.class);
 	}
 	
 	private final Hashtable<String, Arista> aristas = new Hashtable<>();

@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-abstract class Connector implements AutoCloseable{
+abstract class Connector implements AutoCloseable {
 	protected ArrayList<Object> recursos;
 	protected Connection conn;
 	private boolean closed;
 
-	public Connector(){
+	public Connector() {
 		recursos = new ArrayList<Object>();
 		closed = false;
 	}
@@ -32,11 +32,16 @@ abstract class Connector implements AutoCloseable{
 	public void setConn(Connection con) {
 		this.conn = con;
 	}
-	
+
 	protected ResultSet executeModification(String sql) throws SQLException {
-		System.out.println(sql);
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		return prepStmt.executeQuery();
+		try {
+			System.out.println(sql);
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			return prepStmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

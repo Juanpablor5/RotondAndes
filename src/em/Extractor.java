@@ -117,6 +117,7 @@ public class Extractor<T> {
 			
 			List<Field> references = new LinkedList<>();
 			List<Field> referencesList = new LinkedList<>();
+			List<Field> referencesMany= new LinkedList<>();
 			T t = clase.newInstance();
 			for (Field field : clase.getDeclaredFields()) {
 				if (field.isAnnotationPresent(Id.SISTRANS_Id.class)
@@ -128,14 +129,16 @@ public class Extractor<T> {
 						GenericDao<Object> tm = new GenericDao(field.getType(), conn);
 						set(field, t, tm.get(references(field.getType(), field, rs)));
 						tm.close();
-					} else {
+					} else if(field.isAnnotationPresent(ManytoMany.class)) {
+						referencesMany.add(field);
+					}else {
 						if (field.getType().equals(List.class)) 
 							referencesList.add(field);
 						else 
 							references.add(field);
 					}
 				} else if (field.isAnnotationPresent(ManytoMany.class)) {
-					
+					referencesMany.add(field);
 				}
 			}
 			for (Field field : references) {
@@ -154,6 +157,13 @@ public class Extractor<T> {
 				GenericDao<Object> tm = new GenericDao(clase, conn);
 				set(field, t, tm.getWithForeing(f, t));
 				tm.close();
+			}
+			for(Field field: referencesMany) {
+				Class<?> claseref=(Class<?>) ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				GenericManyToMany<Object,Object> gmtm= new GenericManyToMany(clase, claseref,conn);
+				set(field , t, gmtm.getAllFrom(t));
+				gmtm.close();
 			}
 			return t;
 		} catch (InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException

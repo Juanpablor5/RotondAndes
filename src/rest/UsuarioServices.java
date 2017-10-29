@@ -116,6 +116,15 @@ public class UsuarioServices extends BaseServices implements URLS {
 		}
 	}
 	
+	@Path("{" + USUARIOID + ": \\d+}/" + PRODUCTO)
+	public ProductoServices productoServices() {
+		try {
+			return new ProductoServices(context);
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(doErrorMessage(e)).build());
+		}
+	}
+	
 	@Path("{" + USUARIOID + ": \\d+}/" + ZONA)
 	public ZonaAdminServices zonaServices() {
 		try {
