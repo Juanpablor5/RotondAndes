@@ -20,7 +20,7 @@ public class Ingrediente {
 	// Atributos
 	// -------------------------------------------------------------
 
-	@SISTRANS_Id(AutoIncrement=true)
+	@SISTRANS_Id(AutoIncrement = true)
 	@JsonProperty(value = "id")
 	private Long id;
 
@@ -28,14 +28,14 @@ public class Ingrediente {
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	@SISTRANS_Columna(maxSize=1000)
+	@SISTRANS_Columna(maxSize = 1000)
 	@JsonProperty(value = "descripcion")
 	private String descripcion;
 
-	@SISTRANS_Columna(maxSize=1200)
+	@SISTRANS_Columna(maxSize = 1200)
 	@JsonProperty(value = "traduccion")
 	private String traduccion;
-	
+
 	@Reference
 	@ManytoMany
 	private List<Producto> productos;
@@ -47,53 +47,10 @@ public class Ingrediente {
 	public Ingrediente() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	/**
-	 * Método constructor de la clase ingrediente. <b>post: </b> Crea el
-	 * ingrediente con los valores que entran como parámetro.
-	 * 
-	 * @param id
-	 *            - Id del ingrediente.
-	 * @param nombre
-	 *            - Nombre del ingrediente. nombre != null
-	 * @param descripcion
-	 *            - Descripción del ingrediente.
-	 * @param traduccion
-	 *            - Traducción de descripción del ingrediente.
-	 */
-	public Ingrediente(@JsonProperty(value = "id") Long id, @JsonProperty(value = "nombre") String nombre,
-			@JsonProperty(value = "descripcion") String descripcion,
-			@JsonProperty(value = "traduccion") String traduccion) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.traduccion = traduccion;
-	}
 
 	// -------------------------------------------------------------
 	// Getters & Setters
-	// -------------------------------------------------------------
-
-	/**
-	 * Método getter del atributo id
-	 * 
-	 * @return id del ingrediente
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Método setter del atributo id <b>post: </b> El id del ingrediente ha sido
-	 * cambiado con el valor que entra como parámetro.
-	 * 
-	 * @param id
-	 *            - Id del ingrediente
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
+	// ------------------------------------------------------------
 
 	/**
 	 * Método getter del atributo nombre
@@ -104,9 +61,17 @@ public class Ingrediente {
 		return nombre;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	/**
-	 * Método setter del atributo nombre <b>post: </b> El nombre del ingrediente
-	 * ha sido cambiado con el valor que entra como parámetro.
+	 * Método setter del atributo nombre <b>post: </b> El nombre del ingrediente ha
+	 * sido cambiado con el valor que entra como parámetro.
 	 * 
 	 * @param nombre
 	 *            - Nombre del ingrediente.

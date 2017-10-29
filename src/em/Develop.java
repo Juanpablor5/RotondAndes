@@ -138,6 +138,6 @@ public class Develop {
 
 		Arista arista = new Arista(name, ids, listaForeings, null);
 		aristasAux.put(name, arista);
-		sentencias.put(arista, Many.CREATE(name,actual,actualF, ref,refF));
+		sentencias.put(arista, Many.CREATE(name,actual,refF, ref,actualF));
 	}
 }

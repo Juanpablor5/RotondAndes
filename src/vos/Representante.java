@@ -36,7 +36,7 @@ public class Representante {
 	private String correo;
 
 	@Reference
-	@ForeignKey(unique=true)
+	@ForeignKey(unique=true , nullable = false , cascade =true)
 	private Restaurante restaurante;
 
 	// -------------------------------------------------------------

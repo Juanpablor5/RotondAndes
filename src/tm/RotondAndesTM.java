@@ -123,19 +123,13 @@ public class RotondAndesTM extends baseTM {
 	public Usuario deleteUsuario(Long codigo) throws SQLException, RotondAndesException {
 		Usuario usuario = null;
 		updateConnection();
-		try (DAOUsuario dao = new DAOUsuario(conn);
-				DAOCliente daoCliente = new DAOCliente(conn);
-				DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
+		try (DAOUsuario dao = new DAOUsuario(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
 			usuario = dao.get(codigo);
 			if (usuario == null)
 				throw new RotondAndesException("no existe el usuario buscado");
-			if (usuario.getPermisos() == 1)
-				daoCliente.removeAllSub(usuario);
-			if (usuario.getPermisos() == 2)
-				daoRestaurante.removeAllSub(usuario);
 			dao.remove(usuario);
 			conn.commit();
 			// ------------------------
@@ -255,7 +249,7 @@ public class RotondAndesTM extends baseTM {
 			isPermiso(idUser, 3);
 			cliente = dao.get(cedula);
 			if (cliente == null)
-				throw new RotondAndesException("no existe el usuario buscado");
+				throw new RotondAndesException("no existe el cliente buscado");
 			dao.remove(cliente);
 			conn.commit();
 			// ------------------------
@@ -367,16 +361,14 @@ public class RotondAndesTM extends baseTM {
 	public Restaurante deleteRestaurante(Long idUser, Long cedula) throws SQLException, RotondAndesException {
 		Restaurante restaurante = null;
 		updateConnection();
-		try (DAORestaurante dao = new DAORestaurante(conn);
-				DAORepresentante daoRepresentante = new DAORepresentante(conn)) {
+		try (DAORestaurante dao = new DAORestaurante(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
 			isPermiso(idUser, 3);
 			restaurante = dao.get(cedula);
 			if (restaurante == null)
-				throw new RotondAndesException("no existe el usuario buscado");
-			daoRepresentante.removeAllSub(restaurante);
+				throw new RotondAndesException("no existe el restaurante buscado");
 			dao.remove(restaurante);
 			conn.commit();
 			// ------------------------
@@ -581,7 +573,6 @@ public class RotondAndesTM extends baseTM {
 			tipo = dao.get(id);
 			if (tipo == null)
 				throw new RotondAndesException("no existe el tipo de comida buscado buscado");
-			daoRestaurante.removeAllRefSub(tipo);
 			dao.remove(tipo);
 			conn.commit();
 			// ------------------------
@@ -921,7 +912,7 @@ public class RotondAndesTM extends baseTM {
 	public Zona deleteZona(Long idUser, Long id) throws SQLException, RotondAndesException {
 		Zona tipo = null;
 		updateConnection();
-		try (DAOZona dao = new DAOZona(conn); DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
+		try (DAOZona dao = new DAOZona(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
@@ -929,7 +920,6 @@ public class RotondAndesTM extends baseTM {
 			tipo = dao.get(id);
 			if (tipo == null)
 				throw new RotondAndesException("No existe la zona buscada");
-			daoRestaurante.removeAllRefSub(tipo);
 			dao.remove(tipo);
 			conn.commit();
 			// ------------------------
@@ -1229,7 +1219,7 @@ public class RotondAndesTM extends baseTM {
 	public Espacio deleteEspacio(Long idUser, Long id) throws SQLException, RotondAndesException {
 		Espacio tipo = null;
 		updateConnection();
-		try (DAOEspacio dao = new DAOEspacio(conn); DAORestaurante daoRestaurante = new DAORestaurante(conn)) {
+		try (DAOEspacio dao = new DAOEspacio(conn)) {
 			// ------------------------
 			// START
 			// ------------------------
@@ -1237,7 +1227,6 @@ public class RotondAndesTM extends baseTM {
 			tipo = dao.get(id);
 			if (tipo == null)
 				throw new RotondAndesException("No existe la zona buscada");
-			daoRestaurante.removeAllRefSub(tipo);
 			dao.remove(tipo);
 			conn.commit();
 			// ------------------------

@@ -35,7 +35,7 @@ public interface Many {
 			SQL += n + " " + Id.type(f, f.getAnnotation(SISTRANS_Id.class)) + " NOT NULL,\n";
 		}
 		SQL += "CONSTRAINT FK_" + name + " FOREIGN KEY (" + listFormatString(stringFields, ",") + ") REFERENCES  "
-				+ a1.getTableName() + "(" + listFormat(fileds, ",") + "),\n";
+				+ a1.getTableName() + "(" + listFormat(fileds, ",") + ") ON DELETE CASCADE,\n";
 		
 		fileds = a2.getIds();
 		stringFields = new LinkedList<>();
@@ -48,7 +48,7 @@ public interface Many {
 		}
 		
 		SQL += "CONSTRAINT FK_" + name + "2 FOREIGN KEY (" + listFormatString(stringFields, ",") + ") REFERENCES  "
-				+ a2.getTableName() + "(" + listFormat(fileds, ",") + "),\n";
+				+ a2.getTableName() + "(" + listFormat(fileds, ",") + ") ON DELETE CASCADE,\n";
 		SQL += "CONSTRAINT PK_" + name + " PRIMARY KEY (" + listFormatString(ids, ",") + ")\n";
 		return SQL + ");";
 	}

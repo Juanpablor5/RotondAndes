@@ -31,7 +31,7 @@ public class Cliente {
 	private Date fechaIngreso;
 
 	@Reference
-	@ForeignKey(unique = true)
+	@ForeignKey(unique = true , nullable =false ,cascade=true)
 	private Usuario registro;
 
 	@Reference(mappedBy = "cliente")

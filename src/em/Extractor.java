@@ -110,14 +110,15 @@ public class Extractor<T> {
 		return "set" + Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T extractDetail(ResultSet rs, Connection conn) throws SQLException {
 		try {
 			if (!rs.next())
 				return null;
-			
+
 			List<Field> references = new LinkedList<>();
 			List<Field> referencesList = new LinkedList<>();
-			List<Field> referencesMany= new LinkedList<>();
+			List<Field> referencesMany = new LinkedList<>();
 			T t = clase.newInstance();
 			for (Field field : clase.getDeclaredFields()) {
 				if (field.isAnnotationPresent(Id.SISTRANS_Id.class)
@@ -125,16 +126,15 @@ public class Extractor<T> {
 					set(field, t, getRs(rs, field));
 				} else if (field.isAnnotationPresent(Reference.class)) {
 					if (field.isAnnotationPresent(ForeignKey.class)) {
-						@SuppressWarnings({ "unchecked", "rawtypes" })
 						GenericDao<Object> tm = new GenericDao(field.getType(), conn);
 						set(field, t, tm.get(references(field.getType(), field, rs)));
 						tm.close();
-					} else if(field.isAnnotationPresent(ManytoMany.class)) {
+					} else if (field.isAnnotationPresent(ManytoMany.class)) {
 						referencesMany.add(field);
-					}else {
-						if (field.getType().equals(List.class)) 
+					} else {
+						if (field.getType().equals(List.class))
 							referencesList.add(field);
-						else 
+						else
 							references.add(field);
 					}
 				} else if (field.isAnnotationPresent(ManytoMany.class)) {
@@ -143,26 +143,29 @@ public class Extractor<T> {
 			}
 			for (Field field : references) {
 				Field f = field.getType().getDeclaredField(field.getAnnotation(Reference.class).mappedBy());
-				@SuppressWarnings({ "unchecked", "rawtypes" })
 				GenericDao<Object> tm = new GenericDao(field.getType(), conn);
-				List<Object> ans=tm.getWithForeing(f, t);
-				if(!ans.isEmpty())
+				List<Object> ans = tm.getWithForeing(f, t);
+				if (!ans.isEmpty())
 					set(field, t, ans.get(0));
 				tm.close();
 			}
-			for(Field field: referencesList) {
-				Class<?> clase=(Class<?>) ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
-				Field f=clase.getDeclaredField(field.getAnnotation(Reference.class).mappedBy());
-				@SuppressWarnings({ "unchecked", "rawtypes" })
+			for (Field field : referencesList) {
+				Class<?> clase = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+				Field f = clase.getDeclaredField(field.getAnnotation(Reference.class).mappedBy());
 				GenericDao<Object> tm = new GenericDao(clase, conn);
 				set(field, t, tm.getWithForeing(f, t));
 				tm.close();
 			}
-			for(Field field: referencesMany) {
-				Class<?> claseref=(Class<?>) ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
-				@SuppressWarnings({ "unchecked", "rawtypes" })
-				GenericManyToMany<Object,Object> gmtm= new GenericManyToMany(clase, claseref,conn);
-				set(field , t, gmtm.getAllFrom(t));
+			for (Field field : referencesMany) {
+				Class<?> claseref = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+				GenericManyToMany<Object, Object> gmtm;
+				if (!field.getAnnotation(ManytoMany.class).mapped().equals("")) {
+					gmtm = new GenericManyToMany(clase, claseref, conn);
+					set(field, t, gmtm.getAllFrom(t));
+				}else {
+					gmtm = new GenericManyToMany(claseref,clase, conn);
+					set(field, t, gmtm.getAllTo(t));
+				}
 				gmtm.close();
 			}
 			return t;

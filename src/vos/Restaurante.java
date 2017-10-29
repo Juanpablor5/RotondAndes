@@ -33,14 +33,14 @@ public class Restaurante {
 	private String paginaWeb;
 
 	@Reference
-	@ForeignKey(unique = true)
+	@ForeignKey(unique = true, nullable = false, cascade = true)
 	private Usuario registro;
 
 	@Reference(mappedBy = "restaurante")
 	private Representante representante;
 
 	@Reference
-	@ForeignKey(nullable=true)
+	@ForeignKey(nullable = true)
 	private TipoComida tipoComida;
 	// /**
 	// * Id de la zona del restaurante.

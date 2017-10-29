@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesException;
 import tm.RotondAndesTM;
+import vos.Ingrediente;
 import vos.Producto;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -90,6 +91,21 @@ public class ProductoServices extends BaseServices implements URLS {
 		data.setId(id);
 		try {
 			data = tm.deleteProducto(idUser,data);
+		} catch (RotondAndesException ex) {
+			return Response.status(404).entity(doErrorMessage(ex)).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(data).build();
+	}
+	
+	@GET
+	@Path("{" + PRODUCTOID + ": \\d+}/"+INGREDIENTE)
+	public Response getIngredintes(@PathParam(USUARIOID) Long idUser, @PathParam(PRODUCTOID) Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Ingrediente> data;
+		try {
+			data=tm.getIngredientesProducto(idUser,id);
 		} catch (RotondAndesException ex) {
 			return Response.status(404).entity(doErrorMessage(ex)).build();
 		} catch (Exception e) {

@@ -32,7 +32,7 @@ public class GenericManyToMany<T, S> extends Connector {
 		this.TABLA = claseT.getSimpleName() + "_" + claseS.getSimpleName();
 		ids = new LinkedList<>();
 		idt = new LinkedList<>();
-		Field fieldT = fieldOfClass(claseT, claseS);
+		Field fieldT = fieldOfClass(claseS, claseT);
 		for (Field f : claseS.getDeclaredFields())
 			if (f.isAnnotationPresent(SISTRANS_Id.class))
 				idt.add("A." + fieldT.getName() + "_" + f.getName() + " = B." + f.getName());

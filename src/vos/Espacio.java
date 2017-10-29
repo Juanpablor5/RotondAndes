@@ -47,7 +47,7 @@ public class Espacio {
 	private String condicionesTecnicas;
 	
 	@Reference
-	@ForeignKey
+	@ForeignKey(nullable= false, cascade=true)
 	private Zona zona;
 
 	// -------------------------------------------------------------

@@ -19,7 +19,8 @@ public interface Foreing {
 	@Target(ElementType.FIELD)
 	public @interface ForeignKey {
 		boolean unique() default false;
-		boolean nullable() default false;
+		boolean nullable() default true;
+		boolean cascade() default false;
 	}
 	
 	static public String CREATE(Arista arista) throws GenericException {
@@ -44,7 +45,7 @@ public interface Foreing {
 
 			SQL += "CONSTRAINT FK_" + arista.getTableName() + (i + 1) + " FOREIGN KEY ("
 					+ listFormatString(stringRef, ",") + ") REFERENCES " + tablaRef.getTableName() + "("
-					+ listFormat(filedsForeings, ",") + "),\n";
+					+ listFormat(filedsForeings, ",") + ") ON DELETE "+((field.getAnnotation(ForeignKey.class).cascade())?"CASCADE ":"SET NULL ")+",\n";
 			if (field.getAnnotation(ForeignKey.class).unique())
 				SQL += "CONSTRAINT FK_" + arista.getTableName() + (i + 1) + "_U UNIQUE ("
 						+ listFormatString(stringRef, ",") + "),\n";

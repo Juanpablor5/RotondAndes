@@ -193,23 +193,6 @@ public class GenericDao<T> extends Connector {
 		executeModification(sql);
 	}
 
-	public final void removeAllSub(Object padre) throws SQLException {
-		Class<?> claseP = padre.getClass();
-		String sql = "DELETE FROM " + TABLA;
-		sql += " WHERE" + SearchSentence(fieldOfClass(claseP), padre);
-
-		executeModification(sql);
-	}
-
-	public final void removeAllRefSub(Object padre) throws SQLException {
-		Class<?> claseP = padre.getClass();
-		String sql = "UPDATE " + TABLA + " SET "
-				+ Arista.listFormatString(foreingsNull(fieldOfClass(claseP), padre), ",");
-		sql += " WHERE" + SearchSentence(fieldOfClass(claseP), padre);
-
-		executeModification(sql);
-	}
-
 	private String getMethod(String str) {
 		return "get" + Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
@@ -234,19 +217,6 @@ public class GenericDao<T> extends Connector {
 			return search;
 		} catch (IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException
 				| IllegalAccessException e) {
-			e.printStackTrace();
-			throw new SQLException(e.getMessage());
-		}
-	}
-
-	private List<String> foreingsNull(Field fieldB, Object objectA) throws SQLException {
-		try {
-			List<String> search = new LinkedList<>();
-			Field[] idsForeings = Id.ids(fieldB.getType());
-			for (Field f : idsForeings)
-				search.add(fieldB.getName() + "_" + f.getName() + " =  null");
-			return search;
-		} catch (IllegalArgumentException | SecurityException e) {
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
