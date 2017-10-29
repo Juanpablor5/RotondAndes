@@ -1330,4 +1330,46 @@ public class RotondAndesTM extends baseTM {
 		}
 		return data;
 	}
+
+	public List<Menu> getAllMenu() throws SQLException {
+		List<Menu> data = null;
+		updateConnection();
+		try (DAOMenu daos = new DAOMenu(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.getAll();
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
+
+	public Menu getMenu(long id) throws SQLException, RotondAndesException {
+		Menu data = null;
+		updateConnection();
+		try (DAOMenu daos = new DAOMenu(conn)) {
+			// ------------------------
+			// START
+			// ------------------------
+			data = daos.get(id);
+			if(data==null)
+				throw new RotondAndesException("no hay un menu con el id:<"+id+">");
+			conn.commit();
+			// ------------------------
+			// END
+			// ------------------------
+		} catch (SQLException e) {
+			sqlException(e);
+		} finally {
+			closeConection();
+		}
+		return data;
+	}
 }

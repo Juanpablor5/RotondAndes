@@ -22,7 +22,7 @@ public class Menu {
 	// Atributos
 	// -------------------------------------------------------------
 
-	@SISTRANS_Id
+	@SISTRANS_Id(AutoIncrement = true)
 	@JsonProperty(value = "id")
 	private Long id;
 
